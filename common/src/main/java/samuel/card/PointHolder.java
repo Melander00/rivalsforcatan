@@ -2,6 +2,8 @@ package samuel.card;
 
 import samuel.point.Point;
 
+import java.util.Collection;
+
 public interface PointHolder {
-    Point getPoints();
+    Collection<? extends Point> getPoints();
 }
