@@ -1,6 +1,7 @@
 package samuel.board;
 
 import samuel.card.PlaceableCard;
+import samuel.util.CardID;
 
 import java.util.Collection;
 
@@ -23,12 +24,16 @@ public interface Board {
     void place(PlaceableCard card, BoardPosition position);
 
     /**
-     * Returns all positions that has a card with the supplied name.
-     * @param name
+     * Returns all positions that has a card with the supplied cardId.
+     * @param id
      * @return
      */
-    Collection<BoardPosition> getPositionsByName(String name);
+    Collection<BoardPosition> getPositionsById(CardID id);
 
-
-    boolean existsByName(String name);
+    /**
+     * Checks if the board contains a card of the supplied id.
+      * @param id
+     * @return
+     */
+    boolean existsById(CardID id);
 }
