@@ -8,10 +8,11 @@ import samuel.player.Player;
 
 public class RigProductionDieEffect implements Effect {
 
-    private Player owner;
+    private final Player owner;
     private boolean hasBeenUsed = false;
 
-    public RigProductionDieEffect(GameContext context) {
+    public RigProductionDieEffect(Player owner, GameContext context) {
+        this.owner = owner;
         context.getEventBus().register(this);
     }
 

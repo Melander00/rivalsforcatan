@@ -8,31 +8,26 @@ import samuel.player.Player;
 import samuel.resource.BrickResource;
 import samuel.resource.OreResource;
 import samuel.resource.ResourceBundle;
+import samuel.util.CardID;
 
 public class RoadCard implements PlaceableCard, PriceTag {
 
-    private static final String name = "Road";
-    private static final String description = "Allows construction of a new settlement and of road complements.";
+    private static final CardID id = new CardID("center", "road");
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
+    public CardID getCardID() {
+        return id;
     }
 
     @Override
     public boolean validatePlacement(BoardPosition position) {
-        if(!position.isCenterRow()) return false;
+        if(!position.getBoard().isCenterRow(position)) return false;
         if(!position.isEmpty()) return false;
 
-        PlaceableCard left = position.getLeft().getCard();
+        PlaceableCard left = position.getBoard().getLeftOfPosition(position).getCard();
         if(left instanceof SettlementLike) return true;
 
-        PlaceableCard right = position.getRight().getCard();
+        PlaceableCard right = position.getBoard().getRightOfPosition(position).getCard();
         if(right instanceof SettlementLike) return true;
 
         return false;

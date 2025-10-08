@@ -2,34 +2,30 @@ package samuel.card.center;
 
 import samuel.board.Board;
 import samuel.board.BoardPosition;
+import samuel.card.Card;
 import samuel.card.PlaceableCard;
 import samuel.card.PointHolder;
 import samuel.card.PriceTag;
 import samuel.player.Player;
 import samuel.point.VictoryPoint;
 import samuel.resource.*;
+import samuel.util.CardID;
 
 import java.util.Collection;
 
 public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, SettlementLike {
 
-    private static final String name = "Settlement";
-    private static final String description = "Two new regions. 2 building sites for green.";
+    private static final CardID id = new CardID("center", "settlement");
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
+    public CardID getCardID() {
+        return id;
     }
 
     @Override
     public boolean validatePlacement(BoardPosition position) {
         if(!position.isEmpty()) return false;
-        if(!position.isCenterRow()) return false;
+        if(!position.getBoard().isCenterRow(position)) return false;
 
         // check if either left or right is Road
         return true;

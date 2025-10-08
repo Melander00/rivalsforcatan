@@ -32,7 +32,10 @@ public class IntroductoryGameContext implements GameContext {
         return players;
     }
 
-
+    @Override
+    public void addPlayer(Player player) {
+        players.add(player);
+    }
 
     @Override
     public EventBus getEventBus() {

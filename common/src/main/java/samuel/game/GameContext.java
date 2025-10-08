@@ -39,5 +39,4 @@ public interface GameContext {
      */
     EventBus getEventBus();
 
-
 }

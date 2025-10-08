@@ -1,13 +1,29 @@
 package samuel.card;
 
 import samuel.util.CardID;
+
+import java.util.UUID;
+
 public interface Card {
 
     /**
      * Returns the CardID of the card.
      * @return
      */
-    CardID getId();
+    CardID getCardID();
+
+//    /**
+//     * Unique identifier
+//     * @return
+//     */
+//    UUID getUuid();
+//
+//    /**
+//     * Unique identifier
+//     * @param uuid
+//     */
+//    void setUuid(UUID uuid);
+
 
     // The idea is that the Client is responsible for supplying names and descriptions for the cards
     // That way, we can have localization and/or change names without having to touch the core functionality of the game

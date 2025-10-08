@@ -3,6 +3,7 @@ package samuel.board;
 import samuel.card.PlaceableCard;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface BoardPosition {
 
@@ -13,44 +14,27 @@ public interface BoardPosition {
     boolean isEmpty();
 
     /**
-     * Returns whether the position is in the center row (Settlements, Roads, Cities)
-     * @return
-     */
-    boolean isCenterRow();
-
-    /**
-     * Returns all the positions across the row
-     * @return
-     */
-    List<BoardPosition> getRow();
-
-    /**
-     * Returns all the positions along the column
-     * @return
-     */
-    List<BoardPosition> getColumn();
-
-    /**
-     * Gets the position directly to the left of this one.
-     * @return Null if it doesn't exist
-     */
-    BoardPosition getLeft();
-
-    /**
-     * Gets the position directly to the right of this one.
-     * @return Null if it doesn't exist
-     */
-    BoardPosition getRight();
-
-    /**
      * Gets the card placed on this position
-     * @return Null if there is none
+     * @return null if there is none
      */
     PlaceableCard getCard();
+
+    void setCard(PlaceableCard card);
 
     /**
      * Returns the parent board
      * @return
      */
     Board getBoard();
+
+    /**
+     * Unique identifier
+     * @return
+     */
+    UUID getUuid();
+
+    /**
+     * Unique identifier
+     */
+    void setUuid(UUID uuid);
 }

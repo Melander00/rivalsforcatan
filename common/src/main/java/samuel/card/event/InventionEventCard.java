@@ -1,25 +1,36 @@
 package samuel.card.event;
 
-import samuel.card.EventCard;
 import samuel.eventmanager.EventBus;
 import samuel.event.card.InventionEvent;
 import samuel.game.GameContext;
 import samuel.player.Player;
+import samuel.util.CardID;
 
 import java.util.List;
 
 public class InventionEventCard implements EventCard {
 
-    private EventBus eventManager;
+    private static final CardID id = new CardID("event", "invention");
+
+    @Override
+    public CardID getCardID() {
+        return id;
+    }
+
+    private final EventBus eventBus;
+
+    public InventionEventCard(GameContext context) {
+        this.eventBus = context.getEventBus();
+    }
 
     @Override
     public void resolveEvent(GameContext context) {
         InventionEvent event = new InventionEvent();
-        eventManager.fireEvent(event);
+        eventBus.fireEvent(event);
         if(event.isCanceled()) return;
 
-        List<Player> players = context.getPlayers();
+        List<Player> players = context.getPlayers(); // todo
 
-        eventManager.fireEvent(new InventionEvent.Post());
+        eventBus.fireEvent(new InventionEvent.Post());
     }
 }

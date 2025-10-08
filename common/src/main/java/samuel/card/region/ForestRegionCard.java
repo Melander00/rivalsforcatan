@@ -4,11 +4,16 @@ import samuel.board.Board;
 import samuel.board.BoardPosition;
 import samuel.player.Player;
 import samuel.resource.TimberResource;
+import samuel.util.CardID;
 
 public class ForestRegionCard extends AbstractRegionCard<TimberResource> {
 
-    private static final String name = "Forest";
-    private static final String description = "Gains resources based on production die roll. 1 building site for brown.";
+    private static final CardID id = new CardID("region", "forest");
+
+    @Override
+    public CardID getCardID() {
+        return id;
+    }
 
     public ForestRegionCard(int diceRoll) {
         super(new TimberResource(), diceRoll);
@@ -19,13 +24,5 @@ public class ForestRegionCard extends AbstractRegionCard<TimberResource> {
 
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
 
-    @Override
-    public String getDescription() {
-        return description;
-    }
 }

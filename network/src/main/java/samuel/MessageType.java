@@ -1,6 +1,7 @@
 package samuel;
 
 public enum MessageType {
+    GENERIC,
 
     // Client requests
     REQUEST_HAND,
@@ -9,9 +10,12 @@ public enum MessageType {
     // Server requests
     REQUEST_INT,
     REQUEST_RESOURCE,
-    REQUEST_BOARD_POSITION
-    ;
+    REQUEST_CARD_STACK,
+    REQUEST_BOARD_POSITION,
 
+    // Response
+    RESPONSE,
+    ;
 
 
     @Override

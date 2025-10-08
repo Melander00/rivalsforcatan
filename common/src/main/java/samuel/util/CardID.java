@@ -13,4 +13,8 @@ public record CardID(String namespace, String id) {
     public String toString() {
         return this.namespace + ":" + this.id;
     }
+
+    public boolean equals(CardID obj) {
+        return obj.namespace.equals(this.namespace) && obj.id.equals(this.id);
+    }
 }
