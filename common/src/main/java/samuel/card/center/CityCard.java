@@ -2,7 +2,6 @@ package samuel.card.center;
 
 import samuel.board.Board;
 import samuel.board.BoardPosition;
-import samuel.card.Card;
 import samuel.card.PlaceableCard;
 import samuel.card.PointHolder;
 import samuel.card.PriceTag;
@@ -11,7 +10,7 @@ import samuel.point.Point;
 import samuel.resource.GrainResource;
 import samuel.resource.OreResource;
 import samuel.resource.ResourceBundle;
-import samuel.util.CardID;
+import samuel.card.CardID;
 
 import java.util.Collection;
 import java.util.List;

@@ -11,7 +11,7 @@ public interface Game {
     void initGame();
 
     /**
-     * Runs the game
+     * The game loop
      */
     void run();
 

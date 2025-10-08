@@ -3,7 +3,7 @@ package samuel.card.action;
 import samuel.effect.RigProductionDieEffect;
 import samuel.game.GameContext;
 import samuel.player.Player;
-import samuel.util.CardID;
+import samuel.card.CardID;
 
 import java.util.UUID;
 

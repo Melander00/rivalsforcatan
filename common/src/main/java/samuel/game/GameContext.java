@@ -39,4 +39,11 @@ public interface GameContext {
      */
     EventBus getEventBus();
 
+    /**
+     * Checks whether the supplied player has won the game.
+     * @param player
+     * @return
+     */
+    boolean hasWon(Player player);
+
 }

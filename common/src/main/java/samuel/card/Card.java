@@ -1,9 +1,5 @@
 package samuel.card;
 
-import samuel.util.CardID;
-
-import java.util.UUID;
-
 public interface Card {
 
     /**

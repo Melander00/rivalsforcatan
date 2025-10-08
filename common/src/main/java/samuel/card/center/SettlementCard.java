@@ -2,14 +2,14 @@ package samuel.card.center;
 
 import samuel.board.Board;
 import samuel.board.BoardPosition;
-import samuel.card.Card;
 import samuel.card.PlaceableCard;
 import samuel.card.PointHolder;
 import samuel.card.PriceTag;
 import samuel.player.Player;
+import samuel.point.Point;
 import samuel.point.VictoryPoint;
 import samuel.resource.*;
-import samuel.util.CardID;
+import samuel.card.CardID;
 
 import java.util.Collection;
 

@@ -19,7 +19,7 @@ public class GameServer {
         this.game = game;
     }
 
-    public void start(List<Player> players) throws IOException {
+    public void start(List<Player> players) {
         // add players
         this.game.addPlayers(players);
 
@@ -28,27 +28,5 @@ public class GameServer {
 
         // run game
         this.game.run();
-    }
-
-
-
-    private List<Player> randomizeOrder(List<Player> players) {
-        List<Player> randomized = new ArrayList<>();
-
-        for(int i = 0; i < players.size(); i++) {
-            randomized.add(players.get((int)(Math.random() * i)));
-        }
-
-        return randomized;
-    }
-
-    private void chooseInitialDrawStack(GameContext context) {
-        for(Player player : context.getPlayers()) {
-            player.requestCardStack(List.of()); // todo
-        }
-    }
-
-    private void run(GameContext context) {
-
     }
 }

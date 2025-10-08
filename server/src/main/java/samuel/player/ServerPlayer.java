@@ -6,14 +6,19 @@ import samuel.Message;
 import samuel.MessageType;
 import samuel.board.Board;
 import samuel.board.BoardPosition;
+import samuel.card.PlaceableCard;
+import samuel.card.PointHolder;
 import samuel.card.stack.CardStack;
 import samuel.effect.Effect;
 import samuel.network.SocketClient;
+import samuel.point.Point;
+import samuel.point.VictoryPoint;
 import samuel.request.CardStackRequest;
 import samuel.request.IntRequest;
 import samuel.resource.ResourceBundle;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 public class ServerPlayer implements Player {
@@ -79,6 +84,30 @@ public class ServerPlayer implements Player {
     @Override
     public BoardPosition requestBoardPosition() {
         return null;
+    }
+
+    @Override
+    public <T extends Point> int getPoints(Class<T> pointClass) {
+        List<BoardPosition> positions = this.principality.getBoardPositions();
+
+
+        int points = 0;
+        for(BoardPosition position : positions) {
+            PlaceableCard card = position.getCard();
+            if(card == null) continue;
+
+            if(card instanceof PointHolder) {
+                PointHolder holder = (PointHolder) card;
+                Collection<? extends Point> coll = holder.getPoints();
+                for(Point point : coll) {
+                    if(pointClass.isInstance(point)) {
+                        points += 1;
+                    }
+                }
+            }
+        }
+        return points;
+
     }
 
     private void sendMessage(Message msg) {

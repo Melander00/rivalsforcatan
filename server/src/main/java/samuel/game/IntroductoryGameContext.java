@@ -1,5 +1,7 @@
 package samuel.game;
 
+import samuel.condition.IntroductoryVictoryCondition;
+import samuel.condition.VictoryCondition;
 import samuel.eventmanager.GenericEventBus;
 import samuel.eventmanager.EventBus;
 import samuel.player.Player;
@@ -13,6 +15,8 @@ public class IntroductoryGameContext implements GameContext {
 
     private final List<Player> players = new ArrayList<>();
     private int activePlayerIndex = 0;
+
+    private final VictoryCondition victoryCondition = new IntroductoryVictoryCondition();
 
     @Override
     public Player getActivePlayer() {
@@ -40,5 +44,10 @@ public class IntroductoryGameContext implements GameContext {
     @Override
     public EventBus getEventBus() {
         return this.eventBus;
+    }
+
+    @Override
+    public boolean hasWon(Player player) {
+        return victoryCondition.hasWon(player);
     }
 }

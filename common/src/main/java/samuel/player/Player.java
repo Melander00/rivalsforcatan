@@ -4,6 +4,7 @@ import samuel.board.Board;
 import samuel.board.BoardPosition;
 import samuel.card.stack.CardStack;
 import samuel.effect.Effect;
+import samuel.point.Point;
 import samuel.resource.ResourceBundle;
 
 import java.util.List;
@@ -57,4 +58,6 @@ public interface Player {
      * @return
      */
     BoardPosition requestBoardPosition();
+
+    <T extends Point> int getPoints(Class<T> point);
 }

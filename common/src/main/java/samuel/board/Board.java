@@ -1,10 +1,10 @@
 package samuel.board;
 
 import samuel.card.PlaceableCard;
-import samuel.util.CardID;
+import samuel.card.CardID;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 
 public interface Board {
 
@@ -73,4 +73,21 @@ public interface Board {
      * @return
      */
     boolean isCenterRow(BoardPosition position);
+
+
+    /**
+     * Allows for filtering of board positions.
+     * Example usage is to find all board positions that has a card with a victory point,
+     * to calculate the amount of points on the board.
+     * @param positionPredicate
+     * @return
+     */
+    List<BoardPosition> filterPositions(Predicate<BoardPosition> positionPredicate);
+
+
+    /**
+     * Returns a flat list of all the positions.
+     * @return
+     */
+    List<BoardPosition> getBoardPositions();
 }

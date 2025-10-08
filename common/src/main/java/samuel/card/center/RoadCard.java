@@ -8,7 +8,7 @@ import samuel.player.Player;
 import samuel.resource.BrickResource;
 import samuel.resource.OreResource;
 import samuel.resource.ResourceBundle;
-import samuel.util.CardID;
+import samuel.card.CardID;
 
 public class RoadCard implements PlaceableCard, PriceTag {
 

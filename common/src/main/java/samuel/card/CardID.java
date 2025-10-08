@@ -1,4 +1,4 @@
-package samuel.util;
+package samuel.card;
 
 /**
  * The reason for using CardID instead of just a String as id is so that we can keep namespaces in case

@@ -1,11 +1,11 @@
 package samuel.board;
 
 import samuel.card.PlaceableCard;
-import samuel.util.CardID;
+import samuel.card.CardID;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Simple concrete board that implements a grid using arrays.
@@ -112,6 +112,32 @@ public class GridBoard implements Board {
     @Override
     public boolean isCenterRow(BoardPosition position) {
         return false;
+    }
+
+    @Override
+    public List<BoardPosition> filterPositions(Predicate<BoardPosition> positionPredicate) {
+        List<BoardPosition> positions = new ArrayList<>();
+
+        for(List<GridPosition> row : this.grid) {
+            for(GridPosition pos : row) {
+                if(positionPredicate.test(pos)) {
+                    positions.add(pos);
+                }
+            }
+        }
+
+        return positions;
+    }
+
+    @Override
+    public List<BoardPosition> getBoardPositions() {
+        List<BoardPosition> positions = new ArrayList<>();
+
+        for(List<GridPosition> row : this.grid) {
+            positions.addAll(row);
+        }
+
+        return positions;
     }
 
     public List<List<GridPosition>> getGrid() {

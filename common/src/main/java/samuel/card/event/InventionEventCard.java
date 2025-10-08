@@ -4,7 +4,7 @@ import samuel.eventmanager.EventBus;
 import samuel.event.card.InventionEvent;
 import samuel.game.GameContext;
 import samuel.player.Player;
-import samuel.util.CardID;
+import samuel.card.CardID;
 
 import java.util.List;
 
