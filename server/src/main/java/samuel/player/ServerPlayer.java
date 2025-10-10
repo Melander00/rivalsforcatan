@@ -86,11 +86,9 @@ public class ServerPlayer implements Player {
 
     @Override
     public <T extends Point> int getPoints(Class<T> pointClass) {
-        List<BoardPosition> positions = this.principality.getBoardPositions();
-
-
         int points = 0;
-        for(BoardPosition position : positions) {
+
+        for(BoardPosition position : this.principality) {
             PlaceableCard card = position.getCard();
             if(card == null) continue;
 

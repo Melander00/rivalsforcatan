@@ -26,67 +26,58 @@ function buildSep(widths: number[]): string {
 }
 
 // Main function
-function printPrincipality(board: GridBoard): string {
+export function printPrincipality(board: GridBoard): string {
     const sb: string[] = [];
-    const positions = board.boardPositions;
+    const principality = board.boardPositions;
 
-    if (positions.length === 0) return "Empty board";
+    const rows = principality.length;
+    const cols = rows > 0 ? principality[0].length : 0;
 
-    // Determine board size
-    const rows = Math.max(...positions.map(p => p.row)) + 1;
-    const cols = Math.max(...positions.map(p => p.column)) + 1;
-
-    // Build a 2D array for easier indexing
-    const grid: GridPosition[][] = Array.from({ length: rows }, () => Array.from({ length: cols }, () => ({
-        uuid: "",
-        card: { cardID: { namespace: "", id: "" } },
-        row: 0,
-        column: 0,
-        empty: true
-    })));
-
-    positions.forEach(pos => {
-        grid[pos.row][pos.column] = pos;
-    });
+    if (rows === 0 || cols === 0) return "Empty board";
 
     // Compute column widths
-    const w: number[] = new Array(cols).fill(0);
     const minW = 10;
-    for (let c = 0; c < cols; c++) {
-        let m = minW;
+    const widths = Array.from({ length: cols }, (_, c) => {
+        let maxW = minW;
         for (let r = 0; r < rows; r++) {
-            const pos = grid[r][c];
-            m = Math.max(m, cellTitle(pos).length, cellInfo(pos).length);
+            const pos = principality[r][c];
+            maxW = Math.max(maxW, cellTitle(pos).length, cellInfo(pos).length);
         }
-        w[c] = m;
-    }
+        return maxW;
+    });
 
-    // Top column headers
-    sb.push("      " + Array.from({ length: cols }, (_, c) => padRight(`Col ${c}`, w[c] + 3)).join("") + "\n");
+    // Column headers
+    sb.push("      ");
+    for (let c = 0; c < cols; c++) {
+        sb.push(padRight(`Col ${c}`, widths[c] + 3));
+    }
+    sb.push("\n");
 
     // Top border
-    sb.push("    " + buildSep(w) + "\n");
+    sb.push("    " + buildSep(widths) + "\n");
 
-    // Each row
+    // Rows
     for (let r = 0; r < rows; r++) {
         // Title line
-        sb.push(`${r.toString().padStart(2, " ")} |`);
+        sb.push(`${r.toString().padStart(2, " ")}  |`);
         for (let c = 0; c < cols; c++) {
-            sb.push(` ${padRight(cellTitle(grid[r][c]), w[c])} |`);
+            const pos = principality[r][c];
+            sb.push(` ${padRight(cellTitle(pos), widths[c])} |`);
         }
         sb.push("\n");
 
         // Info line
-        sb.push("   |");
+        sb.push("    |");
         for (let c = 0; c < cols; c++) {
-            sb.push(` ${padRight(cellInfo(grid[r][c]), w[c])} |`);
+            const pos = principality[r][c];
+            sb.push(` ${padRight(cellInfo(pos), widths[c])} |`);
         }
         sb.push("\n");
 
         // Row separator
-        sb.push("    " + buildSep(w) + "\n");
+        sb.push("    " + buildSep(widths) + "\n");
     }
 
-    // Points line
+
     return sb.join("");
 }

@@ -10,25 +10,19 @@ import java.util.UUID;
 public class GridPosition implements BoardPosition {
 
     @JsonIgnore
-    private GridBoard board;
+    private Board board;
 
     private UUID uuid = UUID.randomUUID();
 
     private PlaceableCard card;
-
-    private int row;
-
-    private int column;
 
     // Required by jackson
     public GridPosition() {
 
     }
 
-    public GridPosition(GridBoard board, int row, int column) {
+    public GridPosition(Board board) {
         this.board = board;
-        this.row = row;
-        this.column = column;
     }
 
     @Override
@@ -61,11 +55,11 @@ public class GridPosition implements BoardPosition {
         this.uuid = uuid;
     }
 
-    public int getColumn() {
-        return column;
-    }
-
-    public int getRow() {
-        return row;
-    }
+//    public int getColumn() {
+//        return column;
+//    }
+//
+//    public int getRow() {
+//        return row;
+//    }
 }

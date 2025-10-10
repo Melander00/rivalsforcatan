@@ -3,10 +3,11 @@ package samuel.board;
 import samuel.card.PlaceableCard;
 import samuel.card.CardID;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public interface Board {
+public interface Board extends Iterable<BoardPosition> {
 
     /**
      * Returns a boolean whether the card can be placed on that position or not.
@@ -86,10 +87,10 @@ public interface Board {
 
 
     /**
-     * Returns a flat list of all the positions.
+     * Returns a grid list of all the positions. Doesn't enforce grid implementation but helps with how the game is built.
      * @return
      */
-    List<BoardPosition> getBoardPositions();
+    List<List<BoardPosition>> getBoardPositions();
 
 
     /**

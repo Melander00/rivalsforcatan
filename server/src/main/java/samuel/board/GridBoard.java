@@ -5,6 +5,7 @@ import samuel.card.PlaceableCard;
 import samuel.card.CardID;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -13,21 +14,13 @@ import java.util.function.Predicate;
  */
 public class GridBoard implements Board {
 
-    private List<List<GridPosition>> grid = new ArrayList<>();
+    private HorizontalExpandableGrid grid;
 
-    public GridBoard() {
-
-    }
+    public GridBoard() {}
 
     public void initGrid() {
-        // begin with 5x5 grid
-        for(int r = 0; r < 5; r++) {
-            List<GridPosition> row = new ArrayList<>();
-            for(int c = 0; c < 5; c++) {
-                row.add(new GridPosition(this, r, c));
-            }
-            this.grid.add(row);
-        }
+        this.grid = new HorizontalExpandableGrid();
+        this.grid.initGrid(this);
     }
 
     public static GridBoard createGridBoard() {
@@ -44,39 +37,26 @@ public class GridBoard implements Board {
     @Override
     public void place(PlaceableCard card, BoardPosition position) {
         position.setCard(card);
-        // check if board needs expansion
         this.ensureSize();
 //        card.onPlace();
     }
 
     public void ensureSize() {
-        // check leftmost
+        this.grid.ensureSize();
     }
 
     @Override
-    public GridPosition getPositionFromGrid(int row, int column) {
-        int rowSize = grid.size();
-        if(rowSize == 0) return null;
-        int columnSize = grid.getFirst().size();
-
-        if(
-                (row < 0 || row > rowSize - 1)
-             || (column < 0 || column > columnSize - 1)
-
-        ) return null;
-
-        return grid.get(row).get(column);
+    public BoardPosition getPositionFromGrid(int row, int column) {
+        return this.grid.getPositionFromGrid(row, column);
     }
 
     @Override
     public List<BoardPosition> getPositionsById(CardID id) {
         List<BoardPosition> positions = new ArrayList<>();
 
-        for(List<GridPosition> row : this.grid) {
-            for(GridPosition pos : row) {
-                if(pos.getCard().getCardID().equals(id)) {
-                    positions.add(pos);
-                }
+        for(BoardPosition pos : this.grid) {
+            if(pos.getCard().getCardID().equals(id)) {
+                positions.add(pos);
             }
         }
 
@@ -85,36 +65,32 @@ public class GridBoard implements Board {
 
     @Override
     public boolean existsById(CardID id) {
-        for(List<GridPosition> row : this.grid) {
-            for(GridPosition pos : row) {
-                if(pos.getCard().getCardID().equals(id)) {
-                    return true;
-                }
+        for(BoardPosition pos : this.grid) {
+            if(pos.getCard().getCardID().equals(id)) {
+                return true;
             }
         }
         return false;
     }
 
-
-
     @Override
     public BoardPosition getLeftOfPosition(BoardPosition position) {
-        return null;
+        return this.grid.getLeftOfPosition(position);
     }
 
     @Override
     public BoardPosition getRightOfPosition(BoardPosition position) {
-        return null;
+        return this.grid.getRightOfPosition(position);
     }
 
     @Override
     public List<BoardPosition> getRowOfPosition(BoardPosition position) {
-        return List.of();
+        return this.grid.getRowFromPosition(position);
     }
 
     @Override
     public List<BoardPosition> getColumnOfPosition(BoardPosition position) {
-        return List.of();
+        return this.grid.getColumnFromPosition(position);
     }
 
     @Override
@@ -126,11 +102,9 @@ public class GridBoard implements Board {
     public List<BoardPosition> filterPositions(Predicate<BoardPosition> positionPredicate) {
         List<BoardPosition> positions = new ArrayList<>();
 
-        for(List<GridPosition> row : this.grid) {
-            for(GridPosition pos : row) {
-                if(positionPredicate.test(pos)) {
-                    positions.add(pos);
-                }
+        for(BoardPosition pos : this.grid) {
+            if(positionPredicate.test(pos)) {
+                positions.add(pos);
             }
         }
 
@@ -138,19 +112,12 @@ public class GridBoard implements Board {
     }
 
     @Override
-    public List<BoardPosition> getBoardPositions() {
-
-        List<BoardPosition> positions = new ArrayList<>();
-
-        for(List<GridPosition> row : this.grid) {
-            positions.addAll(row);
-        }
-
-        return positions;
+    public List<List<BoardPosition>> getBoardPositions() {
+        return this.grid.getGrid();
     }
 
-//    @JsonIgnore
-//    public List<List<GridPosition>> getGrid() {
-//        return this.grid;
-//    }
+    @Override
+    public Iterator<BoardPosition> iterator() {
+        return this.grid.iterator();
+    }
 }
