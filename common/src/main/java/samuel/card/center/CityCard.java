@@ -7,8 +7,10 @@ import samuel.card.PointHolder;
 import samuel.card.PriceTag;
 import samuel.player.Player;
 import samuel.point.Point;
-import samuel.resource.GrainResource;
-import samuel.resource.OreResource;
+import samuel.point.PointBundle;
+import samuel.point.points.VictoryPoint;
+import samuel.resource.resources.GrainResource;
+import samuel.resource.resources.OreResource;
 import samuel.resource.ResourceBundle;
 import samuel.card.CardID;
 
@@ -30,15 +32,17 @@ public class CityCard implements PlaceableCard, PriceTag, PointHolder, Settlemen
     }
 
     @Override
-    public Collection<? extends Point> getPoints() {
-        return List.of();
+    public PointBundle getPoints() {
+        PointBundle bundle = new PointBundle();
+        bundle.addPoint(VictoryPoint.class, 2);
+        return bundle;
     }
 
     @Override
     public ResourceBundle getCost() {
         ResourceBundle cost = new ResourceBundle();
-        cost.add(new GrainResource(), 2);
-        cost.add(new OreResource(),  4);
+        cost.addResource(GrainResource.class, 2);
+        cost.addResource(OreResource.class,  4);
         return cost;
     }
 

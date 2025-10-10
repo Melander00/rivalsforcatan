@@ -8,6 +8,10 @@ public interface Card {
      */
     CardID getCardID();
 
+//    static CardID getCardID() {
+//        return null;
+//    }
+
 //    /**
 //     * Unique identifier
 //     * @return

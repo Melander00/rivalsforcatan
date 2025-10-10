@@ -5,8 +5,8 @@ import samuel.board.BoardPosition;
 import samuel.card.PlaceableCard;
 import samuel.card.PriceTag;
 import samuel.player.Player;
-import samuel.resource.BrickResource;
-import samuel.resource.OreResource;
+import samuel.resource.resources.BrickResource;
+import samuel.resource.resources.OreResource;
 import samuel.resource.ResourceBundle;
 import samuel.card.CardID;
 
@@ -41,8 +41,8 @@ public class RoadCard implements PlaceableCard, PriceTag {
     @Override
     public ResourceBundle getCost() {
         ResourceBundle cost = new ResourceBundle();
-        cost.add(new OreResource(), 1);
-        cost.add(new BrickResource(),  2);
+        cost.addResource(OreResource.class, 1);
+        cost.addResource(BrickResource.class,  2);
         return cost;
     }
 }

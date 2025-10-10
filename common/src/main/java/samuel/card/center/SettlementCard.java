@@ -6,10 +6,14 @@ import samuel.card.PlaceableCard;
 import samuel.card.PointHolder;
 import samuel.card.PriceTag;
 import samuel.player.Player;
-import samuel.point.Point;
-import samuel.point.VictoryPoint;
+import samuel.point.PointBundle;
+import samuel.point.points.VictoryPoint;
 import samuel.resource.*;
 import samuel.card.CardID;
+import samuel.resource.resources.BrickResource;
+import samuel.resource.resources.GrainResource;
+import samuel.resource.resources.OreResource;
+import samuel.resource.resources.WoolResource;
 
 import java.util.Collection;
 
@@ -39,17 +43,19 @@ public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, Set
 
 
     @Override
-    public Collection<VictoryPoint> getPoints() {
-        return VictoryPoint.create(1);
+    public PointBundle getPoints() {
+        PointBundle bundle = new PointBundle();
+        bundle.addPoint(VictoryPoint.class, 1);
+        return bundle;
     }
 
     @Override
     public ResourceBundle getCost() {
         ResourceBundle cost = new ResourceBundle();
-        cost.add(new OreResource(), 1);
-        cost.add(new BrickResource(),  1);
-        cost.add(new GrainResource(),  1);
-        cost.add(new WoolResource(),  1);
+        cost.addResource(OreResource.class, 1);
+        cost.addResource(BrickResource.class,  1);
+        cost.addResource(GrainResource.class,  1);
+        cost.addResource(WoolResource.class,  1);
         return cost;
     }
 }

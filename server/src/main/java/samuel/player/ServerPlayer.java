@@ -1,7 +1,5 @@
 package samuel.player;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import samuel.Message;
 import samuel.MessageType;
 import samuel.board.Board;
@@ -12,7 +10,7 @@ import samuel.card.stack.CardStack;
 import samuel.effect.Effect;
 import samuel.network.SocketClient;
 import samuel.point.Point;
-import samuel.point.VictoryPoint;
+import samuel.point.PointBundle;
 import samuel.request.CardStackRequest;
 import samuel.request.IntRequest;
 import samuel.resource.ResourceBundle;
@@ -96,14 +94,9 @@ public class ServerPlayer implements Player {
             PlaceableCard card = position.getCard();
             if(card == null) continue;
 
-            if(card instanceof PointHolder) {
-                PointHolder holder = (PointHolder) card;
-                Collection<? extends Point> coll = holder.getPoints();
-                for(Point point : coll) {
-                    if(pointClass.isInstance(point)) {
-                        points += 1;
-                    }
-                }
+            if(card instanceof PointHolder holder) {
+                PointBundle bundle = holder.getPoints();
+                points += bundle.getAmount(pointClass);
             }
         }
         return points;
@@ -114,13 +107,15 @@ public class ServerPlayer implements Player {
         try {
             client.sendData(msg);
         } catch (IOException exception) {
-
+            exception.printStackTrace();
         }
     }
 
     private void clientRequestHandler(Message request) {
+        System.out.println("Received request " + request.getType().toString() + " with id " + request.getRequestId().toString());
+
         switch(request.getType()) {
-            case REQUEST_BOARD -> sendMessage(new Message(MessageType.RESPONSE, principality));
+            case REQUEST_BOARD -> sendMessage(new Message(MessageType.RESPONSE, request.getRequestId(), principality));
         }
     }
 }

@@ -1,6 +1,7 @@
 package samuel.game;
 
 import samuel.player.Player;
+import samuel.principalities.IntrodoctoryPrincipality;
 
 import java.util.List;
 
@@ -11,6 +12,9 @@ public class IntroductoryGame implements Game {
     @Override
     public void initGame() {
         // setup principality
+        for(Player player : context.getPlayers()) {
+            IntrodoctoryPrincipality.setupPrincipality(player.getPrincipality());
+        }
 
         // initial draw
 

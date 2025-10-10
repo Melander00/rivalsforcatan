@@ -1,5 +1,6 @@
 package samuel.board;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import samuel.card.PlaceableCard;
 import samuel.card.CardID;
 
@@ -43,10 +44,17 @@ public class GridBoard implements Board {
     @Override
     public void place(PlaceableCard card, BoardPosition position) {
         position.setCard(card);
+        // check if board needs expansion
+        this.ensureSize();
 //        card.onPlace();
     }
 
-    public GridPosition getPositionOnGrid(int row, int column) {
+    public void ensureSize() {
+        // check leftmost
+    }
+
+    @Override
+    public GridPosition getPositionFromGrid(int row, int column) {
         int rowSize = grid.size();
         if(rowSize == 0) return null;
         int columnSize = grid.getFirst().size();
@@ -131,6 +139,7 @@ public class GridBoard implements Board {
 
     @Override
     public List<BoardPosition> getBoardPositions() {
+
         List<BoardPosition> positions = new ArrayList<>();
 
         for(List<GridPosition> row : this.grid) {
@@ -140,7 +149,8 @@ public class GridBoard implements Board {
         return positions;
     }
 
-    public List<List<GridPosition>> getGrid() {
-        return this.grid;
-    }
+//    @JsonIgnore
+//    public List<List<GridPosition>> getGrid() {
+//        return this.grid;
+//    }
 }

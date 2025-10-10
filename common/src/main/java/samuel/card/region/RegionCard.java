@@ -6,7 +6,7 @@ import samuel.resource.ResourceAmount;
 public interface RegionCard extends PlaceableCard {
 
 
-    ResourceAmount getAmount();
+    ResourceAmount getResourceAmount();
 
     /**
      * Adds to the resource pile.

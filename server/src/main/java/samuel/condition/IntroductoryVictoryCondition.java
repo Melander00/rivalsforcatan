@@ -1,7 +1,7 @@
 package samuel.condition;
 
 import samuel.player.Player;
-import samuel.point.VictoryPoint;
+import samuel.point.points.VictoryPoint;
 
 public class IntroductoryVictoryCondition implements VictoryCondition {
 

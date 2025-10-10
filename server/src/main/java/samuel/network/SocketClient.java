@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import samuel.MessageType;
+import samuel.jackson.CustomMapper;
 
 
 public class SocketClient {
@@ -23,7 +24,7 @@ public class SocketClient {
     private final BufferedReader in;
     private final BufferedWriter out;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = CustomMapper.getInstance();
 
     private final List<Consumer<Message>> listeners = new ArrayList<>();
     private final Map<String, BlockingQueue<Message>> pendingRequests = new ConcurrentHashMap<>();
@@ -44,10 +45,16 @@ public class SocketClient {
     public <T> T requestData(Message message, Class<T> clazz) throws IOException, InterruptedException {
         BlockingQueue<Message> responseQueue = new LinkedBlockingQueue<>();
 
-        pendingRequests.put(MessageType.RESPONSE.toString(), responseQueue);
+        UUID requestId = UUID.randomUUID();
+
+        pendingRequests.put(requestId.toString(), responseQueue);
+
+        message.setRequestId(requestId);
         sendData(message);
         Message res = responseQueue.take();
-        pendingRequests.remove(MessageType.RESPONSE.toString());
+
+        pendingRequests.remove(requestId.toString());
+
         return objectMapper.convertValue(res.getData(), clazz);
     }
 
@@ -69,8 +76,13 @@ public class SocketClient {
 
                     Message msg = objectMapper.readValue(line, Message.class);
 
-                    if(msg.getType().equals(MessageType.RESPONSE)) {
-                        pendingRequests.get(MessageType.RESPONSE).put(msg);
+                    String requestId = msg.getRequestId().toString();
+
+                    if(requestId != null && pendingRequests.containsKey(requestId)) {
+//                    if(msg.getType().equals(MessageType.RESPONSE)) {
+
+                        pendingRequests.get(requestId).put(msg);
+
                     } else {
                         for(Consumer<Message> listener : this.listeners) {
                             listener.accept(msg);
@@ -78,7 +90,7 @@ public class SocketClient {
                     }
                 }
             } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         });
 

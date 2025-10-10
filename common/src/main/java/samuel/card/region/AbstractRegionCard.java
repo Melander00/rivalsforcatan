@@ -7,13 +7,13 @@ import samuel.resource.ResourceAmount;
 
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class AbstractRegionCard<Res extends Resource> implements RegionCard {
+public abstract class AbstractRegionCard implements RegionCard {
 
-    private final Res resourceType;
+    private final Class<? extends Resource> resourceType;
     private int resourceAmount = 0;
     private int diceRoll = 0;
 
-    public AbstractRegionCard(Res resourceType, int diceRoll) {
+    public AbstractRegionCard(Class<? extends Resource> resourceType, int diceRoll) {
         this.resourceType = resourceType;
         this.diceRoll = diceRoll;
     }
@@ -24,7 +24,7 @@ public abstract class AbstractRegionCard<Res extends Resource> implements Region
     }
 
     @Override
-    public ResourceAmount getAmount() {
+    public ResourceAmount getResourceAmount() {
         return new ResourceAmount(resourceType, resourceAmount);
     }
 

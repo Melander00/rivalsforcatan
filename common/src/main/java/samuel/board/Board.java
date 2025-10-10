@@ -90,4 +90,13 @@ public interface Board {
      * @return
      */
     List<BoardPosition> getBoardPositions();
+
+
+    /**
+     * Doesn't enforce grid board but helps immensely with position validation and placement.
+     * @param row
+     * @param column
+     * @return
+     */
+    BoardPosition getPositionFromGrid(int row, int column);
 }

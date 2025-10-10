@@ -1,4 +1,6 @@
-package samuel.resource;
+package samuel.resource.resources;
+
+import samuel.resource.Resource;
 
 public class WoolResource implements Resource {
     @Override

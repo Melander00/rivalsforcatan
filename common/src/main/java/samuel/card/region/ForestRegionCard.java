@@ -3,10 +3,10 @@ package samuel.card.region;
 import samuel.board.Board;
 import samuel.board.BoardPosition;
 import samuel.player.Player;
-import samuel.resource.TimberResource;
+import samuel.resource.resources.TimberResource;
 import samuel.card.CardID;
 
-public class ForestRegionCard extends AbstractRegionCard<TimberResource> {
+public class ForestRegionCard extends AbstractRegionCard {
 
     private static final CardID id = new CardID("region", "forest");
 
@@ -16,7 +16,7 @@ public class ForestRegionCard extends AbstractRegionCard<TimberResource> {
     }
 
     public ForestRegionCard(int diceRoll) {
-        super(new TimberResource(), diceRoll);
+        super(TimberResource.class, diceRoll);
     }
 
     @Override
