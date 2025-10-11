@@ -1,10 +1,14 @@
 package samuel.game;
 
+import samuel.card.Card;
+import samuel.card.stack.CardStack;
+import samuel.card.stack.StackContainer;
 import samuel.condition.IntroductoryVictoryCondition;
 import samuel.condition.VictoryCondition;
 import samuel.eventmanager.GenericEventBus;
 import samuel.eventmanager.EventBus;
 import samuel.player.Player;
+import samuel.stack.GenericStackContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +21,8 @@ public class IntroductoryGameContext implements GameContext {
     private int activePlayerIndex = 0;
 
     private final VictoryCondition victoryCondition = new IntroductoryVictoryCondition();
+
+    private final StackContainer stackContainer = new GenericStackContainer();
 
     @Override
     public Player getActivePlayer() {
@@ -49,5 +55,10 @@ public class IntroductoryGameContext implements GameContext {
     @Override
     public boolean hasWon(Player player) {
         return victoryCondition.hasWon(player);
+    }
+
+    @Override
+    public StackContainer getStackContainer() {
+        return stackContainer;
     }
 }

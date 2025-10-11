@@ -1,5 +1,7 @@
 package samuel.card;
 
+import java.util.UUID;
+
 public interface Card {
 
     /**
@@ -7,6 +9,8 @@ public interface Card {
      * @return
      */
     CardID getCardID();
+
+    UUID getUuid();
 
 //    static CardID getCardID() {
 //        return null;

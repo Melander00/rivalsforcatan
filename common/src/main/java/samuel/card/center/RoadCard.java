@@ -10,9 +10,18 @@ import samuel.resource.resources.OreResource;
 import samuel.resource.ResourceBundle;
 import samuel.card.CardID;
 
+import java.util.UUID;
+
 public class RoadCard implements PlaceableCard, PriceTag {
 
     private static final CardID id = new CardID("center", "road");
+
+    private final UUID uuid = UUID.randomUUID();
+
+    @Override
+    public UUID getUuid() {
+        return uuid;
+    }
 
     @Override
     public CardID getCardID() {

@@ -1,5 +1,8 @@
 package samuel.game;
 
+import samuel.card.Card;
+import samuel.card.stack.CardStack;
+import samuel.card.stack.StackContainer;
 import samuel.eventmanager.EventBus;
 import samuel.player.Player;
 
@@ -46,4 +49,8 @@ public interface GameContext {
      */
     boolean hasWon(Player player);
 
+    /**
+     * Gets the stack container
+     */
+    StackContainer getStackContainer();
 }

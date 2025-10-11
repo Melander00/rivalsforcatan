@@ -12,4 +12,7 @@ public interface CardStack<CardType extends Card> extends Iterable<CardType> {
     CardType takeCardByUuid(UUID uuid);
     void shuffleCards();
     List<CardType> getCards();
+    int getSize();
+
+    UUID getUuid();
 }

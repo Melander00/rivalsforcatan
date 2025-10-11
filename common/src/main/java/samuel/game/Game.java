@@ -19,4 +19,6 @@ public interface Game {
      * Add all the players to the game
      */
     void addPlayers(List<Player> players);
+
+    GameContext getContext();
 }

@@ -16,10 +16,13 @@ import samuel.card.CardID;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 public class CityCard implements PlaceableCard, PriceTag, PointHolder, SettlementLike {
 
-    public static final CardID id = new CardID("center", "city");
+    private static final CardID id = new CardID("center", "city");
+
+    private final UUID uuid = UUID.randomUUID();
 
     @Override
     public boolean validatePlacement(BoardPosition position) {
@@ -49,5 +52,10 @@ public class CityCard implements PlaceableCard, PriceTag, PointHolder, Settlemen
     @Override
     public CardID getCardID() {
         return id;
+    }
+
+    @Override
+    public UUID getUuid() {
+        return uuid;
     }
 }

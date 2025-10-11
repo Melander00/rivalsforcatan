@@ -6,6 +6,7 @@ import samuel.resource.Resource;
 import samuel.resource.ResourceAmount;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.UUID;
 
 public abstract class AbstractRegionCard implements RegionCard {
 
@@ -13,9 +14,17 @@ public abstract class AbstractRegionCard implements RegionCard {
     private int resourceAmount = 0;
     private int diceRoll = 0;
 
+    private final UUID uuid = UUID.randomUUID();
+
     public AbstractRegionCard(Class<? extends Resource> resourceType, int diceRoll) {
         this.resourceType = resourceType;
         this.diceRoll = diceRoll;
+    }
+
+
+    @Override
+    public UUID getUuid() {
+        return uuid;
     }
 
     @Override

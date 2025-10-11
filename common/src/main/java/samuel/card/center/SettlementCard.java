@@ -16,10 +16,18 @@ import samuel.resource.resources.OreResource;
 import samuel.resource.resources.WoolResource;
 
 import java.util.Collection;
+import java.util.UUID;
 
 public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, SettlementLike {
 
     private static final CardID id = new CardID("center", "settlement");
+
+    private final UUID uuid = UUID.randomUUID();
+
+    @Override
+    public UUID getUuid() {
+        return uuid;
+    }
 
     @Override
     public CardID getCardID() {
