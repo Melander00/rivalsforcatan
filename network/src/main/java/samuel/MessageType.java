@@ -2,6 +2,7 @@ package samuel;
 
 public enum MessageType {
     GENERIC,
+    DIRECT_MESSAGE,
 
     // Client requests
     REQUEST_HAND,

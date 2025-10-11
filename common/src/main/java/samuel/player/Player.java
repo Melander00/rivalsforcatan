@@ -59,5 +59,8 @@ public interface Player {
      */
     BoardPosition requestBoardPosition();
 
+    void directMessage(String msg);
+
+
     <T extends Point> int getPoints(Class<T> point);
 }

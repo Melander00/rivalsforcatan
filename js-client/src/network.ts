@@ -56,17 +56,14 @@ function sendMessage(msg: Message) {
 let c = 0;
 
 client.on("data", buf => {
-
-    console.log("Received data")
-
     const data = buf.toString();
 
     const parts = data.split("\n").filter(e => e);
 
     for(const part of parts) {
-        // console.log(++c, part)
-
+        
         const json: Message = JSON.parse(part)
+        // console.log("Received", ++c, json.type)
 
         const funcs = listeners[json.type]
         if(funcs) {

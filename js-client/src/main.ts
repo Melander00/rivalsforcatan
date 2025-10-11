@@ -17,6 +17,10 @@ listenToMessage(MessageType.GENERIC, data => {
     }
 })
 
+listenToMessage(MessageType.DIRECT_MESSAGE, dm => {
+    console.log(`[${dm.sender}]: ${dm.message}`)
+})
+
 setTimeout(async () => {
     console.log("Requesting data")
     const data = await requestData<GridBoard>(MessageType.REQUEST_BOARD)

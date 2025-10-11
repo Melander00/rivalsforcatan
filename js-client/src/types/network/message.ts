@@ -1,6 +1,9 @@
 export enum MessageType {
     GENERIC = "GENERIC",
-    REQUEST_BOARD = "REQUEST_BOARD"
+    DIRECT_MESSAGE = "DIRECT_MESSAGE",
+    
+    REQUEST_BOARD = "REQUEST_BOARD",
+    
 }
 
 export type Message = {

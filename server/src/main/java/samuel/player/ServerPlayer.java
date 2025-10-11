@@ -1,5 +1,6 @@
 package samuel.player;
 
+import samuel.DirectMessage;
 import samuel.Message;
 import samuel.MessageType;
 import samuel.board.Board;
@@ -99,6 +100,11 @@ public class ServerPlayer implements Player {
         }
         return points;
 
+    }
+
+    @Override
+    public void directMessage(String msg) {
+        sendMessage(new Message(MessageType.DIRECT_MESSAGE, new DirectMessage("server", msg)));
     }
 
     private void sendMessage(Message msg) {

@@ -16,9 +16,17 @@ public class IntroductoryGame implements Game {
             IntrodoctoryPrincipality.setupPrincipality(player.getPrincipality());
         }
 
+        // setup card deck
+
+
         // initial draw
 
 
+        // Send init message to players
+        System.out.println("Setup complete.");
+        for(Player player : context.getPlayers()) {
+            player.directMessage("Game has been set up.");
+        }
     }
 
 
@@ -45,7 +53,7 @@ public class IntroductoryGame implements Game {
     private void runTurn(Player activePlayer) {
         // (optional?) ask the players if they want to play a card before the run
         // will be needed to allow BrigitteTheWiseWoman to be used correctly
-        // she is played before
+        // she is played before. alternatively let the player who rolls decide when to roll or if to play a card
 
         // roll dice
 
