@@ -1,9 +1,9 @@
 package samuel.card.action;
 
 import samuel.card.Card;
+import samuel.card.PlayableCard;
 import samuel.game.GameContext;
 import samuel.player.Player;
 
-public interface ActionCard extends Card {
-    void play(Player owner, GameContext context);
+public interface ActionCard extends PlayableCard {
 }

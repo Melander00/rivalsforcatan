@@ -66,4 +66,9 @@ public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, Set
         cost.addResource(WoolResource.class,  1);
         return cost;
     }
+
+    @Override
+    public int getExpansionSlots() {
+        return 1;
+    }
 }

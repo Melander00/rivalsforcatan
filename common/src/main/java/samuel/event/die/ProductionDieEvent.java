@@ -4,9 +4,8 @@ import samuel.event.CancelableEvent;
 import samuel.event.Event;
 import samuel.player.Player;
 
-public class ProductionDieEvent implements CancelableEvent {
+public class ProductionDieEvent implements Event {
 
-    private boolean isCanceled = false;
     private final Player roller;
     private int rollResults;
 
@@ -25,16 +24,6 @@ public class ProductionDieEvent implements CancelableEvent {
 
     public Player getRoller() {
         return this.roller;
-    }
-
-    @Override
-    public boolean isCanceled() {
-        return isCanceled;
-    }
-
-    @Override
-    public void cancel() {
-        this.isCanceled = true;
     }
 
 

@@ -1,18 +1,12 @@
 package samuel;
 
-import samuel.board.BoardPosition;
 import samuel.board.GridBoard;
-import samuel.card.region.ForestRegionCard;
 import samuel.game.IntroductoryGame;
+import samuel.player.GenericPlayerHand;
 import samuel.player.ServerPlayer;
 import samuel.network.SocketClient;
 import samuel.network.SocketServer;
 import samuel.player.Player;
-import samuel.point.PointBundle;
-import samuel.point.points.VictoryPoint;
-import samuel.resource.ResourceBundle;
-import samuel.resource.resources.OreResource;
-import samuel.resource.resources.TimberResource;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -26,7 +20,7 @@ public class Main {
         SocketServer socket = new SocketServer(5000);
 
         // await two players
-        List<Player> awaitedPlayers = awaitPlayers(socket, 1);
+        List<Player> awaitedPlayers = awaitPlayers(socket, 2);
 
         (new GameServer(new IntroductoryGame())).start(awaitedPlayers);
     }
@@ -41,10 +35,19 @@ public class Main {
 
             test(socketClient);
 
-            ServerPlayer player = new ServerPlayer(GridBoard.createGridBoard(), socketClient);
+            ServerPlayer player = new ServerPlayer(GridBoard.createGridBoard(), new GenericPlayerHand(), socketClient);
+
+            player.addListener(Main::contextRequestHandler);
+
             players.add(player);
         }
         return players;
+    }
+
+    private static void contextRequestHandler(Message request, Player player) {
+
+
+
     }
 
     private static void test(SocketClient client) throws IOException {

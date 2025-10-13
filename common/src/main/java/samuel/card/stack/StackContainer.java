@@ -2,6 +2,7 @@ package samuel.card.stack;
 
 import samuel.card.Card;
 import samuel.card.PlaceableCard;
+import samuel.card.PlayableCard;
 import samuel.card.center.CityCard;
 import samuel.card.event.EventCard;
 import samuel.card.region.RegionCard;
@@ -20,14 +21,17 @@ public interface StackContainer {
 
     CardStack<EventCard> getEventStack();
 
-    CardStack<Card> getBasicStack(int stackIndex);
+    CardStack<PlayableCard> getBasicStack(int stackIndex);
 
-    void addToBasicStacks(CardStack<Card> stack);
+    void addToBasicStacks(CardStack<PlayableCard> stack);
 
-    CardStack<Card> getThemeStack(int stackIndex);
+    CardStack<PlayableCard> getThemeStack(int stackIndex);
 
-    void addToThemeStacks(CardStack<Card> stack);
+    void addToThemeStacks(CardStack<PlayableCard> stack);
 
-    List<CardStack<Card>> getBasicStacks();
-    List<CardStack<Card>> getThemeStacks();
+    List<CardStack<PlayableCard>> getBasicStacks();
+    List<CardStack<PlayableCard>> getThemeStacks();
+
+//    CardStack<Card> getDiscardPile();
+//    void discardCard(Card card);
 }

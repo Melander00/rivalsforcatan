@@ -155,6 +155,12 @@ public class HorizontalExpandableGrid implements Iterable<BoardPosition> {
         return grid;
     }
 
+    public List<BoardPosition> getCenterRow() {
+        int rows = grid.size();
+        int centerIndex = rows / 2;
+        return grid.get(centerIndex);
+    }
+
     @Override
     public Iterator<BoardPosition> iterator() {
         return new Iterator<>() {

@@ -1,6 +1,15 @@
 [
     {
         "id": "forest",
-        "name": "Forest"
+        "name": "Forest",
+        "description": "Gains resources based on production die roll. 1 building site for brown.",
+        "board": {
+            "name": {
+                "template": "Forest D{diceRoll}"
+            },
+            "description": {
+                "template": "{resourceAmount.resourceType} {resourceAmount.amount}/3"
+            }
+        }
     }
 ]

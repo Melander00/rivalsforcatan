@@ -1,7 +1,9 @@
 package samuel.deck;
 
 import samuel.card.Card;
+import samuel.card.PlayableCard;
 import samuel.card.action.BrigittaTheWiseWoman;
+import samuel.card.building.TollBridge;
 import samuel.card.event.EventCard;
 import samuel.card.event.InventionEventCard;
 import samuel.card.region.ForestRegionCard;
@@ -21,29 +23,29 @@ public class IntroductoryDeck implements Deck {
             new ForestRegionCard(6)
     );
 
-    private final List<Card> basicCards = List.of(
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
+    private final List<PlayableCard> basicCards = List.of(
+            new TollBridge(),
+            new TollBridge(),
+            new TollBridge(),
+            new TollBridge(),
 
             new BrigittaTheWiseWoman(),
             new BrigittaTheWiseWoman(),
             new BrigittaTheWiseWoman(),
             new BrigittaTheWiseWoman(),
 
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
+            new TollBridge(),
+            new TollBridge(),
+            new TollBridge(),
+            new TollBridge(),
 
             new BrigittaTheWiseWoman(),
             new BrigittaTheWiseWoman(),
             new BrigittaTheWiseWoman(),
             new BrigittaTheWiseWoman(),
 
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
+            new TollBridge(),
+            new TollBridge(),
             new BrigittaTheWiseWoman(),
             new BrigittaTheWiseWoman()
     );
@@ -69,7 +71,7 @@ public class IntroductoryDeck implements Deck {
     }
 
     @Override
-    public List<Card> getBasicCards() {
+    public List<PlayableCard> getBasicCards() {
         return basicCards;
     }
 

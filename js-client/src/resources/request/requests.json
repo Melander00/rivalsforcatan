@@ -1,0 +1,10 @@
+[
+    {
+        "cause": "INITIAL_DRAW",
+        "description": "Initial Draw"
+    },
+    {
+        "cause": "EXCHANGE_SEARCH",
+        "description": "Do you want to pay to search the stack?"
+    }
+]

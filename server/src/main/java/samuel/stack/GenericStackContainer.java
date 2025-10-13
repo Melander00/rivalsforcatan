@@ -2,6 +2,7 @@ package samuel.stack;
 
 import samuel.card.Card;
 import samuel.card.PlaceableCard;
+import samuel.card.PlayableCard;
 import samuel.card.event.EventCard;
 import samuel.card.region.RegionCard;
 import samuel.card.stack.CardStack;
@@ -18,8 +19,8 @@ public class GenericStackContainer implements StackContainer {
     private final CardStack<PlaceableCard> cityStack = new GenericCardStack<>();
     private final CardStack<EventCard> eventStack = new EventCardStack();
 
-    private final List<CardStack<Card>> basicStacks = new ArrayList<>();
-    private final List<CardStack<Card>> themeStacks = new ArrayList<>();
+    private final List<CardStack<PlayableCard>> basicStacks = new ArrayList<>();
+    private final List<CardStack<PlayableCard>> themeStacks = new ArrayList<>();
 
 
     @Override
@@ -48,33 +49,33 @@ public class GenericStackContainer implements StackContainer {
     }
 
     @Override
-    public CardStack<Card> getBasicStack(int stackIndex) {
+    public CardStack<PlayableCard> getBasicStack(int stackIndex) {
         return basicStacks.get(stackIndex);
     }
 
     @Override
-    public void addToBasicStacks(CardStack<Card> stack) {
+    public void addToBasicStacks(CardStack<PlayableCard> stack) {
         basicStacks.add(stack);
     }
 
 
     @Override
-    public CardStack<Card> getThemeStack(int stackIndex) {
+    public CardStack<PlayableCard> getThemeStack(int stackIndex) {
         return themeStacks.get(stackIndex);
     }
 
     @Override
-    public void addToThemeStacks(CardStack<Card> stack) {
+    public void addToThemeStacks(CardStack<PlayableCard> stack) {
         themeStacks.add(stack);
     }
 
     @Override
-    public List<CardStack<Card>> getBasicStacks() {
+    public List<CardStack<PlayableCard>> getBasicStacks() {
         return basicStacks;
     }
 
     @Override
-    public List<CardStack<Card>> getThemeStacks() {
+    public List<CardStack<PlayableCard>> getThemeStacks() {
         return themeStacks;
     }
 }

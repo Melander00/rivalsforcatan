@@ -5,8 +5,13 @@ import samuel.card.stack.CardStack;
 import samuel.card.stack.StackContainer;
 import samuel.condition.IntroductoryVictoryCondition;
 import samuel.condition.VictoryCondition;
+import samuel.die.Die;
+import samuel.die.EventDie;
+import samuel.die.EventDieFace;
+import samuel.die.ProductionDie;
 import samuel.eventmanager.GenericEventBus;
 import samuel.eventmanager.EventBus;
+import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.stack.GenericStackContainer;
 
@@ -23,6 +28,13 @@ public class IntroductoryGameContext implements GameContext {
     private final VictoryCondition victoryCondition = new IntroductoryVictoryCondition();
 
     private final StackContainer stackContainer = new GenericStackContainer();
+
+    private final Die<Integer> productionDie = new ProductionDie();
+    private final Die<EventDieFace> eventDie = new EventDie();
+
+
+
+    private Phase phase;
 
     @Override
     public Player getActivePlayer() {
@@ -60,5 +72,25 @@ public class IntroductoryGameContext implements GameContext {
     @Override
     public StackContainer getStackContainer() {
         return stackContainer;
+    }
+
+    @Override
+    public Phase getPhase() {
+        return phase;
+    }
+
+    @Override
+    public void setPhase(Phase phase) {
+        this.phase = phase;
+    }
+
+    @Override
+    public EventDieFace rollEventDice() {
+        return eventDie.rollDie();
+    }
+
+    @Override
+    public Integer rollProductionDie() {
+        return productionDie.rollDie();
     }
 }

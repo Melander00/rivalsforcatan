@@ -3,6 +3,8 @@ package samuel;
 public enum MessageType {
     GENERIC,
     DIRECT_MESSAGE,
+    // Response
+    RESPONSE,
 
     // Client requests
     REQUEST_HAND,
@@ -10,12 +12,14 @@ public enum MessageType {
 
     // Server requests
     REQUEST_INT,
+    REQUEST_BOOL,
+    REQUEST_CARD,
     REQUEST_RESOURCE,
     REQUEST_CARD_STACK,
     REQUEST_BOARD_POSITION,
 
-    // Response
-    RESPONSE,
+    REQUEST_ACTION, // the main server->client game request
+
     ;
 
 

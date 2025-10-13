@@ -45,7 +45,7 @@ public class SocketClient {
     public <T> T requestData(Message message, Class<T> clazz) throws IOException, InterruptedException {
         BlockingQueue<Message> responseQueue = new LinkedBlockingQueue<>();
 
-        UUID requestId = UUID.randomUUID();
+        UUID requestId = message.getRequestId();
 
         pendingRequests.put(requestId.toString(), responseQueue);
 

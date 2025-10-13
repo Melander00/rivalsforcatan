@@ -3,7 +3,9 @@ package samuel.game;
 import samuel.card.Card;
 import samuel.card.stack.CardStack;
 import samuel.card.stack.StackContainer;
+import samuel.die.EventDieFace;
 import samuel.eventmanager.EventBus;
+import samuel.phase.Phase;
 import samuel.player.Player;
 
 import java.util.List;
@@ -53,4 +55,12 @@ public interface GameContext {
      * Gets the stack container
      */
     StackContainer getStackContainer();
+
+    Phase getPhase();
+
+    void setPhase(Phase phase);
+
+    EventDieFace rollEventDice();
+    Integer rollProductionDie();
+
 }

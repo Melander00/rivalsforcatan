@@ -2,12 +2,21 @@ package samuel.player;
 
 import samuel.board.Board;
 import samuel.board.BoardPosition;
+import samuel.card.Card;
+import samuel.card.PlaceableCard;
+import samuel.card.PlayableCard;
 import samuel.card.stack.CardStack;
 import samuel.effect.Effect;
+import samuel.phase.Phase;
+import samuel.player.action.PlayerAction;
+import samuel.player.request.RequestCause;
 import samuel.point.Point;
 import samuel.resource.ResourceBundle;
+import samuel.util.Pair;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.function.BiConsumer;
 
 public interface Player {
 
@@ -24,10 +33,16 @@ public interface Player {
     void giveEffect(Effect effect);
 
     /**
+     * Removes an effect.
+     * @param effect
+     */
+    void removeEffect(Effect effect);
+
+    /**
      * Asks the user for an integer.
      * @return
      */
-    int requestInt();
+    int requestInt(RequestCause cause);
 
     /**
      * Asks the user for an integer in the range
@@ -35,7 +50,7 @@ public interface Player {
      * @param max
      * @return
      */
-    int requestInt(int min, int max);
+    int requestInt(int min, int max, RequestCause cause);
 
     /**
      * Asks the user to select an amount of resources from the bundle.
@@ -43,24 +58,62 @@ public interface Player {
      * @param amount
      * @return A ResourceBundle containing whichever resources the player picked.
      */
-    ResourceBundle requestResource(ResourceBundle bundle, int amount);
+    ResourceBundle requestResource(ResourceBundle bundle, int amount, RequestCause cause);
 
     /**
      * Generic method to ask which card stack to choose.
      * Example: Player should replenish cards, which stack to choose from?
+     *
      * @param cardStacks
      * @return
      */
-    CardStack<?> requestCardStack(List<CardStack<?>> cardStacks);
+    CardStack<PlayableCard> requestCardStack(List<CardStack<PlayableCard>> cardStacks, List<UUID> unselectableStackIds, RequestCause cause);
 
     /**
-     * Asks the user which board position to choose.
+     * Asks the user which board position to choose from the 2d list of positions. It is up to the caller to determine validity.
      * @return
      */
-    BoardPosition requestBoardPosition();
+    BoardPosition requestBoardPosition(List<List<BoardPosition>> positions, RequestCause cause);
 
+    /**
+     * Asks the user which card to choose.
+     * @return
+     */
+    <T extends Card> T requestCard(List<T> cards, RequestCause cause);
+
+    /**
+     * Asks the user a yes/no question.
+     * @return
+     */
+    boolean requestBoolean(RequestCause cause);
+
+    /**
+     * Main loop action request
+     * @param phase
+     * @return
+     */
+    Pair<PlayerAction, BiConsumer<Boolean,String>> requestAction(Phase phase);
+
+    /**
+     * Send a message to the player from the server
+     * @param msg
+     */
     void directMessage(String msg);
 
-
+    /**
+     * Returns the amount of a specific point type that the player has.
+     * @param point
+     * @return
+     * @param <T>
+     */
     <T extends Point> int getPoints(Class<T> point);
+
+    PlayerHand getHand();
+    void removeCardFromHand(PlayableCard card);
+    boolean isHandFull();
+    void addCardToHand(PlayableCard card);
+
+    PlayableCard getCardInHandFromUuid(UUID uuid);
+
+    void placeCard(BoardPosition position, PlaceableCard card);
 }

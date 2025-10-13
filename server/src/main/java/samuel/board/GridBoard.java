@@ -95,7 +95,7 @@ public class GridBoard implements Board {
 
     @Override
     public boolean isCenterRow(BoardPosition position) {
-        return false;
+        return this.grid.getCenterRow().contains(position);
     }
 
     @Override

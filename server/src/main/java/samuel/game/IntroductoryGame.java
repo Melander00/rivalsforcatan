@@ -1,6 +1,7 @@
 package samuel.game;
 
 import samuel.card.Card;
+import samuel.card.PlayableCard;
 import samuel.card.center.CityCard;
 import samuel.card.center.RoadCard;
 import samuel.card.center.SettlementCard;
@@ -10,7 +11,9 @@ import samuel.card.stack.CardStack;
 import samuel.card.stack.StackContainer;
 import samuel.deck.Deck;
 import samuel.deck.IntroductoryDeck;
+import samuel.phase.Phase;
 import samuel.player.Player;
+import samuel.player.request.RequestCause;
 import samuel.principalities.IntrodoctoryPrincipality;
 import samuel.stack.GenericCardStack;
 
@@ -67,27 +70,30 @@ public class IntroductoryGame extends AbstractGame {
         // --- Basic Cards ---
 
         // We divide the cards into four stacks at random
-        List<Card> cards = new ArrayList<>(deck.getBasicCards());
+        List<PlayableCard> cards = new ArrayList<>(deck.getBasicCards());
         Collections.shuffle(cards);
         int cardsPerStack = cards.size() / 4;
 
         /*
-         0 1 2 3 4 5 6 7
+         0 1 2 3 4 5 6 7 8 9 10 11
 
-         cps = 8/4 = 2
+         cps = 12/4 = 3
          loop:
            i = 0:
-             sublist(0, 1) => 0 1
+             sublist(0, 2) => 0 1 2
+           i = 1:
+             sublist(3, 5) => 3 4 5
            i = 2:
-             sublist(2, 3) => 2 3
-
+             sublist(6, 8) => 6 7 8
+           i = 3:
+             sublist(9, 11) => 9 10 11
          */
 
-        // Get sublists for each stack
-        for(int i = 0; i < 4; i += cardsPerStack) {
-            CardStack<Card> stack = new GenericCardStack<>();
-            List<Card> sublist = cards.subList(i, i + cardsPerStack - 1);
-            for(Card card : sublist) {
+        // Get sub-lists for each stack
+        for(int i = 0; i < 4; i++) {
+            CardStack<PlayableCard> stack = new GenericCardStack<>();
+            List<PlayableCard> sublist = cards.subList(i*cardsPerStack, i*cardsPerStack + cardsPerStack);
+            for(PlayableCard card : sublist) {
                 stack.addCardToBottom(card);
             }
             container.addToBasicStacks(stack);
@@ -101,8 +107,24 @@ public class IntroductoryGame extends AbstractGame {
 
 
     @Override
-    UUID setupInitialDraw(Player player, List<CardStack<Card>> cardStacks, List<UUID> usedCardStackIds) {
-        return null;
+    UUID setupInitialDraw(Player player, List<CardStack<PlayableCard>> cardStacks, List<UUID> usedCardStackIds) {
+        CardStack<PlayableCard> stack = player.requestCardStack(cardStacks, usedCardStackIds, RequestCause.INITIAL_DRAW);
+        if(usedCardStackIds.contains(stack.getUuid())) {
+            // Bad value from client, default to the next stack available
+            for(CardStack<PlayableCard> cardStack : cardStacks) {
+                if(!usedCardStackIds.contains(cardStack.getUuid())){
+                    stack = cardStack;
+                    break;
+                }
+            }
+        }
+
+        for(int i = 0; i < 3; i++) {
+            PlayableCard card = stack.takeTopCard();
+            player.addCardToHand(card);
+        }
+
+        return stack.getUuid();
     }
 
     @Override
@@ -114,21 +136,20 @@ public class IntroductoryGame extends AbstractGame {
 
     @Override
     void runTurn(Player activePlayer) {
-        // (optional?) ask the players if they want to play a card before the run
-        // will be needed to allow BrigitteTheWiseWoman to be used correctly
-        // she is played before. alternatively let the player who rolls decide when to roll or if to play a card
+        activePlayer.directMessage("Your turn");
 
-        // roll dice
+        getContext().setPhase(Phase.DICE_ROLL);
+        preDiceRolls(activePlayer);
+        rollAndResolveDice(activePlayer);
 
-        // resolve dice
-            // if brigand, resolve event first
-            // else, resolve production -> event
+        getContext().setPhase(Phase.ACTION);
+        actionPhase(activePlayer);
 
-        // action phase
+        getContext().setPhase(Phase.REPLENISH);
+        replenishCards(activePlayer);
 
-        // replenish
-
-        // exchange
+        getContext().setPhase(Phase.EXCHANGE);
+        exchangeCards(activePlayer);
     }
 
     @Override

@@ -58,4 +58,9 @@ public class CityCard implements PlaceableCard, PriceTag, PointHolder, Settlemen
     public UUID getUuid() {
         return uuid;
     }
+
+    @Override
+    public int getExpansionSlots() {
+        return 2;
+    }
 }

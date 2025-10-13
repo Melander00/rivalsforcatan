@@ -1,28 +1,34 @@
 import "dotenv/config";
-import { displayBoard } from "./display";
-import { connect, listenToMessage, requestData } from "./network";
-import { GridBoard } from "./types/board/board";
-import { MessageType } from "./types/network/message";
+import { initActionQueue } from "./network/ActionQueue";
+import { addMessageListener, connect } from "./network/Socket";
+import { initBoardPositionRequestHandler } from "./requests/BoardPositionRequestHandler";
+import { initBoolRequestHandler } from "./requests/BoolRequestHandler";
+import initCardRequestHandler from "./requests/CardRequestHandler";
+import initCardStackRequestHandler from "./requests/CardStackRequestHandler";
+import { initIntRequestHandler } from "./requests/IntRequestHandler";
+import { MessageType } from "./types/message";
+import { debug, listenToCommands, print } from "./ui/Console";
 
 const PORT = parseInt(process.env["HOST_PORT"] || "5000")
 const ADDRESS = process.env["HOST_ADDRESS"] || "localhost"
 
 connect(ADDRESS, PORT);
 
-listenToMessage(MessageType.GENERIC, data => {
-    if(data.boardPositions) {
-        displayBoard(data)
-    } else {
-        console.log(JSON.stringify(data, null, 2))
-    }
+listenToCommands()
+initActionQueue()
+
+// -- Init Server Request Handlers --
+initIntRequestHandler()
+initBoolRequestHandler()
+initCardRequestHandler()
+initCardStackRequestHandler()
+initBoardPositionRequestHandler()
+
+
+addMessageListener(MessageType.GENERIC, data => {
+    debug(JSON.stringify(data, null, 2))
 })
 
-listenToMessage(MessageType.DIRECT_MESSAGE, dm => {
-    console.log(`[${dm.sender}]: ${dm.message}`)
+addMessageListener(MessageType.DIRECT_MESSAGE, dm => {
+    print(`[${dm.sender}]: ${dm.message}`)
 })
-
-setTimeout(async () => {
-    console.log("Requesting data")
-    const data = await requestData<GridBoard>(MessageType.REQUEST_BOARD)
-    displayBoard(data)
-}, 2000)

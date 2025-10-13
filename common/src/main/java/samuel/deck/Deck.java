@@ -1,6 +1,7 @@
 package samuel.deck;
 
 import samuel.card.Card;
+import samuel.card.PlayableCard;
 import samuel.card.event.EventCard;
 import samuel.card.region.RegionCard;
 
@@ -17,7 +18,7 @@ public interface Deck {
 
     List<EventCard> getEventCards();
 
-    List<Card> getBasicCards();
+    List<PlayableCard> getBasicCards();
 
     /**
      * For game-expansions

@@ -3,30 +3,44 @@ package samuel.player;
 import samuel.DirectMessage;
 import samuel.Message;
 import samuel.MessageType;
+import samuel.action.ActionResponse;
 import samuel.board.Board;
 import samuel.board.BoardPosition;
+import samuel.card.Card;
 import samuel.card.PlaceableCard;
+import samuel.card.PlayableCard;
 import samuel.card.PointHolder;
 import samuel.card.stack.CardStack;
 import samuel.effect.Effect;
 import samuel.network.SocketClient;
+import samuel.phase.Phase;
+import samuel.player.action.PlayerAction;
+import samuel.player.request.RequestCause;
 import samuel.point.Point;
 import samuel.point.PointBundle;
-import samuel.request.CardStackRequest;
-import samuel.request.IntRequest;
+import samuel.point.points.ProgressPoint;
+import samuel.request.*;
 import samuel.resource.ResourceBundle;
+import samuel.util.Pair;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.function.BiConsumer;
 
 public class ServerPlayer implements Player {
 
     private final Board principality;
     private final SocketClient client;
+    private final PlayerHand hand;
 
-    public ServerPlayer(Board principality, SocketClient client) {
+    private final List<Effect> effects = new ArrayList<>();
+
+
+    public ServerPlayer(Board principality, PlayerHand hand, SocketClient client) {
         this.principality = principality;
+        this.hand = hand;
         this.client = client;
         client.addListener(this::clientRequestHandler);
     }
@@ -41,38 +55,70 @@ public class ServerPlayer implements Player {
 
     @Override
     public void giveEffect(Effect effect) {
-
+        effects.add(effect);
     }
 
     @Override
-    public int requestInt() {
-        return this.requestInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
+    public void removeEffect(Effect effect) {
+        effects.remove(effect);
     }
 
     @Override
-    public int requestInt(int min, int max) {
+    public int requestInt(RequestCause cause) {
+        return this.requestInt(Integer.MIN_VALUE, Integer.MAX_VALUE, cause);
+    }
+
+    @Override
+    public int requestInt(int min, int max, RequestCause cause) {
         try {
-            int res = client.requestData(new Message(MessageType.REQUEST_INT, new IntRequest(min, max)), Integer.class);
+            int res = client.requestData(new Message(MessageType.REQUEST_INT, new Request(cause.toString(), new IntRequest(min, max))), Integer.class);
             if(res < min) return min;
             if(res > max) return max;
             return res;
         } catch (IOException | InterruptedException exception) {
             // handle the exception
-            return 0;
+            return min;
         }
     }
 
     @Override
-    public ResourceBundle requestResource(ResourceBundle bundle, int amount) {
+    public ResourceBundle requestResource(ResourceBundle bundle, int amount, RequestCause cause) {
+        // todo: determine if this is even necessary. Instead we could do the request board position with a different cause.
         return null;
     }
 
+
+
+
     @Override
-    public CardStack<?> requestCardStack(List<CardStack<?>> cardStacks) {
+    public CardStack<PlayableCard> requestCardStack(List<CardStack<PlayableCard>> cardStacks, List<UUID> unselectableStackIds, RequestCause cause) {
 
         try {
-            int index = client.requestData(new Message(MessageType.REQUEST_CARD_STACK, new CardStackRequest()), Integer.class);
+            UUID uuid = client.requestData(new Message(MessageType.REQUEST_CARD_STACK, new Request(cause.toString(), new CardStackRequest(cardStacks, unselectableStackIds))), UUID.class);
+            for(CardStack<PlayableCard> stack : cardStacks) {
+                if(stack.getUuid().equals(uuid)) return stack;
+            }
+        } catch (IOException | InterruptedException exception) {
 
+        }
+
+        return null;
+    }
+
+
+
+    @Override
+    public BoardPosition requestBoardPosition(List<List<BoardPosition>> positions, RequestCause cause) {
+
+        try {
+            UUID uuid = client.requestData(new Message(MessageType.REQUEST_BOARD_POSITION, new Request(cause.toString(), new BoardPositionRequest(positions))), UUID.class);
+            for(List<BoardPosition> row : positions) {
+                for(BoardPosition pos : row) {
+                    if(pos.getUuid().equals(uuid)) {
+                        return pos;
+                    }
+                }
+            }
         } catch (IOException | InterruptedException exception) {
 
         }
@@ -81,9 +127,63 @@ public class ServerPlayer implements Player {
     }
 
     @Override
-    public BoardPosition requestBoardPosition() {
+    public <T extends Card> T requestCard(List<T> cards, RequestCause cause) {
+        try {
+            UUID uuid = client.requestData(new Message(
+                    MessageType.REQUEST_CARD,
+                    new Request(cause.toString(), new CardRequest(cards))),
+                    UUID.class);
+
+            for(T card : cards) {
+                if(card.getUuid().equals(uuid)) return card;
+            }
+        } catch (IOException | InterruptedException exception) {
+
+        }
+
         return null;
     }
+
+    @Override
+    public boolean requestBoolean(RequestCause cause) {
+
+        try {
+            Boolean bool = client.requestData(new Message(MessageType.REQUEST_BOOL, new Request(cause.toString(), null)), Boolean.class);
+            return bool;
+
+        } catch (IOException | InterruptedException exception) {
+
+        }
+
+        return false;
+    }
+
+    @Override
+    public Pair<PlayerAction, BiConsumer<Boolean, String>> requestAction(Phase phase) {
+        UUID uuid = UUID.randomUUID();
+
+        System.out.println("Created REQUEST_ACTION with id " + uuid + " at " + phase.toString());
+
+        try {
+            PlayerAction action = client.requestData(new Message(MessageType.REQUEST_ACTION, uuid, phase), PlayerAction.class);
+
+            return new Pair<>(action, (success, code) -> {
+                System.out.println("Sending ACTION_RESPONSE with id " + uuid + " of " + success + " " + code);
+                try {
+
+
+                    client.sendData(new Message(MessageType.RESPONSE, uuid, new ActionResponse(success, code)));
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     @Override
     public <T extends Point> int getPoints(Class<T> pointClass) {
@@ -103,6 +203,47 @@ public class ServerPlayer implements Player {
     }
 
     @Override
+    public PlayerHand getHand() {
+        return hand;
+    }
+
+
+    @Override
+    public void removeCardFromHand(PlayableCard card) {
+        hand.removeCard(card);
+    }
+
+    @Override
+    public boolean isHandFull() {
+        int points = getPoints(ProgressPoint.class);
+
+        return hand.getSize() >= 3 + points;
+    }
+
+    @Override
+    public void addCardToHand(PlayableCard card) {
+        hand.addCard(card);
+    }
+
+    @Override
+    public PlayableCard getCardInHandFromUuid(UUID uuid) {
+        for(PlayableCard card : hand) {
+            if(card.getUuid().equals(uuid)) {
+                return card;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void placeCard(BoardPosition position, PlaceableCard card) {
+        if(card.validatePlacement(position)) {
+            this.principality.place(card, position);
+        }
+    }
+
+
+    @Override
     public void directMessage(String msg) {
         sendMessage(new Message(MessageType.DIRECT_MESSAGE, new DirectMessage("server", msg)));
     }
@@ -115,11 +256,18 @@ public class ServerPlayer implements Player {
         }
     }
 
-    private void clientRequestHandler(Message request) {
-        System.out.println("Received request " + request.getType().toString() + " with id " + request.getRequestId().toString());
+    public void addListener(BiConsumer<Message, Player> listener) {
+        Player owner = this;
+        this.client.addListener(message -> listener.accept(message, owner));
+    }
 
-        switch(request.getType()) {
-            case REQUEST_BOARD -> sendMessage(new Message(MessageType.RESPONSE, request.getRequestId(), principality));
-        }
+    private void clientRequestHandler(Message request) {
+        Object data = switch(request.getType()) {
+            case REQUEST_BOARD -> principality;
+            case REQUEST_HAND -> hand;
+            default -> null;
+        };
+
+        sendMessage(new Message(MessageType.RESPONSE, request.getRequestId(), data));
     }
 }

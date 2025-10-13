@@ -1,0 +1,8 @@
+[
+    {
+        "id": "toll_bridge",
+        "name": "Toll Bridge",
+        "type": "Building",
+        "description": "Event Plentiful Harvest:\nYou receive 2 gold."
+    }
+]

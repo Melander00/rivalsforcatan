@@ -20,7 +20,7 @@ public class PointBundle implements Iterable<PointAmount> {
     }
 
     public int getAmount(Class<? extends Point> pointClass) {
-        return this.points.get(pointClass);
+        return this.points.getOrDefault(pointClass, 0);
     }
 
     @Override
