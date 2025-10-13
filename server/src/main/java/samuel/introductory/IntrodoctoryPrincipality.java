@@ -1,8 +1,6 @@
-package samuel.principalities;
+package samuel.introductory;
 
 import samuel.board.Board;
-import samuel.board.GridBoard;
-import samuel.board.GridPosition;
 import samuel.card.center.RoadCard;
 import samuel.card.center.SettlementCard;
 import samuel.card.region.ForestRegionCard;

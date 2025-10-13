@@ -1,7 +1,7 @@
 package samuel;
 
 import samuel.board.GridBoard;
-import samuel.game.IntroductoryGame;
+import samuel.introductory.IntroductoryGame;
 import samuel.player.GenericPlayerHand;
 import samuel.player.ServerPlayer;
 import samuel.network.SocketClient;

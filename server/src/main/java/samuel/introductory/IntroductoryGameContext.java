@@ -1,9 +1,7 @@
-package samuel.game;
+package samuel.introductory;
 
-import samuel.card.Card;
-import samuel.card.stack.CardStack;
 import samuel.card.stack.StackContainer;
-import samuel.condition.IntroductoryVictoryCondition;
+import samuel.game.GameContext;
 import samuel.condition.VictoryCondition;
 import samuel.die.Die;
 import samuel.die.EventDie;

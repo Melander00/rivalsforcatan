@@ -1,6 +1,5 @@
-package samuel.game;
+package samuel.introductory;
 
-import samuel.card.Card;
 import samuel.card.PlayableCard;
 import samuel.card.center.CityCard;
 import samuel.card.center.RoadCard;
@@ -10,11 +9,10 @@ import samuel.card.region.RegionCard;
 import samuel.card.stack.CardStack;
 import samuel.card.stack.StackContainer;
 import samuel.deck.Deck;
-import samuel.deck.IntroductoryDeck;
+import samuel.game.AbstractGame;
 import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.player.request.RequestCause;
-import samuel.principalities.IntrodoctoryPrincipality;
 import samuel.stack.GenericCardStack;
 
 import java.util.ArrayList;

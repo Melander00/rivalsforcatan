@@ -1,4 +1,4 @@
-package samuel.deck;
+package samuel.introductory;
 
 import samuel.card.Card;
 import samuel.card.PlayableCard;
@@ -8,6 +8,7 @@ import samuel.card.event.EventCard;
 import samuel.card.event.InventionEventCard;
 import samuel.card.region.ForestRegionCard;
 import samuel.card.region.RegionCard;
+import samuel.deck.Deck;
 
 import java.util.List;
 

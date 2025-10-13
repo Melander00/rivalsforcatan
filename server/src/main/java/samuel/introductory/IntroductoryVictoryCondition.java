@@ -1,5 +1,6 @@
-package samuel.condition;
+package samuel.introductory;
 
+import samuel.condition.VictoryCondition;
 import samuel.player.Player;
 import samuel.point.points.VictoryPoint;
 
