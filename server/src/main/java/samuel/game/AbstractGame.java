@@ -2,7 +2,14 @@ package samuel.game;
 
 import samuel.action.ActionResponseType;
 import samuel.card.PlayableCard;
+import samuel.card.center.CityCard;
+import samuel.card.center.RoadCard;
+import samuel.card.center.SettlementCard;
+import samuel.card.event.EventCard;
+import samuel.card.region.RegionCard;
 import samuel.card.stack.CardStack;
+import samuel.card.stack.StackContainer;
+import samuel.deck.Deck;
 import samuel.die.EventDieFace;
 import samuel.event.die.EventDieEvent;
 import samuel.event.die.ProductionDieEvent;
@@ -11,9 +18,11 @@ import samuel.player.Player;
 import samuel.player.action.PlayerAction;
 import samuel.player.action.PlayerActionEnum;
 import samuel.player.request.RequestCause;
+import samuel.stack.GenericCardStack;
 import samuel.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -21,9 +30,11 @@ import java.util.function.BiConsumer;
 public abstract class AbstractGame implements Game {
 
     private final GameContext context;
+    private final Deck deck;
 
-    public AbstractGame(GameContext context) {
+    public AbstractGame(GameContext context, Deck deck) {
         this.context = context;
+        this.deck = deck;
     }
 
     @Override
@@ -55,13 +66,99 @@ public abstract class AbstractGame implements Game {
         setupFinal();
     }
 
-    abstract void setupPrincipality(Player player, int playerIndex);
+    public abstract void setupPrincipality(Player player, int playerIndex);
 
-    abstract void setupCardDeckAndStacks();
+    public void setupCardDeckAndStacks() {
+        StackContainer container = getContext().getStackContainer();
 
-    abstract UUID setupInitialDraw(Player player, List<CardStack<PlayableCard>> cardStacks, List<UUID> usedCardStackIds);
 
-    abstract void setupFinal();
+        // --- Center Cards ---
+        for(int i = 0; i < deck.getAmountOfRoadCards(); i++) {
+            container.getRoadStack().addCardToBottom(new RoadCard());
+        }
+
+        for(int i = 0; i < deck.getAmountOfSettlementCards(); i++) {
+            container.getSettlementStack().addCardToBottom(new SettlementCard());
+        }
+
+        for(int i = 0; i < deck.getAmountOfCityCards(); i++) {
+            container.getCityStack().addCardToBottom(new CityCard());
+        }
+
+
+        // --- Region Cards ---
+        for(RegionCard card : deck.getRegionCards()) {
+            container.getRegionStack().addCardToBottom(card);
+        }
+        container.getRegionStack().shuffleCards();
+
+
+        // --- Event Cards ---
+        for(EventCard card : deck.getEventCards()) {
+            container.getEventStack().addCardToBottom(card);
+        }
+        container.getEventStack().shuffleCards();
+
+        // --- Basic Cards ---
+
+        // We divide the cards into X stacks at random
+        List<PlayableCard> cards = new ArrayList<>(deck.getBasicCards());
+        Collections.shuffle(cards);
+        int cardsPerStack = cards.size() / getBasicCardStacks();
+
+        // Get sub-lists for each stack
+        for(int i = 0; i < getBasicCardStacks(); i++) {
+            CardStack<PlayableCard> stack = new GenericCardStack<>();
+            List<PlayableCard> sublist = cards.subList(i*cardsPerStack, i*cardsPerStack + cardsPerStack);
+            for(PlayableCard card : sublist) {
+                stack.addCardToBottom(card);
+            }
+            container.addToBasicStacks(stack);
+        }
+
+        // --- Theme Cards ---
+
+        // We divide the cards into X stacks at random
+        List<PlayableCard> themeCards = new ArrayList<>(deck.getThemeCards());
+        Collections.shuffle(themeCards);
+        int themeCardsPerStack = themeCards.size() / getThemeCardStacks();
+
+        // Get sub-lists for each stack
+        for(int i = 0; i < getThemeCardStacks(); i++) {
+            CardStack<PlayableCard> stack = new GenericCardStack<>();
+            List<PlayableCard> sublist = themeCards.subList(i*themeCardsPerStack, i*themeCardsPerStack + themeCardsPerStack);
+            for(PlayableCard card : sublist) {
+                stack.addCardToBottom(card);
+            }
+            container.addToThemeStacks(stack);
+        }
+
+    }
+
+    public abstract int getBasicCardStacks();
+    public abstract int getThemeCardStacks();
+
+    public UUID setupInitialDraw(Player player, List<CardStack<PlayableCard>> cardStacks, List<UUID> usedCardStackIds) {
+        CardStack<PlayableCard> stack = player.requestCardStack(cardStacks, usedCardStackIds, RequestCause.INITIAL_DRAW);
+        if(usedCardStackIds.contains(stack.getUuid())) {
+            // Bad value from client, default to the next stack available
+            for(CardStack<PlayableCard> cardStack : cardStacks) {
+                if(!usedCardStackIds.contains(cardStack.getUuid())){
+                    stack = cardStack;
+                    break;
+                }
+            }
+        }
+
+        for(int i = 0; i < 3; i++) {
+            PlayableCard card = stack.takeTopCard();
+            player.addCardToHand(card);
+        }
+
+        return stack.getUuid();
+    }
+
+    public abstract void setupFinal();
 
 
     @Override
@@ -84,11 +181,24 @@ public abstract class AbstractGame implements Game {
         endGame(context.getActivePlayer());
     }
 
-    abstract void runTurn(Player activePlayer);
+    public void runTurn(Player activePlayer) {
+        getContext().setPhase(Phase.DICE_ROLL);
+        preDiceRolls(activePlayer);
+        rollAndResolveDice(activePlayer);
 
-    abstract void switchTurn();
+        getContext().setPhase(Phase.ACTION);
+        actionPhase(activePlayer);
 
-    abstract void endGame(Player winner);
+        getContext().setPhase(Phase.REPLENISH);
+        replenishCards(activePlayer);
+
+        getContext().setPhase(Phase.EXCHANGE);
+        exchangeCards(activePlayer);
+    }
+
+    public abstract void switchTurn();
+
+    public abstract void endGame(Player winner);
 
     @Override
     public void addPlayers(List<Player> players) {
@@ -134,7 +244,7 @@ public abstract class AbstractGame implements Game {
         }
     }
 
-    private void resolveProduction(int rollResults) {
+    public void resolveProduction(int rollResults) {
         System.out.println("Production has rolled " + rollResults);
     }
 

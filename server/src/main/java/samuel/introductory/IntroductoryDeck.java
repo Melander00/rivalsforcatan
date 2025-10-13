@@ -77,7 +77,7 @@ public class IntroductoryDeck implements Deck {
     }
 
     @Override
-    public List<Card> getThemeCards() {
+    public List<PlayableCard> getThemeCards() {
         return null;
     }
 

@@ -24,7 +24,7 @@ public interface Deck {
      * For game-expansions
      * @return null if there is no theme
      */
-    List<Card> getThemeCards();
+    List<PlayableCard> getThemeCards();
 
     /**
      * For game-expansions
