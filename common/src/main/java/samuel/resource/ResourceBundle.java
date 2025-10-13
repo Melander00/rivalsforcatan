@@ -1,9 +1,11 @@
 package samuel.resource;
 
 import samuel.card.CardID;
+import samuel.resource.resources.*;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 // todo: change so that we dont have the type as an instance, we reference it via the class, e.g OreResource.class. Also: implement IResourceBundle
@@ -37,5 +39,30 @@ public class ResourceBundle implements Iterable<ResourceAmount> {
                 return new ResourceAmount(entry.getKey(), entry.getValue());
             }
         };
+    }
+
+    public static ResourceBundle oneOfAll() {
+        ResourceBundle bundle = new ResourceBundle();
+        bundle.addResource(TimberResource.class, 1);
+        bundle.addResource(GoldResource.class, 1);
+        bundle.addResource(GrainResource.class, 1);
+        bundle.addResource(BrickResource.class, 1);
+        bundle.addResource(WoolResource.class, 1);
+        bundle.addResource(OreResource.class, 1);
+        return bundle;
+    }
+
+    public static ResourceBundle fromAmount(ResourceAmount amount) {
+        ResourceBundle bundle = new ResourceBundle();
+        bundle.addResource(amount.resourceType(), amount.amount());
+        return bundle;
+    }
+
+    public static ResourceBundle fromAmounts(List<ResourceAmount> amounts) {
+        ResourceBundle bundle = new ResourceBundle();
+        for(ResourceAmount amount : amounts) {
+            bundle.addResource(amount.resourceType(), amount.amount());
+        }
+        return bundle;
     }
 }

@@ -7,7 +7,7 @@ import samuel.die.Die;
 import samuel.die.EventDie;
 import samuel.die.EventDieFace;
 import samuel.die.ProductionDie;
-import samuel.eventmanager.GenericEventBus;
+import samuel.event.GenericEventBus;
 import samuel.eventmanager.EventBus;
 import samuel.phase.Phase;
 import samuel.player.Player;

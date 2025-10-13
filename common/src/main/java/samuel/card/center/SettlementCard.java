@@ -5,6 +5,7 @@ import samuel.board.BoardPosition;
 import samuel.card.PlaceableCard;
 import samuel.card.PointHolder;
 import samuel.card.PriceTag;
+import samuel.game.GameContext;
 import samuel.player.Player;
 import samuel.point.PointBundle;
 import samuel.point.points.VictoryPoint;
@@ -15,12 +16,11 @@ import samuel.resource.resources.GrainResource;
 import samuel.resource.resources.OreResource;
 import samuel.resource.resources.WoolResource;
 
-import java.util.Collection;
 import java.util.UUID;
 
 public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, SettlementLike {
 
-    private static final CardID id = new CardID("center", "settlement");
+    static final CardID id = new CardID("center", "settlement");
 
     private final UUID uuid = UUID.randomUUID();
 
@@ -37,15 +37,28 @@ public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, Set
     @Override
     public boolean validatePlacement(BoardPosition position) {
         if(!position.isEmpty()) return false;
-        if(!position.getBoard().isCenterRow(position)) return false;
+
+        Board board = position.getBoard();
+
+        if(!board.isCenterRow(position)) return false;
 
         // check if either left or right is Road
-        return true;
+        PlaceableCard left = board.getLeftOfPosition(position).getCard();
+        if(left != null && left.getCardID().equals(RoadCard.id)) {// todo: high coupling
+            return true;
+        }
+
+        PlaceableCard right = board.getRightOfPosition(position).getCard();
+        if(right != null && right.getCardID().equals(RoadCard.id)) {// todo: high coupling
+            return true;
+        }
+
+        return false;
 
     }
 
     @Override
-    public void onPlace(Player owner, Board board, BoardPosition position) {
+    public void onPlace(Player owner, GameContext context) {
 
     }
 

@@ -3,6 +3,7 @@ package samuel;
 public enum MessageType {
     GENERIC,
     DIRECT_MESSAGE,
+    EVENT,
     // Response
     RESPONSE,
 

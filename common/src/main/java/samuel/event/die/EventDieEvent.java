@@ -3,9 +3,12 @@ package samuel.event.die;
 import samuel.die.EventDieFace;
 import samuel.event.CancelableEvent;
 import samuel.event.Event;
+import samuel.event.EventID;
 import samuel.player.Player;
 
 public class EventDieEvent implements Event {
+
+    private final static EventID id = new EventID("dice", "event");
 
     private final Player roller;
     private EventDieFace rollResults;
@@ -27,10 +30,16 @@ public class EventDieEvent implements Event {
         return this.roller;
     }
 
-
+    @Override
+    public EventID getId() {
+        return id;
+    }
 
 
     public static class Post implements Event {
+
+        private final static EventID id = new EventID("dice", "event_post");
+
         private final EventDieFace rollResults;
 
         public Post(EventDieFace rollResults) {
@@ -39,6 +48,11 @@ public class EventDieEvent implements Event {
 
         public EventDieFace getRollResults() {
             return this.rollResults;
+        }
+
+        @Override
+        public EventID getId() {
+            return id;
         }
     }
 }

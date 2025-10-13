@@ -1,6 +1,8 @@
 export enum MessageType {
     GENERIC = "GENERIC",
     DIRECT_MESSAGE = "DIRECT_MESSAGE",
+    EVENT = "EVENT",
+
     RESPONSE = "RESPONSE",
 
     REQUEST_HAND = "REQUEST_HAND",

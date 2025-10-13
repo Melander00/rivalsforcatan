@@ -31,7 +31,7 @@ public class IntroductoryGame extends AbstractGame {
 
     @Override
     public void setupPrincipality(Player player, int playerIndex) {
-        IntrodoctoryPrincipality.setupPrincipality(player.getPrincipality());
+        IntrodoctoryPrincipality.setupPrincipality(player, getContext());
     }
 
     @Override

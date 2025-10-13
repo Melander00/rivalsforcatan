@@ -1,17 +1,18 @@
 package samuel.player;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import samuel.DirectMessage;
 import samuel.Message;
 import samuel.MessageType;
 import samuel.action.ActionResponse;
 import samuel.board.Board;
 import samuel.board.BoardPosition;
-import samuel.card.Card;
-import samuel.card.PlaceableCard;
-import samuel.card.PlayableCard;
-import samuel.card.PointHolder;
+import samuel.card.*;
 import samuel.card.stack.CardStack;
 import samuel.effect.Effect;
+import samuel.event.Event;
+import samuel.eventmanager.Subscribe;
+import samuel.game.GameContext;
 import samuel.network.SocketClient;
 import samuel.phase.Phase;
 import samuel.player.action.PlayerAction;
@@ -20,7 +21,9 @@ import samuel.point.Point;
 import samuel.point.PointBundle;
 import samuel.point.points.ProgressPoint;
 import samuel.request.*;
+import samuel.resource.ResourceAmount;
 import samuel.resource.ResourceBundle;
+import samuel.util.ResourceHelper;
 import samuel.util.Pair;
 
 import java.io.IOException;
@@ -83,7 +86,17 @@ public class ServerPlayer implements Player {
 
     @Override
     public ResourceBundle requestResource(ResourceBundle bundle, int amount, RequestCause cause) {
-        // todo: determine if this is even necessary. Instead we could do the request board position with a different cause.
+        try {
+            List<ResourceAmount> res = client.requestData(new Message(
+                            MessageType.REQUEST_RESOURCE,
+                            new Request(cause.toString(), new ResourceRequest(bundle, amount))),
+                            new TypeReference<>() {});
+
+            return ResourceBundle.fromAmounts(res);
+        } catch (IOException | InterruptedException exception) {
+
+        }
+
         return null;
     }
 
@@ -184,6 +197,16 @@ public class ServerPlayer implements Player {
         return null;
     }
 
+    @Subscribe
+    @Override
+    public void onEvent(Event event) {
+        try {
+            client.sendData(new Message(MessageType.EVENT, event));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public <T extends Point> int getPoints(Class<T> pointClass) {
@@ -236,17 +259,29 @@ public class ServerPlayer implements Player {
     }
 
     @Override
-    public void placeCard(BoardPosition position, PlaceableCard card) {
+    public void placeCard(PlaceableCard card, BoardPosition position, GameContext context) {
         if(card.validatePlacement(position)) {
             this.principality.place(card, position);
+            card.onPlace(this, context);
         }
     }
 
+    @Override
+    public void giveResources(ResourceBundle bundle) {
+        if(bundle == null) return;
+
+        for(ResourceAmount amount : bundle) {
+            for(int i = 0; i < amount.amount(); i++) {
+                ResourceHelper.increaseRegionOfChoice(this, amount.resourceType(), 1);
+            }
+        }
+    }
 
     @Override
     public void directMessage(String msg) {
         sendMessage(new Message(MessageType.DIRECT_MESSAGE, new DirectMessage("server", msg)));
     }
+
 
     private void sendMessage(Message msg) {
         try {

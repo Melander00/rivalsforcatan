@@ -7,10 +7,14 @@ import samuel.card.PlaceableCard;
 import samuel.card.PlayableCard;
 import samuel.card.stack.CardStack;
 import samuel.effect.Effect;
+import samuel.event.Event;
+import samuel.eventmanager.Subscribe;
+import samuel.game.GameContext;
 import samuel.phase.Phase;
 import samuel.player.action.PlayerAction;
 import samuel.player.request.RequestCause;
 import samuel.point.Point;
+import samuel.resource.ResourceAmount;
 import samuel.resource.ResourceBundle;
 import samuel.util.Pair;
 
@@ -56,7 +60,7 @@ public interface Player {
      * Asks the user to select an amount of resources from the bundle.
      * @param bundle
      * @param amount
-     * @return A ResourceBundle containing whichever resources the player picked.
+     * @return A <code>ResourceBundle</code> containing whichever resource the player picked.
      */
     ResourceBundle requestResource(ResourceBundle bundle, int amount, RequestCause cause);
 
@@ -95,6 +99,14 @@ public interface Player {
     Pair<PlayerAction, BiConsumer<Boolean,String>> requestAction(Phase phase);
 
     /**
+     * Emits that an event has happened.
+     *
+     * @param event
+     */
+    @Subscribe
+    void onEvent(Event event);
+
+    /**
      * Send a message to the player from the server
      * @param msg
      */
@@ -115,5 +127,7 @@ public interface Player {
 
     PlayableCard getCardInHandFromUuid(UUID uuid);
 
-    void placeCard(BoardPosition position, PlaceableCard card);
+    void placeCard(PlaceableCard card, BoardPosition position, GameContext context);
+
+    void giveResources(ResourceBundle bundle);
 }

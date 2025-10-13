@@ -27,12 +27,12 @@ public class HorizontalExpandableGrid implements Iterable<BoardPosition> {
 
     private Board board;
 
-    public void initGrid(Board board) {
+    public void initGrid(Board board, int rows, int cols) {
         this.board = board;
-        // begin with 5x5 grid
-        for(int r = 0; r < 5; r++) {
+        // begin with rows X cols grid
+        for(int r = 0; r < rows; r++) {
             List<BoardPosition> row = new ArrayList<>();
-            for(int c = 0; c < 5; c++) {
+            for(int c = 0; c < cols; c++) {
                 row.add(new GridPosition(board));
             }
             this.grid.add(row);

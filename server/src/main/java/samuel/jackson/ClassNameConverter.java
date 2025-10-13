@@ -39,7 +39,7 @@ public class ClassNameConverter {
         @Override
         public Class<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             String simpleName = p.getValueAsString();
-            String pkg = basePackage != null ? basePackage : "com.example.resources"; // fallback
+            String pkg = basePackage != null ? basePackage : "samuel.resource.resources"; // fallback
             try {
                 return Class.forName(pkg + "." + simpleName);
             } catch (ClassNotFoundException e) {

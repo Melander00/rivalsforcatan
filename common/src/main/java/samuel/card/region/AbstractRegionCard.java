@@ -1,11 +1,13 @@
 package samuel.card.region;
 
 import samuel.board.BoardPosition;
-import samuel.card.PlaceableCard;
+import samuel.event.die.ProductionDieEvent;
+import samuel.eventmanager.Subscribe;
+import samuel.game.GameContext;
+import samuel.player.Player;
 import samuel.resource.Resource;
 import samuel.resource.ResourceAmount;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 public abstract class AbstractRegionCard implements RegionCard {
@@ -21,6 +23,10 @@ public abstract class AbstractRegionCard implements RegionCard {
         this.diceRoll = diceRoll;
     }
 
+    @Override
+    public Class<? extends Resource> getType() {
+        return resourceType;
+    }
 
     @Override
     public UUID getUuid() {
@@ -71,8 +77,21 @@ public abstract class AbstractRegionCard implements RegionCard {
 
     @Override
     public boolean validatePlacement(BoardPosition position) {
-        return false;
+        return true;
     }
+
+
+
+    @Override
+    public void onPlace(Player owner, GameContext context) {
+        context.getEventBus().register(this);
+    }
+
+    @Override
+    public void onRemove(GameContext context) {
+        context.getEventBus().unregister(this);
+    }
+
 
 
 }

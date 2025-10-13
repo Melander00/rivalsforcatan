@@ -1,6 +1,5 @@
 package samuel.card;
 
-import samuel.board.Board;
 import samuel.board.BoardPosition;
 import samuel.game.GameContext;
 import samuel.player.Player;
@@ -8,7 +7,20 @@ import samuel.player.request.RequestCause;
 
 public interface PlaceableCard extends Card, PlayableCard {
     boolean validatePlacement(BoardPosition position);
-    default void onPlace(Player owner, Board board, BoardPosition position) {}
+
+    /**
+     * Called when the player places this card on a position.
+     *
+     * @param owner
+     * @param context
+     */
+    default void onPlace(Player owner, GameContext context) {}
+
+    /**
+     * Called when a player removes this card from play.
+     * @param context
+     */
+    default void onRemove(GameContext context) {}
 
     @Override
     default void play(Player player, GameContext context) {
@@ -22,6 +34,6 @@ public interface PlaceableCard extends Card, PlayableCard {
             }
         }
 
-        player.placeCard(position, this);
+        player.placeCard(this, position, context);
     }
 }

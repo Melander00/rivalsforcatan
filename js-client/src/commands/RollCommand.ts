@@ -1,6 +1,6 @@
 import { getActionQueue } from "../network/ActionQueue";
 import { Action } from "../types/message";
-import { debug, print } from "../ui/Console";
+import { print } from "../ui/Console";
 import { Command } from "./Command";
 
 export class RollCommand implements Command {
@@ -23,8 +23,6 @@ export class RollCommand implements Command {
             action: Action.ROLL_DICE,
             data: null
         })
-
-        debug(data)
 
         return true;
     }

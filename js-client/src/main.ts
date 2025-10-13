@@ -6,8 +6,10 @@ import { initBoolRequestHandler } from "./requests/BoolRequestHandler";
 import initCardRequestHandler from "./requests/CardRequestHandler";
 import initCardStackRequestHandler from "./requests/CardStackRequestHandler";
 import { initIntRequestHandler } from "./requests/IntRequestHandler";
+import { initResourceRequestHandler } from "./requests/ResourceRequestHandler";
 import { MessageType } from "./types/message";
-import { debug, listenToCommands, print } from "./ui/Console";
+import { listenToCommands, print } from "./ui/Console";
+import { initEventListener } from "./ui/Event";
 
 const PORT = parseInt(process.env["HOST_PORT"] || "5000")
 const ADDRESS = process.env["HOST_ADDRESS"] || "localhost"
@@ -21,14 +23,19 @@ initActionQueue()
 initIntRequestHandler()
 initBoolRequestHandler()
 initCardRequestHandler()
+initResourceRequestHandler()
 initCardStackRequestHandler()
 initBoardPositionRequestHandler()
 
+// -- Init Event Printer Listener --
+initEventListener()
 
 addMessageListener(MessageType.GENERIC, data => {
-    debug(JSON.stringify(data, null, 2))
+    print(JSON.stringify(data, null, 2))
 })
 
 addMessageListener(MessageType.DIRECT_MESSAGE, dm => {
     print(`[${dm.sender}]: ${dm.message}`)
 })
+
+

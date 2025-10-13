@@ -1,12 +1,11 @@
 package samuel.card.center;
 
-import samuel.board.Board;
 import samuel.board.BoardPosition;
 import samuel.card.PlaceableCard;
 import samuel.card.PointHolder;
 import samuel.card.PriceTag;
+import samuel.game.GameContext;
 import samuel.player.Player;
-import samuel.point.Point;
 import samuel.point.PointBundle;
 import samuel.point.points.VictoryPoint;
 import samuel.resource.resources.GrainResource;
@@ -14,8 +13,6 @@ import samuel.resource.resources.OreResource;
 import samuel.resource.ResourceBundle;
 import samuel.card.CardID;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 public class CityCard implements PlaceableCard, PriceTag, PointHolder, SettlementLike {
@@ -26,11 +23,15 @@ public class CityCard implements PlaceableCard, PriceTag, PointHolder, Settlemen
 
     @Override
     public boolean validatePlacement(BoardPosition position) {
-        return false;
+
+        if(position.isEmpty()) return false;
+
+        return position.getCard().getCardID().equals(SettlementCard.id); // todo: high coupling
+
     }
 
     @Override
-    public void onPlace(Player owner, Board board, BoardPosition position) {
+    public void onPlace(Player owner, GameContext context) {
 
     }
 

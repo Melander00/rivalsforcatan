@@ -5,6 +5,8 @@ public enum ActionResponseType {
 
     CARD_NOT_FOUND,
     CARD_CANNOT_BE_PLAYED,
+
+    INVALID_ACTION,
     ;
 
     @Override

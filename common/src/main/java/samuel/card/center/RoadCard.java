@@ -1,9 +1,9 @@
 package samuel.card.center;
 
-import samuel.board.Board;
 import samuel.board.BoardPosition;
 import samuel.card.PlaceableCard;
 import samuel.card.PriceTag;
+import samuel.game.GameContext;
 import samuel.player.Player;
 import samuel.resource.resources.BrickResource;
 import samuel.resource.resources.OreResource;
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class RoadCard implements PlaceableCard, PriceTag {
 
-    private static final CardID id = new CardID("center", "road");
+    static final CardID id = new CardID("center", "road");
 
     private final UUID uuid = UUID.randomUUID();
 
@@ -43,7 +43,7 @@ public class RoadCard implements PlaceableCard, PriceTag {
     }
 
     @Override
-    public void onPlace(Player owner, Board board, BoardPosition position) {
+    public void onPlace(Player owner, GameContext context) {
 
     }
 

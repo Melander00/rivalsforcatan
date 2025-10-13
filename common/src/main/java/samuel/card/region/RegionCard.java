@@ -1,6 +1,7 @@
 package samuel.card.region;
 
 import samuel.card.PlaceableCard;
+import samuel.resource.Resource;
 import samuel.resource.ResourceAmount;
 
 public interface RegionCard extends PlaceableCard {
@@ -27,4 +28,6 @@ public interface RegionCard extends PlaceableCard {
      * @return
      */
     int getDiceRoll();
+
+    Class<? extends Resource> getType();
 }

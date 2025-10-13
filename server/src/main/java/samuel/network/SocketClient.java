@@ -1,5 +1,6 @@
 package samuel.network;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import samuel.Message;
 
 import java.io.*;
@@ -56,6 +57,22 @@ public class SocketClient {
         pendingRequests.remove(requestId.toString());
 
         return objectMapper.convertValue(res.getData(), clazz);
+    }
+
+    public <T> T requestData(Message message, TypeReference<T> typeReference) throws IOException, InterruptedException {
+        BlockingQueue<Message> responseQueue = new LinkedBlockingQueue<>();
+
+        UUID requestId = message.getRequestId();
+
+        pendingRequests.put(requestId.toString(), responseQueue);
+
+        message.setRequestId(requestId);
+        sendData(message);
+        Message res = responseQueue.take();
+
+        pendingRequests.remove(requestId.toString());
+
+        return objectMapper.convertValue(res.getData(), typeReference);
     }
 
 

@@ -119,20 +119,21 @@ public abstract class AbstractGame implements Game {
         // --- Theme Cards ---
 
         // We divide the cards into X stacks at random
-        List<PlayableCard> themeCards = new ArrayList<>(deck.getThemeCards());
-        Collections.shuffle(themeCards);
-        int themeCardsPerStack = themeCards.size() / getThemeCardStacks();
+        if(deck.getThemeCards() != null) {
+            List<PlayableCard> themeCards = new ArrayList<>(deck.getThemeCards());
+            Collections.shuffle(themeCards);
+            int themeCardsPerStack = themeCards.size() / getThemeCardStacks();
 
-        // Get sub-lists for each stack
-        for(int i = 0; i < getThemeCardStacks(); i++) {
-            CardStack<PlayableCard> stack = new GenericCardStack<>();
-            List<PlayableCard> sublist = themeCards.subList(i*themeCardsPerStack, i*themeCardsPerStack + themeCardsPerStack);
-            for(PlayableCard card : sublist) {
-                stack.addCardToBottom(card);
+            // Get sub-lists for each stack
+            for(int i = 0; i < getThemeCardStacks(); i++) {
+                CardStack<PlayableCard> stack = new GenericCardStack<>();
+                List<PlayableCard> sublist = themeCards.subList(i*themeCardsPerStack, i*themeCardsPerStack + themeCardsPerStack);
+                for(PlayableCard card : sublist) {
+                    stack.addCardToBottom(card);
+                }
+                container.addToThemeStacks(stack);
             }
-            container.addToThemeStacks(stack);
         }
-
     }
 
     public abstract int getBasicCardStacks();
@@ -204,6 +205,7 @@ public abstract class AbstractGame implements Game {
     public void addPlayers(List<Player> players) {
         for(Player player : players) {
             context.addPlayer(player);
+            context.getEventBus().register(player);
         }
     }
 
@@ -216,6 +218,8 @@ public abstract class AbstractGame implements Game {
                 res.second().accept(true, "");
             } else if(res.first().getAction().equals(PlayerActionEnum.PLAY_CARD)) {
                 handleCardPlayAction(activePlayer, res.first().getData(), res.second());
+            } else {
+                res.second().accept(false, ActionResponseType.INVALID_ACTION.toString());
             }
         }
     }
@@ -259,6 +263,8 @@ public abstract class AbstractGame implements Game {
                 handleCardPlayAction(activePlayer, res.first().getData(), res.second());
             } else if(res.first().getAction().equals(PlayerActionEnum.TRADE)) {
                 handleTradeAction(activePlayer, res.first().getData(), res.second());
+            } else {
+                res.second().accept(false, ActionResponseType.INVALID_ACTION.toString());
             }
         }
     }

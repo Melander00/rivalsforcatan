@@ -1,0 +1,13 @@
+[
+
+    {
+        "id": "production_post",
+        "description": {
+            "template": "The production dice rolled {rollResults}"
+        }
+    },
+    {
+        "id": "event",
+        "description": "Event dice has been rolled."
+    }
+]

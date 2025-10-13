@@ -35,7 +35,7 @@ public class Main {
 
             test(socketClient);
 
-            ServerPlayer player = new ServerPlayer(GridBoard.createGridBoard(), new GenericPlayerHand(), socketClient);
+            ServerPlayer player = new ServerPlayer(GridBoard.createGridBoard(5, 7), new GenericPlayerHand(), socketClient);
 
             player.addListener(Main::contextRequestHandler);
 

@@ -11,6 +11,13 @@ public enum RequestCause {
     EXCHANGE_TAKE_STACK,
     EXCHANGE_SEARCH,
 
+    FREE_RESOURCE,
+
+    CHOOSE_REGION_TO_INCREASE_RESOURCE,
+    CHOOSE_REGION_TO_DECREASE_RESOURCE,
+
+    FREE_RESOURCES,
+
 
     RIG_PRODUCTION_DIE,
     ;
@@ -20,3 +27,4 @@ public enum RequestCause {
         return super.toString();
     }
 }
+

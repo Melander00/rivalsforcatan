@@ -18,14 +18,14 @@ public class GridBoard implements Board {
 
     public GridBoard() {}
 
-    public void initGrid() {
+    public void initGrid(int rows, int cols) {
         this.grid = new HorizontalExpandableGrid();
-        this.grid.initGrid(this);
+        this.grid.initGrid(this, rows, cols);
     }
 
-    public static GridBoard createGridBoard() {
+    public static GridBoard createGridBoard(int rows, int cols) {
         GridBoard board = new GridBoard();
-        board.initGrid();
+        board.initGrid(rows, cols);
         return board;
     }
 
@@ -38,7 +38,6 @@ public class GridBoard implements Board {
     public void place(PlaceableCard card, BoardPosition position) {
         position.setCard(card);
         this.ensureSize();
-//        card.onPlace();
     }
 
     public void ensureSize() {
