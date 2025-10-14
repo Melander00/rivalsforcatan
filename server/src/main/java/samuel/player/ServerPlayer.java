@@ -19,6 +19,7 @@ import samuel.network.SocketClient;
 import samuel.phase.Phase;
 import samuel.player.action.PlayerAction;
 import samuel.player.request.RequestCause;
+import samuel.player.request.RequestCauseEnum;
 import samuel.point.Point;
 import samuel.point.PointAmount;
 import samuel.point.PointBundle;
@@ -77,7 +78,7 @@ public class ServerPlayer implements Player {
     @Override
     public int requestInt(int min, int max, RequestCause cause) {
         try {
-            int res = client.requestData(new Message(MessageType.REQUEST_INT, new Request(cause.toString(), new IntRequest(min, max))), Integer.class);
+            int res = client.requestData(new Message(MessageType.REQUEST_INT, new Request(cause, new IntRequest(min, max))), Integer.class);
             if(res < min) return min;
             if(res > max) return max;
             return res;
@@ -92,7 +93,7 @@ public class ServerPlayer implements Player {
         try {
             List<ResourceAmount> res = client.requestData(new Message(
                             MessageType.REQUEST_RESOURCE,
-                            new Request(cause.toString(), new ResourceRequest(bundle, amount))),
+                            new Request(cause, new ResourceRequest(bundle, amount))),
                             new TypeReference<>() {});
 
             return ResourceBundle.fromAmounts(res);
@@ -110,7 +111,7 @@ public class ServerPlayer implements Player {
     public CardStack<PlayableCard> requestCardStack(List<CardStack<PlayableCard>> cardStacks, List<UUID> unselectableStackIds, RequestCause cause) {
 
         try {
-            UUID uuid = client.requestData(new Message(MessageType.REQUEST_CARD_STACK, new Request(cause.toString(), new CardStackRequest(cardStacks, unselectableStackIds))), UUID.class);
+            UUID uuid = client.requestData(new Message(MessageType.REQUEST_CARD_STACK, new Request(cause, new CardStackRequest(cardStacks, unselectableStackIds))), UUID.class);
             for(CardStack<PlayableCard> stack : cardStacks) {
                 if(stack.getUuid().equals(uuid)) return stack;
             }
@@ -127,7 +128,7 @@ public class ServerPlayer implements Player {
     public BoardPosition requestBoardPosition(List<List<BoardPosition>> positions, RequestCause cause) {
 
         try {
-            UUID uuid = client.requestData(new Message(MessageType.REQUEST_BOARD_POSITION, new Request(cause.toString(), new BoardPositionRequest(positions))), UUID.class);
+            UUID uuid = client.requestData(new Message(MessageType.REQUEST_BOARD_POSITION, new Request(cause, new BoardPositionRequest(positions))), UUID.class);
             for(List<BoardPosition> row : positions) {
                 for(BoardPosition pos : row) {
                     if(pos.getUuid().equals(uuid)) {
@@ -147,7 +148,7 @@ public class ServerPlayer implements Player {
         try {
             UUID uuid = client.requestData(new Message(
                     MessageType.REQUEST_CARD,
-                    new Request(cause.toString(), new CardRequest(cards))),
+                    new Request(cause, new CardRequest(cards))),
                     UUID.class);
 
             for(T card : cards) {
@@ -164,7 +165,7 @@ public class ServerPlayer implements Player {
     public boolean requestBoolean(RequestCause cause) {
 
         try {
-            Boolean bool = client.requestData(new Message(MessageType.REQUEST_BOOL, new Request(cause.toString(), null)), Boolean.class);
+            Boolean bool = client.requestData(new Message(MessageType.REQUEST_BOOL, new Request(cause, null)), Boolean.class);
             return bool;
 
         } catch (IOException | InterruptedException exception) {
@@ -304,7 +305,7 @@ public class ServerPlayer implements Player {
             BoardPosition position = null;
             boolean isValid = false;
             while(!isValid) {
-                position = requestBoardPosition(getPrincipality().getBoardPositions(), RequestCause.PLACE_CARD);
+                position = requestBoardPosition(getPrincipality().getBoardPositions(), new RequestCause(RequestCauseEnum.PLACE_CARD));
                 isValid = placeableCard.validatePlacement(position);
                 if(!isValid) {
                     directMessage("Invalid Placement");
@@ -322,9 +323,15 @@ public class ServerPlayer implements Player {
     public void giveResources(ResourceBundle bundle) {
         if(bundle == null) return;
 
-        for(ResourceAmount amount : bundle) {
-            for(int i = 0; i < amount.amount(); i++) {
-                ResourceHelper.increaseRegionOfChoice(this, amount.resourceType(), 1);
+        for(ResourceAmount am : bundle) {
+            int amount = am.amount();
+            while(amount > 0) {
+                int res = ResourceHelper.increaseRegionOfChoice(this, am.resourceType(), 1);
+                if(res < amount) {
+                    amount--;
+                } else {
+                    directMessage("That region already has max amount of resources.");
+                }
             }
         }
     }
@@ -357,8 +364,9 @@ public class ServerPlayer implements Player {
                 int res = ResourceHelper.decreaseRegionOfChoice(this, am.resourceType(), 1);
                 if(res < amount) {
                     amount--;
+                } else {
+                    directMessage("That region has no resources to remove from.");
                 }
-                // otherwise the region didn't actually
             }
         }
     }

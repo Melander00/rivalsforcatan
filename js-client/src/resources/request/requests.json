@@ -6,5 +6,20 @@
     {
         "cause": "EXCHANGE_SEARCH",
         "description": "Do you want to pay to search the stack?"
+    },
+    {
+        "cause": "CHOOSE_REGION_TO_INCREASE_RESOURCE",
+        "fallback": "Pick the region for which you want to increase resources on.",
+        "description": {
+            "template": "Pick the region for which you want to increase $resource{resource} on."
+        }
+    },
+    {
+        "cause": "CHOOSE_REGION_TO_DECREASE_RESOURCE",
+        "description": "Pick region to decrease resources on."
+    },
+    {
+        "cause": "PLACE_CARD",
+        "description": "Where do you want to place the card?"
     }
 ]

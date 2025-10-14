@@ -1,5 +1,5 @@
 import { setRequestListener } from "../network/Socket";
-import { GetRequestCause } from "../resources/ResourceHandler";
+import { GetRequestCauseInfo } from "../resources/ResourceHandler";
 import { CardStack } from "../types/card/card";
 import { MessageType } from "../types/message";
 import { ServerRequest } from "../types/request";
@@ -29,7 +29,7 @@ export default function initCardStackRequestHandler() {
             sb.push(`[Stack ${i}]`)
         }
 
-        const question = `${GetRequestCause(cause)} | Choose a card stack from: ${sb.join(" ")}\nWhich card stack do you want? `
+        const question = `${GetRequestCauseInfo(cause.type)?.description ?? cause.type} | Choose a card stack from: ${sb.join(" ")}\nWhich card stack do you want? `
 
         async function q() {
             const answer = await ask(question)

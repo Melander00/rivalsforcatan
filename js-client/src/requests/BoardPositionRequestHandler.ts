@@ -1,10 +1,11 @@
 import { setRequestListener } from "../network/Socket"
-import { GetRequestCause } from "../resources/ResourceHandler"
+import { GetRequestCauseInfo } from "../resources/ResourceHandler"
 import { GridPosition } from "../types/board/board"
 import { MessageType } from "../types/message"
 import { ServerRequest } from "../types/request"
 import { ask, print } from "../ui/Console"
 import { buildPrincipality } from "../ui/Grid"
+import { handleTemplate } from "../ui/Helper"
 import { isNumber } from "../util/Validator"
 
 type BoardPositionRequest = {
@@ -14,7 +15,17 @@ type BoardPositionRequest = {
 export function initBoardPositionRequestHandler() {
     setRequestListener(MessageType.REQUEST_BOARD_POSITION, async ({data, cause}: ServerRequest<BoardPositionRequest>) => {
 
-        const question = `\n${buildPrincipality(data.positions)}\n${GetRequestCause(cause)} | Choose the position as "[Row] [Column]": `
+        const info = GetRequestCauseInfo(cause.type)
+        let causeDetails =  info?.fallback ?? cause.type
+
+        if(cause.type === "CHOOSE_REGION_TO_INCREASE_RESOURCE" || cause.type === "CHOOSE_REGION_TO_DECREASE_RESOURCE") {
+            const metadata = cause.data as string; // containes which resource to change
+            if(info?.description) {
+                causeDetails = handleTemplate({resource: metadata}, info.description)
+            }
+        }
+
+        const question = `\n${buildPrincipality(data.positions)}\n${causeDetails} | Choose the position as "[Row] [Column]": `
 
         if(data.positions.length === 0 || data.positions[0].length === 0) return null;
 

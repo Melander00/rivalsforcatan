@@ -18,6 +18,7 @@ import samuel.player.Player;
 import samuel.player.action.PlayerAction;
 import samuel.player.action.PlayerActionEnum;
 import samuel.player.request.RequestCause;
+import samuel.player.request.RequestCauseEnum;
 import samuel.stack.GenericCardStack;
 import samuel.util.Pair;
 
@@ -140,7 +141,7 @@ public abstract class AbstractGame implements Game {
     public abstract int getThemeCardStacks();
 
     public UUID setupInitialDraw(Player player, List<CardStack<PlayableCard>> cardStacks, List<UUID> usedCardStackIds) {
-        CardStack<PlayableCard> stack = player.requestCardStack(cardStacks, usedCardStackIds, RequestCause.INITIAL_DRAW);
+        CardStack<PlayableCard> stack = player.requestCardStack(cardStacks, usedCardStackIds, new RequestCause(RequestCauseEnum.INITIAL_DRAW));
         if(usedCardStackIds.contains(stack.getUuid())) {
             // Bad value from client, default to the next stack available
             for(CardStack<PlayableCard> cardStack : cardStacks) {
@@ -300,7 +301,7 @@ public abstract class AbstractGame implements Game {
             CardStack<PlayableCard> stack = activePlayer.requestCardStack(
                     getContext().getStackContainer().getBasicStacks(),
                     getContext().getStackContainer().getBasicStacks().stream().filter((s) -> s.getSize() == 0).map(CardStack::getUuid).toList(),
-                    RequestCause.REPLENISH_STACK);
+                    new RequestCause(RequestCauseEnum.REPLENISH_STACK));
             if(stack.getSize() == 0) {
                 // todo:
             }
@@ -311,12 +312,12 @@ public abstract class AbstractGame implements Game {
 
     // todo: add events
     public void exchangeCards(Player activePlayer) {
-        boolean shouldExchange = activePlayer.requestBoolean(RequestCause.EXCHANGE);
+        boolean shouldExchange = activePlayer.requestBoolean(new RequestCause(RequestCauseEnum.EXCHANGE));
         if(shouldExchange) {
 
             // Choose which card to discard and where
-            PlayableCard card = activePlayer.requestCard(activePlayer.getHand().getCards(), RequestCause.EXCHANGE_DISCARD_CARD);
-            CardStack<PlayableCard> discardStack = activePlayer.requestCardStack(getContext().getStackContainer().getBasicStacks(), List.of(), RequestCause.EXCHANGE_DISCARD_STACK);
+            PlayableCard card = activePlayer.requestCard(activePlayer.getHand().getCards(), new RequestCause(RequestCauseEnum.EXCHANGE_DISCARD_CARD));
+            CardStack<PlayableCard> discardStack = activePlayer.requestCardStack(getContext().getStackContainer().getBasicStacks(), List.of(), new RequestCause(RequestCauseEnum.EXCHANGE_DISCARD_STACK));
             discardStack.addCardToBottom(card);
             activePlayer.removeCardFromHand(card);
 
@@ -324,9 +325,9 @@ public abstract class AbstractGame implements Game {
             CardStack<PlayableCard> takeStack = activePlayer.requestCardStack(
                     getContext().getStackContainer().getBasicStacks(),
                     getContext().getStackContainer().getBasicStacks().stream().filter((s) -> s.getSize() == 0).map(CardStack::getUuid).toList(),
-                    RequestCause.EXCHANGE_TAKE_STACK);
+                    new RequestCause(RequestCauseEnum.EXCHANGE_TAKE_STACK));
 
-            boolean searchStack = activePlayer.requestBoolean(RequestCause.EXCHANGE_SEARCH);
+            boolean searchStack = activePlayer.requestBoolean(new RequestCause(RequestCauseEnum.EXCHANGE_SEARCH));
             if(searchStack) {
                 // todo
                 // ask which resources to pay with

@@ -22,6 +22,8 @@ export async function listenToCommands() {
 
         const [cmd, ...args] = input.split(" ")
 
+        print("")
+
         await handleCommands(cmd, args)
 
         print("")

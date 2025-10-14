@@ -4,6 +4,7 @@ import buildings from "./building/cards.json"
 import dice from "./event/dice.json"
 import dice_events from "./event/dice_event.json"
 import events from "./event/event.json"
+import phases from "./phase/phases.json"
 import regions from "./region/cards.json"
 import requests from "./request/requests.json"
 import resources from "./resource/resources.json"
@@ -34,8 +35,8 @@ export function GetCardInfo(id: CardID) {
 }
 
 
-export function GetRequestCause(cause: string): string {
-    return requests.find(e => e.cause === cause)?.description ?? cause
+export function GetRequestCauseInfo(cause: string) {
+    return requests.find(e => e.cause === cause)
 }
 
 export function GetEventInfo(id: CardID) {
@@ -72,4 +73,9 @@ export function GetPointInfo(id: string) {
         name: full,
         short: first
     }
+}
+
+
+export function GetPhaseInfo(id: string) {
+    return phases.find(e => e.id === id)
 }

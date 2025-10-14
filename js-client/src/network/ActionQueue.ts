@@ -1,4 +1,6 @@
 import { ActionMessage, ActionResponse, MessageType } from "../types/message";
+import { print } from "../ui/Console";
+import { buildState } from "../ui/State";
 import { setIdListener, setRequestListener } from "./Socket";
 
 type ActionQueueItem = {
@@ -28,6 +30,8 @@ export class ActionQueue {
                         respond(toRespondWith)
                     })
                 }
+
+                print(buildState({yourTurn: true, phase}))
             
                 this.queue.push({phase, respond: listener})
             })

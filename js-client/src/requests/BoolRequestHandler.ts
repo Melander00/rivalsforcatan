@@ -1,5 +1,5 @@
 import { setRequestListener } from "../network/Socket"
-import { GetRequestCause } from "../resources/ResourceHandler"
+import { GetRequestCauseInfo } from "../resources/ResourceHandler"
 import { MessageType } from "../types/message"
 import { ServerRequest } from "../types/request"
 import { ask, print } from "../ui/Console"
@@ -9,7 +9,7 @@ type BoolRequest = null
 export function initBoolRequestHandler() {
     setRequestListener(MessageType.REQUEST_BOOL, async ({cause}: ServerRequest<BoolRequest>) => {
 
-        const question = `${GetRequestCause(cause)} | Yes or No: `
+        const question = `${GetRequestCauseInfo(cause.type)?.description ?? cause.type} | Yes or No: `
 
         async function q() {
             const answer = await ask(question)

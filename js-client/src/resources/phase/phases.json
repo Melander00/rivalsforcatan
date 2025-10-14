@@ -1,0 +1,32 @@
+[
+    {
+        "id": "INIT",
+        "description": {
+            "template": "Initializing game."
+        }
+    },
+    {
+        "id": "DICE_ROLL",
+        "description": {
+            "template": "{player} turn to roll dice."
+        }
+    },
+    {
+        "id": "ACTION",
+        "description": {
+            "template": "{player} turn to play cards or trade."
+        }
+    },
+    {
+        "id": "REPLENISH",
+        "description": {
+            "template": "{player} turn to replenish their hand."
+        }
+    },
+    {
+        "id": "EXCHANGE",
+        "description": {
+            "template": "{player} exchange a card."
+        }
+    }
+]

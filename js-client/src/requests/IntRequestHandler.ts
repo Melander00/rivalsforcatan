@@ -1,5 +1,5 @@
 import { setRequestListener } from "../network/Socket"
-import { GetRequestCause } from "../resources/ResourceHandler"
+import { GetRequestCauseInfo } from "../resources/ResourceHandler"
 import { MessageType } from "../types/message"
 import { ServerRequest } from "../types/request"
 import { ask, print } from "../ui/Console"
@@ -12,7 +12,7 @@ type IntRequest = {
 export function initIntRequestHandler() {
     setRequestListener(MessageType.REQUEST_INT, async ({data, cause}: ServerRequest<IntRequest>) => {
 
-        const question = `${GetRequestCause(cause)} | Enter a number between ${data.min} and ${data.max}: `
+        const question = `${GetRequestCauseInfo(cause.type)?.description ?? cause.type} | Enter a number between ${data.min} and ${data.max}: `
 
         async function q() {
             const answer = await ask(question)

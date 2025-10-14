@@ -1,4 +1,4 @@
 package samuel.request;
 
-public record Request(String cause, Object data) {
+public record Request(Object cause, Object data) {
 }

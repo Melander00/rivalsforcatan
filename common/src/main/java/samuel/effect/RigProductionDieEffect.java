@@ -6,6 +6,7 @@ import samuel.event.die.ProductionDieEvent;
 import samuel.game.GameContext;
 import samuel.player.Player;
 import samuel.player.request.RequestCause;
+import samuel.player.request.RequestCauseEnum;
 
 public class RigProductionDieEffect implements Effect {
 
@@ -21,7 +22,7 @@ public class RigProductionDieEffect implements Effect {
     public void onProductionDie(ProductionDieEvent event) {
         if(!owner.equals(event.getRoller())) return;
 
-        int riggedResults = owner.requestInt(1, 6, RequestCause.RIG_PRODUCTION_DIE);
+        int riggedResults = owner.requestInt(1, 6, new RequestCause(RequestCauseEnum.RIG_PRODUCTION_DIE));
 
         event.setRollResults(riggedResults);
         this.hasBeenUsed = true;
