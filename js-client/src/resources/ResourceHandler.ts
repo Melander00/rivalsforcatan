@@ -59,3 +59,17 @@ export function GetResourceInfo(id: string) {
     }
 
 }
+
+export function GetPointInfo(id: string) {
+    // const res = resources.find(e => e.id === id)
+    // if(res) return res;
+
+    const full = id.replace("Point", "")
+    const first = id[0]
+
+    return {
+        id,
+        name: full,
+        short: first
+    }
+}

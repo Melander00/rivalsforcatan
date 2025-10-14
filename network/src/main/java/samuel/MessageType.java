@@ -10,6 +10,9 @@ public enum MessageType {
     // Client requests
     REQUEST_HAND,
     REQUEST_BOARD,
+    REQUEST_STATE,
+    REQUEST_POINTS,
+    REQUEST_OPPONENT,
 
     // Server requests
     REQUEST_INT,

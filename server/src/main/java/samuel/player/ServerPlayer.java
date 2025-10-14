@@ -20,6 +20,7 @@ import samuel.phase.Phase;
 import samuel.player.action.PlayerAction;
 import samuel.player.request.RequestCause;
 import samuel.point.Point;
+import samuel.point.PointAmount;
 import samuel.point.PointBundle;
 import samuel.point.points.ProgressPoint;
 import samuel.request.*;
@@ -232,6 +233,25 @@ public class ServerPlayer implements Player {
     }
 
     @Override
+    public PointBundle getPoints() {
+        PointBundle points = new PointBundle();
+
+        for(BoardPosition position : this.principality) {
+            PlaceableCard card = position.getCard();
+            if(card == null) continue;
+
+            if(card instanceof PointHolder holder) {
+                PointBundle bundle = holder.getPoints();
+                for(PointAmount am : bundle) {
+                    points.addPoint(am.pointType(), am.amount());
+                }
+            }
+        }
+
+        return points;
+    }
+
+    @Override
     public PlayerHand getHand() {
         return hand;
     }
@@ -274,9 +294,11 @@ public class ServerPlayer implements Player {
 
     @Override
     public void playCard(PlayableCard card, GameContext context) {
+
         if(card instanceof PriceTag price) {
             removeResources(price.getCost());
         }
+
 
         if(card instanceof PlaceableCard placeableCard) {
             BoardPosition position = null;
@@ -291,6 +313,9 @@ public class ServerPlayer implements Player {
 
             placeCard(placeableCard, position, context);
         }
+
+        card.onPlay(this, context);
+
     }
 
     @Override
@@ -344,7 +369,7 @@ public class ServerPlayer implements Player {
     }
 
 
-    private void sendMessage(Message msg) {
+    public void sendMessage(Message msg) {
         try {
             client.sendData(msg);
         } catch (IOException exception) {
@@ -361,8 +386,11 @@ public class ServerPlayer implements Player {
         Object data = switch(request.getType()) {
             case REQUEST_BOARD -> principality;
             case REQUEST_HAND -> hand;
+            case REQUEST_POINTS -> getPoints();
             default -> null;
         };
+
+        if(data == null) return;
 
         sendMessage(new Message(MessageType.RESPONSE, request.getRequestId(), data));
     }

@@ -1,12 +1,16 @@
 package samuel;
 
 import samuel.board.GridBoard;
+import samuel.game.Game;
+import samuel.game.GameContext;
 import samuel.introductory.IntroductoryGame;
 import samuel.player.GenericPlayerHand;
 import samuel.player.ServerPlayer;
 import samuel.network.SocketClient;
 import samuel.network.SocketServer;
 import samuel.player.Player;
+import samuel.response.OpponentResponse;
+import samuel.response.StateResponse;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -15,14 +19,22 @@ import java.util.List;
 
 public class Main {
 
+    private static GameContext context;
+
     public static void main(String[] args) throws IOException {
         // open socket
         SocketServer socket = new SocketServer(5000);
 
         // await two players
+
+        Game game = new IntroductoryGame();
+        GameServer server = new GameServer(game);
+
+        context = game.getContext();
+
         List<Player> awaitedPlayers = awaitPlayers(socket, 2);
 
-        (new GameServer(new IntroductoryGame())).start(awaitedPlayers);
+        server.start(awaitedPlayers);
     }
 
     private static List<Player> awaitPlayers(SocketServer socket, int nrOfPlayers) throws IOException {
@@ -46,8 +58,31 @@ public class Main {
 
     private static void contextRequestHandler(Message request, Player player) {
 
+        if(context != null && player instanceof ServerPlayer serverPlayer) {
 
+            Object data = switch(request.getType()) {
+                case REQUEST_OPPONENT -> {
+                    Player opponent = null;
+                    for(Player p : context.getPlayers()) {
+                        if(!p.equals(player)) {
+                            opponent = p;
+                            break;
+                        }
+                    }
 
+                    if(opponent == null) yield null;
+
+                    yield new OpponentResponse(opponent.getPrincipality().getBoardPositions(), opponent.getPoints());
+                }
+                case REQUEST_STATE -> new StateResponse(context.getActivePlayer().equals(player), context.getPhase().toString());
+                default -> null;
+            };
+
+            if(data == null) return;
+
+            serverPlayer.sendMessage(new Message(MessageType.RESPONSE, request.getRequestId(), data));
+
+        }
     }
 
     private static void test(SocketClient client) throws IOException {

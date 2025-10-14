@@ -14,6 +14,7 @@ import samuel.phase.Phase;
 import samuel.player.action.PlayerAction;
 import samuel.player.request.RequestCause;
 import samuel.point.Point;
+import samuel.point.PointBundle;
 import samuel.resource.ResourceBundle;
 import samuel.util.Pair;
 
@@ -118,6 +119,8 @@ public interface Player {
      * @param <T>
      */
     <T extends Point> int getPoints(Class<T> point);
+
+    PointBundle getPoints();
 
     PlayerHand getHand();
     void removeCardFromHand(PlayableCard card);
