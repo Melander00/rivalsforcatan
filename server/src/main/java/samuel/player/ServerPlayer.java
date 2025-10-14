@@ -12,6 +12,7 @@ import samuel.card.region.RegionCard;
 import samuel.card.stack.CardStack;
 import samuel.effect.Effect;
 import samuel.event.Event;
+import samuel.event.PlayerEvent;
 import samuel.eventmanager.Subscribe;
 import samuel.game.GameContext;
 import samuel.network.SocketClient;
@@ -202,6 +203,10 @@ public class ServerPlayer implements Player {
     @Override
     public void onEvent(Event event) {
         try {
+            if(event instanceof PlayerEvent playerEvent) {
+                if(!playerEvent.getPlayer().equals(this)) return;
+            }
+
             client.sendData(new Message(MessageType.EVENT, event));
         } catch (Exception e) {
             e.printStackTrace();
