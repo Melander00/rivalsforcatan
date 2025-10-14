@@ -340,7 +340,7 @@ public class ServerPlayer implements Player {
 
     @Override
     public void directMessage(String msg) {
-        sendMessage(new Message(MessageType.DIRECT_MESSAGE, new DirectMessage("server", msg)));
+        sendMessage(new Message(MessageType.DIRECT_MESSAGE, new DirectMessage("Server", msg)));
     }
 
 
