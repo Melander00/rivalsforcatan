@@ -15,7 +15,6 @@ const PORT = parseInt(process.env["HOST_PORT"] || "5000")
 const ADDRESS = process.env["HOST_ADDRESS"] || "localhost"
 
 connect(ADDRESS, PORT);
-
 listenToCommands()
 initActionQueue()
 

@@ -3,7 +3,7 @@ import { GridBoard } from "../types/board/board";
 import { Hand } from "../types/hand/hand";
 import { MessageType } from "../types/message";
 import { buildCardsList } from "../ui/Card";
-import { print } from "../ui/Console";
+import { getTerminalProperties, print } from "../ui/Console";
 import { buildPrincipality } from "../ui/Grid";
 import { Command } from "./Command";
 
@@ -29,7 +29,7 @@ export class ViewCommand implements Command {
             
         } else if(type === "hand") {
             const data = await requestData<Hand>(MessageType.REQUEST_HAND);
-            const hand = buildCardsList(data.cards);
+            const hand = buildCardsList(data.cards, getTerminalProperties().width);
             print(hand);
             return true;
         }

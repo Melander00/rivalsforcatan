@@ -8,7 +8,7 @@
                 "template": "Forest D{diceRoll}"
             },
             "description": {
-                "template": "{resourceAmount.resourceType} {resourceAmount.amount}/3"
+                "template": "$resource{resourceAmount.resourceType} {resourceAmount.amount}/3"
             }
         }
     }

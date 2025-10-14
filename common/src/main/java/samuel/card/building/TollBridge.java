@@ -6,6 +6,7 @@ import samuel.card.util.ExpansionCardHelper;
 import samuel.event.die.PlentifulHarvestEvent;
 import samuel.eventmanager.Subscribe;
 import samuel.game.GameContext;
+import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.point.PointBundle;
 import samuel.point.points.CommercePoint;
@@ -16,7 +17,7 @@ import samuel.resource.resources.TimberResource;
 
 import java.util.UUID;
 
-public class TollBridge implements PlaceableCard, PriceTag, PointHolder {
+public class TollBridge implements PlaceableCard, PriceTag, PointHolder, ActionPhaseCard {
 
     private static final CardID cardId = new CardID("building", "toll_bridge");
 
@@ -76,5 +77,19 @@ public class TollBridge implements PlaceableCard, PriceTag, PointHolder {
             bundle.addResource(GoldResource.class, 2);
             this.owner.giveResources(bundle);
         }
+    }
+
+    @Override
+    public boolean canPlay(Player player, GameContext context) {
+        if(!ActionPhaseCard.super.canPlay(player, context)) return false;
+
+        if(!player.hasResources(getCost())) return false;
+
+        return true;
+    }
+
+    @Override
+    public void play(Player player, GameContext context) {
+        PlaceableCard.super.play(player, context);
     }
 }

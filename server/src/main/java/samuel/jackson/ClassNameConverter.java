@@ -36,10 +36,15 @@ public class ClassNameConverter {
             this.basePackage = basePackage;
         }
 
+        public String getBasePackage() {
+            return basePackage;
+        }
+
         @Override
         public Class<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             String simpleName = p.getValueAsString();
-            String pkg = basePackage != null ? basePackage : "samuel.resource.resources"; // fallback
+            String pkg = getBasePackage() != null ? getBasePackage() : "samuel.resource.resources"; // fallback
+            System.out.println(pkg + " | " + getBasePackage());
             try {
                 return Class.forName(pkg + "." + simpleName);
             } catch (ClassNotFoundException e) {
@@ -47,12 +52,24 @@ public class ClassNameConverter {
             }
         }
 
+        public Deserializer create(String pkg) {
+            return new Deserializer(pkg);
+        }
+
         @Override
         public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) {
             if (property != null) {
-                // Example: dynamically decide package based on field name or type
-                String pkg = property.getType().getRawClass().getPackageName();
-                return new Deserializer(pkg);
+//                // Example: dynamically decide package based on field name or type
+//                String pkg = property.getType().getRawClass().getPackageName();
+                // Use the package of the class that *owns* this property
+                Class<?> owner = property.getMember() != null
+                        ? property.getMember().getDeclaringClass()
+                        : null;
+
+                String pkg = (owner != null)
+                        ? owner.getPackageName()
+                        : "samuel.resource.resources"; // default/fallback
+                return create(pkg);
             }
             return this;
         }

@@ -6,9 +6,7 @@ import samuel.player.Player;
 
 public interface PlayableCard extends Card {
 
-    default boolean canPlay(GameContext context) {
-        return context.getPhase().equals(Phase.ACTION);
-    }
+    boolean canPlay(Player player, GameContext context);
 
     void play(Player player, GameContext context);
 

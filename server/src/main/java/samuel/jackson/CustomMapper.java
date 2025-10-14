@@ -1,6 +1,8 @@
 package samuel.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import samuel.jackson.mixin.PointClassMixin;
+import samuel.jackson.mixin.ResourceClassMixin;
 import samuel.point.PointAmount;
 import samuel.resource.ResourceAmount;
 
@@ -19,8 +21,8 @@ public class CustomMapper extends ObjectMapper {
 
     private static void addMixins(CustomMapper mapper) {
 
-        mapper.addMixIn(ResourceAmount.class, ClassNameMixin.class);
-        mapper.addMixIn(PointAmount.class, ClassNameMixin.class);
+        mapper.addMixIn(ResourceAmount.class, ResourceClassMixin.class);
+        mapper.addMixIn(PointAmount.class, PointClassMixin.class);
 
     }
 

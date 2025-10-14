@@ -1,8 +1,6 @@
 package samuel.card.region;
 
 import samuel.board.BoardPosition;
-import samuel.event.die.ProductionDieEvent;
-import samuel.eventmanager.Subscribe;
 import samuel.game.GameContext;
 import samuel.player.Player;
 import samuel.resource.Resource;

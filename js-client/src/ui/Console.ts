@@ -6,6 +6,13 @@ const rl = createInterface({input: stdin, output: stdout, prompt: "> "});
 
 const isTTY = process.stdin.isTTY === true
 
+export function getTerminalProperties() {
+    return {
+        width: process.stdout.columns,
+        height: process.stdout.rows,
+        isTTY: isTTY,
+    }
+}
 
 export async function listenToCommands() {   
     rl.prompt();

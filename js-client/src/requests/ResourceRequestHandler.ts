@@ -1,5 +1,5 @@
 import { setRequestListener } from "../network/Socket"
-import { GetRequestCause } from "../resources/ResourceHandler"
+import { GetRequestCause, GetResourceInfo } from "../resources/ResourceHandler"
 import { MessageType } from "../types/message"
 import { ServerRequest } from "../types/request"
 import { ask, print } from "../ui/Console"
@@ -33,7 +33,7 @@ export function initResourceRequestHandler() {
                 if(am > 0) available.push({resourceType: resAmount.resourceType, amount: am})
             }
 
-            return `${available.map(e => `[${e.amount}x${e.resourceType}]`).join(" ")}`
+            return `${available.map(e => `[${GetResourceInfo(e.resourceType).name}]`).join(" ")}`
         }
         
         async function q(): Promise<ResourceAmount> {
@@ -41,7 +41,7 @@ export function initResourceRequestHandler() {
 
             const answer = await ask(question)
 
-            const resources = data.resources.filter(e => e.resourceType.includes(answer))
+            const resources = data.resources.filter(e => e.resourceType.toLowerCase().includes(answer.toLowerCase()))
 
             if(resources.length === 0) {
                 print("No resource found")

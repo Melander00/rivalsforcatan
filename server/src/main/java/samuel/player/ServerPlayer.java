@@ -8,6 +8,7 @@ import samuel.action.ActionResponse;
 import samuel.board.Board;
 import samuel.board.BoardPosition;
 import samuel.card.*;
+import samuel.card.region.RegionCard;
 import samuel.card.stack.CardStack;
 import samuel.effect.Effect;
 import samuel.event.Event;
@@ -273,6 +274,40 @@ public class ServerPlayer implements Player {
         for(ResourceAmount amount : bundle) {
             for(int i = 0; i < amount.amount(); i++) {
                 ResourceHelper.increaseRegionOfChoice(this, amount.resourceType(), 1);
+            }
+        }
+    }
+
+    @Override
+    public boolean hasResources(ResourceBundle bundle) {
+        ResourceBundle has = new ResourceBundle();
+        for(BoardPosition position : principality) {
+            if(position.getCard() instanceof ResourceHolder holder) {
+                ResourceAmount am = holder.getResourceAmount();
+                has.addResource(am.resourceType(), am.amount());
+            }
+        }
+
+        // check if we actually have enough
+        for(ResourceAmount am : bundle) {
+            int hasAmount = has.getAmount(am.resourceType());
+            if(am.amount() > hasAmount) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void removeResources(ResourceBundle bundle) {
+        for(ResourceAmount am : bundle) {
+            int amount = am.amount();
+            while(amount > 0) {
+                int res = ResourceHelper.decreaseRegionOfChoice(this, am.resourceType(), 1);
+                if(res < amount) {
+                    amount--;
+                }
+                // otherwise the region didn't actually
             }
         }
     }

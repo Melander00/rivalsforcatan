@@ -1,13 +1,11 @@
 package samuel.card.region;
 
 import samuel.card.PlaceableCard;
+import samuel.card.ResourceHolder;
 import samuel.resource.Resource;
 import samuel.resource.ResourceAmount;
 
-public interface RegionCard extends PlaceableCard {
-
-
-    ResourceAmount getResourceAmount();
+public interface RegionCard extends PlaceableCard, ResourceHolder {
 
     /**
      * Adds to the resource pile.

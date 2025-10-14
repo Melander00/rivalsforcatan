@@ -42,3 +42,15 @@ export function GetEventInfo(id: CardID) {
     if(!namespace) return null;
     return namespace.find(e => e.id === id.id)
 }
+
+export function GetResourceInfo(name: string) {
+
+    const full = name.replace("Resource", "")
+    const first = name[0]
+
+    return {
+        name: full,
+        short: first
+    }
+
+}

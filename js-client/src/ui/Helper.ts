@@ -1,9 +1,11 @@
 
-export function replaceTemplate(data: any, template: string): string {
-    return template.replace(/\{([^{}]+)\}/g, (_, path) => {
-        return path.split('.').reduce((obj: any, key: any) => obj[key], data)
-    })
-}
+// export function replaceTemplate(data: any, template: string): string {
+//     return template.replace(/\{([^{}]+)\}/g, (_, path) => {
+//         return path.split('.').reduce((obj: any, key: any) => obj[key], data)
+//     })
+// }
+
+import { GetResourceInfo } from "../resources/ResourceHandler";
 
 export function handleTemplate(data: any, field: string | {template: string}, identifier = ""): string {
     if(typeof field === "string") return field;
@@ -13,3 +15,83 @@ export function handleTemplate(data: any, field: string | {template: string}, id
 
     return replaceTemplate(data, template);
 }
+
+
+const helpers: {
+    [key: string]: (val: string) => string
+} = {
+    resource: (val) => GetResourceInfo(val).name,
+    resourceShort: (val) => GetResourceInfo(val).short,
+    upper: (val) => val.toLocaleUpperCase(),
+    lower: (val) => val.toLocaleLowerCase(),
+}
+
+/**
+ * Replaces placeholders in a template string with values from data.
+ * Supports helpers (single or chained) using the syntax $helper{expression}.
+ */
+export function replaceTemplate(
+  data: any,
+  template: string,
+): string {
+  function evaluate(str: string): string {
+    // Regex: matches either $helper{expr} or {expr}, innermost first
+    const regex = /\$([a-zA-Z_$][\w$]*)\{([^{}]+)\}|\{([^{}]+)\}/;
+
+    let match = regex.exec(str);
+    if (!match) return str;
+
+    const [fullMatch, helperName, helperExpr, simpleExpr] = match;
+
+    let value: any;
+
+    if (helperName && helperExpr !== undefined) {
+      // Recursively evaluate inner expression
+      const inner = evaluate(helperExpr.trim());
+      // If inner matches a path in data, resolve it
+      const resolvedInner =
+        resolvePath(data, helperExpr.trim()) ?? inner;
+      if (!helpers[helperName])
+        throw new Error(`Unknown helper: ${helperName}`);
+      value = helpers[helperName](resolvedInner);
+    } else if (simpleExpr !== undefined) {
+      value = resolvePath(data, simpleExpr.trim());
+    }
+
+    // Replace first match and continue recursively
+    return evaluate(str.replace(fullMatch, value ?? ""));
+  }
+
+  return evaluate(template);
+}
+
+// ): string {
+//   // Matches either {expression} or $helper{expression}
+//   const regex = /(\$[a-zA-Z_$][\w$]*)?\{([^{}]+)\}/g;
+
+//   return template.replace(regex, (_, helperName, expr) => {
+//     try {
+//       let value = resolvePath(data, expr.trim());
+//       if (helperName) {
+//         const name = helperName.slice(1); // remove $
+//         if (!helpers[name]) throw new Error(`Unknown helper: ${name}`);
+//         value = helpers[name](value);
+//       }
+//       return value ?? "";
+//     } catch (e: any) {
+//       return `{Error:${e.message}}`;
+//     }
+//   });
+// }
+
+/**
+ * Resolves a path like 'foo.bar[0].baz' against an object
+ */
+function resolvePath(obj: any, path: string): any {
+  return path
+    .split(/[\.\[\]]/)
+    .filter(Boolean)
+    .reduce((acc, key) => (acc != null ? acc[key] : undefined), obj);
+}
+
+

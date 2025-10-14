@@ -1,6 +1,5 @@
 package samuel.resource;
 
-import samuel.card.CardID;
 import samuel.resource.resources.*;
 
 import java.util.HashMap;

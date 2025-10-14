@@ -1,13 +1,84 @@
-import { GetCardInfo } from "../resources/ResourceHandler";
+import { GetCardInfo, GetResourceInfo } from "../resources/ResourceHandler";
 import { Card } from "../types/card/card";
 import { handleTemplate } from "./Helper";
 
-export function buildCardsList(cards: Card[]): string {
-
-    return cards.map((e, index) => buildCard(e, index)).join("\n\n")
+type CardPrint = {
+    width: number;
+    rows: string[];
 }
 
-function buildCard(card: Card, index: number) {
+export function buildCardsList(cards: Card[], maxWidthPerRow = Number.MAX_VALUE): string {
+
+
+    const cardsList = cards.map((e, index) => buildCard(e, index))
+
+    if(cardsList.length === 0) return "Empty list"
+
+    // calculate how many cards we can fit on one row
+    const cardsPerLine: CardPrint[][] = []
+    let allowedCards = 0;
+    let currentWidth = 0;
+    let currentLine: CardPrint[] = []
+    for(let i = 0; i < cardsList.length; i++) {
+        const card = cardsList[i]
+        let nextWidth = currentWidth + card.width + currentLine.length; // <-- Would this card cause the row to overflow?
+
+        if(nextWidth > maxWidthPerRow && allowedCards > 0) {
+            cardsPerLine.push(currentLine)
+            currentLine = []
+            allowedCards = 0;
+            currentWidth = 0;
+        }
+        
+        currentLine.push(card)
+        allowedCards++;
+        currentWidth += card.width;
+    }
+    cardsPerLine.push(currentLine)
+
+
+    return cardsPerLine.map(e => buildRow(e)).join("\n")
+    
+
+    // return cards.map((e, index) => buildCard(e, index)).join("\n\n")
+}
+
+function buildRow(cards: CardPrint[]) {
+    let height = 0;
+    cards.forEach(e => height = Math.max(height, e.rows.length))
+
+    /*
+    +-------0------+ +-------1------+
+    | Name         | | Name         |
+    | Description  | | Description  |
+    |              | |              |
+    | 1 Timber     | | 1 Timber     |
+    | 2 Brick      | | 2 Brick      |
+    |              | |              |
+    | 1 Commerce   | | 1 Commerce   |
+    +-------0------+ +-------1------+
+    */
+
+    const rows: string[] = []
+    for(let r = 0; r < height; r++) {
+        const row: string[] = []
+        cards.forEach((card) => {
+            if(r > card.rows.length-1) {
+                // that means there are no more rows for this card
+                // push only spaces equal to the width
+                row.push((new Array(card.width).fill(0).map(e => " ")).join(""))
+            } else {
+                row.push(card.rows[r])
+            }
+
+        })
+        rows.push(row.join(" "))
+    }
+    return rows.join("\n")
+}
+
+
+function buildCard(card: Card, index: number): CardPrint {
 
     const name = getName(card)
     const type = getType(card)
@@ -47,6 +118,8 @@ function buildCard(card: Card, index: number) {
         if(e.length > biggestWidth) biggestWidth = e.length;
     })
 
+    // textRows.push("S: " + biggestWidth)
+
     const inner: string[] = textRows.map(e => getRow(e, biggestWidth))
 
     let outer = "+-"
@@ -56,22 +129,15 @@ function buildCard(card: Card, index: number) {
     }
     outer += "-+"
 
-    return [outer, ...inner, outer].join("\n")
+    return {
+        width: biggestWidth + 4,
+        rows: [outer, ...inner, outer]
+    }
     
-    /*
-    +--------------+
-    | Name         |
-    | Description  |
-    |              |
-    | 1 Timber     |
-    | 2 Brick      |
-    |              |
-    | 1 Commerce   |
-    +--------------+
-    */
+    
 
 
-    return `${index} | ${getName(card)} : ${getPoints(card)} : ${getCost(card)} : ${getDescription(card)}`
+    // return `${index} | ${getName(card)} : ${getPoints(card)} : ${getCost(card)} : ${getDescription(card)}`
 }
 
 
@@ -124,7 +190,7 @@ function getCost(card: Card): CardCost|null {
     const cost: CardCost = {}
 
     card.cost.forEach((c: {resourceType: string, amount: number}) => {
-        const type = c.resourceType.replace("Resource","")
+        const type = GetResourceInfo(c.resourceType).name
 
         if(!cost[type]) cost[type] = 0
 

@@ -278,7 +278,7 @@ public abstract class AbstractGame implements Game {
                 return;
             }
 
-            if(card.canPlay(getContext())) {
+            if(card.canPlay(player, getContext())) {
                 card.play(player, getContext());
                 player.removeCardFromHand(card);
                 callback.accept(true, "");

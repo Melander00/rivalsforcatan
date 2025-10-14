@@ -1,8 +1,5 @@
 package samuel.point;
 
-import samuel.resource.Resource;
-import samuel.resource.ResourceAmount;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

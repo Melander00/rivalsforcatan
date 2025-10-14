@@ -25,7 +25,7 @@ public class BrigittaTheWiseWoman implements ActionCard {
     }
 
     @Override
-    public boolean canPlay(GameContext context) {
+    public boolean canPlay(Player player, GameContext context) {
         return context.getPhase().equals(Phase.DICE_ROLL);
     }
 

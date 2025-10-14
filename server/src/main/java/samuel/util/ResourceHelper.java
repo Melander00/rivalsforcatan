@@ -24,6 +24,7 @@ public class ResourceHelper {
     }
 
     public static int decreaseRegionOfChoice(Player player, Class<? extends Resource> resourceClass, int amount) {
+        // todo: Can introduce deadlock, if the player doesn't have a region to decrease from
         RegionCard region = letPlayerChooseRegion(player, resourceClass, RequestCause.CHOOSE_REGION_TO_DECREASE_RESOURCE);
         if(region != null) {
             return region.decreaseAmount(amount);

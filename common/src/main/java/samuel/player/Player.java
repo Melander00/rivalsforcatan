@@ -14,7 +14,6 @@ import samuel.phase.Phase;
 import samuel.player.action.PlayerAction;
 import samuel.player.request.RequestCause;
 import samuel.point.Point;
-import samuel.resource.ResourceAmount;
 import samuel.resource.ResourceBundle;
 import samuel.util.Pair;
 
@@ -130,4 +129,6 @@ public interface Player {
     void placeCard(PlaceableCard card, BoardPosition position, GameContext context);
 
     void giveResources(ResourceBundle bundle);
+    boolean hasResources(ResourceBundle bundle);
+    void removeResources(ResourceBundle bundle);
 }
