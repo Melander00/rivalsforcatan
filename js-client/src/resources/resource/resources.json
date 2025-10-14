@@ -1,7 +1,32 @@
 [
     {
+        "id": "BrickResource",
+        "name": "Brick",
+        "short": "B"
+    },
+    {
+        "id": "GoldResource",
+        "name": "Gold",
+        "short": "Go"
+    },
+    {
+        "id": "GrainResource",
+        "name": "Grain",
+        "short": "Gr"
+    },
+    {
+        "id": "OreResource",
+        "name": "Ore",
+        "short": "O"
+    },
+    {
         "id": "TimberResource",
         "name": "Timber",
         "short": "T"
+    },
+    {
+        "id": "WoolResource",
+        "name": "Wool",
+        "short": "W"
     }
 ]

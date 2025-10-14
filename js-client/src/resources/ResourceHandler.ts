@@ -6,6 +6,7 @@ import dice_events from "./event/dice_event.json"
 import events from "./event/event.json"
 import regions from "./region/cards.json"
 import requests from "./request/requests.json"
+import resources from "./resource/resources.json"
 
 const mapper: {
     [key: string]: any[]
@@ -43,12 +44,16 @@ export function GetEventInfo(id: CardID) {
     return namespace.find(e => e.id === id.id)
 }
 
-export function GetResourceInfo(name: string) {
+export function GetResourceInfo(id: string) {
 
-    const full = name.replace("Resource", "")
-    const first = name[0]
+    const res = resources.find(e => e.id === id)
+    if(res) return res;
+
+    const full = id.replace("Resource", "")
+    const first = id[0]
 
     return {
+        id,
         name: full,
         short: first
     }

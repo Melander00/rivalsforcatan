@@ -1,11 +1,76 @@
 [
     {
+        "id": "hills",
+        "name": "Hills",
+        "description": "Gains resources based on production die roll. 1 building site for brown.",
+        "board": {
+            "name": {
+                "template": "Hills D{diceRoll}"
+            },
+            "description": {
+                "template": "$resource{resourceAmount.resourceType} {resourceAmount.amount}/3"
+            }
+        }
+    },
+    {
+        "id": "gold_field",
+        "name": "Gold Field",
+        "description": "Gains resources based on production die roll. 1 building site for brown.",
+        "board": {
+            "name": {
+                "template": "Gold Field D{diceRoll}"
+            },
+            "description": {
+                "template": "$resource{resourceAmount.resourceType} {resourceAmount.amount}/3"
+            }
+        }
+    },
+    {
+        "id": "fields",
+        "name": "Fields",
+        "description": "Gains resources based on production die roll. 1 building site for brown.",
+        "board": {
+            "name": {
+                "template": "Fields D{diceRoll}"
+            },
+            "description": {
+                "template": "$resource{resourceAmount.resourceType} {resourceAmount.amount}/3"
+            }
+        }
+    },
+    {
+        "id": "mountains",
+        "name": "Mountains",
+        "description": "Gains resources based on production die roll. 1 building site for brown.",
+        "board": {
+            "name": {
+                "template": "Mountains D{diceRoll}"
+            },
+            "description": {
+                "template": "$resource{resourceAmount.resourceType} {resourceAmount.amount}/3"
+            }
+        }
+    },
+    {
         "id": "forest",
         "name": "Forest",
         "description": "Gains resources based on production die roll. 1 building site for brown.",
         "board": {
             "name": {
                 "template": "Forest D{diceRoll}"
+            },
+            "description": {
+                "template": "$resource{resourceAmount.resourceType} {resourceAmount.amount}/3"
+            }
+        }
+    },
+    {
+        "id": "pasture",
+        "name": "Pasture",
+        "description": "Gains resources based on production die roll. 1 building site for brown.",
+        "board": {
+            "name": {
+                "template": "Pasture D{diceRoll}"
             },
             "description": {
                 "template": "$resource{resourceAmount.resourceType} {resourceAmount.amount}/3"
