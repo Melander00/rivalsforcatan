@@ -90,6 +90,9 @@ public abstract class AbstractRegionCard implements RegionCard {
         context.getEventBus().unregister(this);
     }
 
-
+    @Override
+    public boolean canPlay(Player player, GameContext context) {
+        return true;
+    }
 
 }

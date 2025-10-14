@@ -54,4 +54,10 @@ public class RoadCard implements PlaceableCard, PriceTag {
         cost.addResource(BrickResource.class,  2);
         return cost;
     }
+
+    @Override
+    public boolean canPlay(Player player, GameContext context) {
+        if(!player.hasResources(getCost())) return false;
+        return true;
+    }
 }

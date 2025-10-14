@@ -268,6 +268,27 @@ public class ServerPlayer implements Player {
     }
 
     @Override
+    public void playCard(PlayableCard card, GameContext context) {
+        if(card instanceof PriceTag price) {
+            removeResources(price.getCost());
+        }
+
+        if(card instanceof PlaceableCard placeableCard) {
+            BoardPosition position = null;
+            boolean isValid = false;
+            while(!isValid) {
+                position = requestBoardPosition(getPrincipality().getBoardPositions(), RequestCause.PLACE_CARD);
+                isValid = placeableCard.validatePlacement(position);
+                if(!isValid) {
+                    directMessage("Invalid Placement");
+                }
+            }
+
+            placeCard(placeableCard, position, context);
+        }
+    }
+
+    @Override
     public void giveResources(ResourceBundle bundle) {
         if(bundle == null) return;
 

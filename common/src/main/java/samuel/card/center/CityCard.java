@@ -64,4 +64,10 @@ public class CityCard implements PlaceableCard, PriceTag, PointHolder, Settlemen
     public int getExpansionSlots() {
         return 2;
     }
+
+    @Override
+    public boolean canPlay(Player player, GameContext context) {
+        if(!player.hasResources(getCost())) return false;
+        return true;
+    }
 }

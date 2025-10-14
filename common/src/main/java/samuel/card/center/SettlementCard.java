@@ -84,4 +84,10 @@ public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, Set
     public int getExpansionSlots() {
         return 1;
     }
+
+    @Override
+    public boolean canPlay(Player player, GameContext context) {
+        if(!player.hasResources(getCost())) return false;
+        return true;
+    }
 }

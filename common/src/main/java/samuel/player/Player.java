@@ -128,6 +128,8 @@ public interface Player {
 
     void placeCard(PlaceableCard card, BoardPosition position, GameContext context);
 
+    void playCard(PlayableCard card, GameContext context);
+
     void giveResources(ResourceBundle bundle);
     boolean hasResources(ResourceBundle bundle);
     void removeResources(ResourceBundle bundle);

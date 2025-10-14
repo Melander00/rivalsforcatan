@@ -8,6 +8,8 @@ public interface PlayableCard extends Card {
 
     boolean canPlay(Player player, GameContext context);
 
-    void play(Player player, GameContext context);
+//    void play(Player player, GameContext context);
+
+    default void onPlay(Player player, GameContext context) {}
 
 }

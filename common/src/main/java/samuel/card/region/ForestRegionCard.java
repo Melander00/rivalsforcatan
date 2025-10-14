@@ -26,4 +26,6 @@ public class ForestRegionCard extends AbstractRegionCard {
             increaseResource(1);
         }
     }
+
+
 }

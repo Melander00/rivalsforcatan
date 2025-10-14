@@ -46,7 +46,7 @@ public class TollBridge implements PlaceableCard, PriceTag, PointHolder, ActionP
     public ResourceBundle getCost() {
         ResourceBundle bundle = new ResourceBundle();
         bundle.addResource(TimberResource.class, 1);
-        bundle.addResource(BrickResource.class, 1);
+//        bundle.addResource(BrickResource.class, 1);
         return bundle;
     }
 
@@ -74,7 +74,7 @@ public class TollBridge implements PlaceableCard, PriceTag, PointHolder, ActionP
         System.out.println("event");
         if(this.owner != null) {
             ResourceBundle bundle = new ResourceBundle();
-            bundle.addResource(GoldResource.class, 2);
+            bundle.addResource(TimberResource.class, 2); //todo: fix
             this.owner.giveResources(bundle);
         }
     }
@@ -88,8 +88,8 @@ public class TollBridge implements PlaceableCard, PriceTag, PointHolder, ActionP
         return true;
     }
 
-    @Override
-    public void play(Player player, GameContext context) {
-        PlaceableCard.super.play(player, context);
-    }
+//    @Override
+//    public void play(Player player, GameContext context) {
+//        PlaceableCard.super.play(player, context);
+//    }
 }

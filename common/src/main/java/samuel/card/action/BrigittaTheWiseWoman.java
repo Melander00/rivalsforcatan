@@ -30,7 +30,7 @@ public class BrigittaTheWiseWoman implements ActionCard {
     }
 
     @Override
-    public void play(Player owner, GameContext context) {
+    public void onPlay(Player owner, GameContext context) {
         owner.giveEffect(new RigProductionDieEffect(owner, context));
     }
 }

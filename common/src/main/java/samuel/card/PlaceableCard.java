@@ -22,18 +22,18 @@ public interface PlaceableCard extends Card, PlayableCard {
      */
     default void onRemove(GameContext context) {}
 
-    @Override
-    default void play(Player player, GameContext context) {
-        BoardPosition position = null;
-        boolean isValid = false;
-        while(!isValid) {
-            position = player.requestBoardPosition(player.getPrincipality().getBoardPositions(), RequestCause.PLACE_CARD);
-            isValid = validatePlacement(position);
-            if(!isValid) {
-                player.directMessage("Invalid Placement");
-            }
-        }
-
-        player.placeCard(this, position, context);
-    }
+//    @Override
+//    default void play(Player player, GameContext context) {
+//        BoardPosition position = null;
+//        boolean isValid = false;
+//        while(!isValid) {
+//            position = player.requestBoardPosition(player.getPrincipality().getBoardPositions(), RequestCause.PLACE_CARD);
+//            isValid = validatePlacement(position);
+//            if(!isValid) {
+//                player.directMessage("Invalid Placement");
+//            }
+//        }
+//
+//        player.placeCard(this, position, context);
+//    }
 }
