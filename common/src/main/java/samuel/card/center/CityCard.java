@@ -26,7 +26,7 @@ public class CityCard implements PlaceableCard, PriceTag, PointHolder, Settlemen
 
         if(position.isEmpty()) return false;
 
-        return position.getCard().getCardID().equals(SettlementCard.id); // todo: high coupling
+        return position.getCard() instanceof SettlementCard; // todo: high coupling?
 
     }
 

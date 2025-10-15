@@ -44,12 +44,12 @@ public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, Set
 
         // check if either left or right is Road
         BoardPosition left = board.getLeftOfPosition(position);
-        if(left != null && left.getCard() != null && left.getCard().getCardID().equals(RoadCard.id)) {// todo: high coupling
+        if(left != null && left.getCard() != null && left.getCard() instanceof RoadCard) {
             return true;
         }
 
         BoardPosition right = board.getRightOfPosition(position);
-        if(right != null && right.getCard() != null && right.getCard().getCardID().equals(RoadCard.id)) {// todo: high coupling
+        if(right != null && right.getCard() != null && right.getCard() instanceof RoadCard) {
             return true;
         }
 
