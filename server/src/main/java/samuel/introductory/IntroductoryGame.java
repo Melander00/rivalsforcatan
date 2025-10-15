@@ -1,7 +1,14 @@
 package samuel.introductory;
 
+import samuel.card.PlayableCard;
+import samuel.card.stack.CardStack;
 import samuel.game.AbstractGame;
 import samuel.player.Player;
+import samuel.player.request.RequestCause;
+import samuel.player.request.RequestCauseEnum;
+
+import java.util.List;
+import java.util.UUID;
 
 public class IntroductoryGame extends AbstractGame {
 
@@ -32,6 +39,27 @@ public class IntroductoryGame extends AbstractGame {
         for(Player player : getContext().getPlayers()) {
             player.directMessage("Game setup complete.");
         }
+    }
+
+    @Override
+    public UUID setupInitialDraw(Player player, List<CardStack<PlayableCard>> cardStacks, List<UUID> usedCardStackIds) {
+        CardStack<PlayableCard> stack = player.requestCardStack(cardStacks, usedCardStackIds, new RequestCause(RequestCauseEnum.INITIAL_DRAW));
+        if(usedCardStackIds.contains(stack.getUuid())) {
+            // Bad value from client, default to the next stack available
+            for(CardStack<PlayableCard> cardStack : cardStacks) {
+                if(!usedCardStackIds.contains(cardStack.getUuid())){
+                    stack = cardStack;
+                    break;
+                }
+            }
+        }
+
+        for(int i = 0; i < 3; i++) {
+            PlayableCard card = stack.takeTopCard();
+            player.addCardToHand(card);
+        }
+
+        return stack.getUuid();
     }
 
     @Override

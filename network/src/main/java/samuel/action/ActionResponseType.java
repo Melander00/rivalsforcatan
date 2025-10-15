@@ -6,6 +6,8 @@ public enum ActionResponseType {
     CARD_NOT_FOUND,
     CARD_CANNOT_BE_PLAYED,
 
+    NOT_ENOUGH_RESOURCES,
+
     INVALID_ACTION,
     ;
 

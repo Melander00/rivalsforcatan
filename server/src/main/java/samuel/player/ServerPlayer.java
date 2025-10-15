@@ -318,7 +318,7 @@ public class ServerPlayer implements Player {
             while(amount > 0) {
                 int res = ResourceHelper.increaseRegionOfChoice(this, am.resourceType(), 1);
 
-//                    // todo: deadlock
+//                deadlock if there is no region without max resources.
 //                if(res < amount) {
 //                    amount--;
 //                } else {
@@ -358,7 +358,7 @@ public class ServerPlayer implements Player {
             int amount = am.amount();
             while(amount > 0) {
                 int res = ResourceHelper.decreaseRegionOfChoice(this, am.resourceType(), 1);
-                // todo: deadlock see #giveResources
+//                  deadlock
 //                if(res < amount) {
 //                    amount--;
 //                } else {

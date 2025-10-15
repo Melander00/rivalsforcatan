@@ -5,6 +5,7 @@ import { EndTurnCommand } from "./EndTurnCommand"
 import { PlayCommand } from "./PlayCommand"
 import { ResumeCommand } from "./ResumeCommand"
 import { RollCommand } from "./RollCommand"
+import { TradeCommand } from "./TradeCommand"
 import { ViewCommand } from "./ViewCommand"
 
 export interface Command {
@@ -32,13 +33,17 @@ class HelpCommand implements Command {
 }
 
 const commands: Command[] = [
+    // Always
     new HelpCommand(),
     new ViewCommand(),
+    new ResumeCommand(),
+
+    // Action
+    new RollCommand(),
     new PlayCommand(),
     new BuildCommand(),
-    new RollCommand(),
+    new TradeCommand(),
     new EndTurnCommand(),
-    new ResumeCommand(),
 ]
 
 export async function handleCommands(cmd: string, args: string[]): Promise<boolean> {

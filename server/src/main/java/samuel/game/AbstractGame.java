@@ -14,12 +14,14 @@ import samuel.deck.Deck;
 import samuel.die.EventDieFace;
 import samuel.event.die.EventDieEvent;
 import samuel.event.die.ProductionDieEvent;
+import samuel.event.player.PlayerTradeEvent;
 import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.player.action.PlayerAction;
 import samuel.player.action.PlayerActionEnum;
 import samuel.player.request.RequestCause;
 import samuel.player.request.RequestCauseEnum;
+import samuel.resource.ResourceAmount;
 import samuel.resource.ResourceBundle;
 import samuel.stack.GenericCardStack;
 import samuel.util.Pair;
@@ -47,13 +49,9 @@ public abstract class AbstractGame implements Game {
     public void initGame() {
         context.setPhase(Phase.INIT);
 
-        // setup principality
-        for(int i = 0; i < context.getPlayers().size(); i++ ) {
-            setupPrincipality(context.getPlayers().get(i), i);
-        }
-
         // setup card deck and stacks
         setupCardDeckAndStacks();
+
 
         // initial draw
         List<CardStack<PlayableCard>> cardStacks = context.getStackContainer().getBasicStacks();
@@ -61,6 +59,11 @@ public abstract class AbstractGame implements Game {
         for(Player player : context.getPlayers()) {
             UUID selectedStackId = setupInitialDraw(player, cardStacks, usedStacks);
             usedStacks.add(selectedStackId);
+        }
+
+        // setup principality
+        for(int i = 0; i < context.getPlayers().size(); i++ ) {
+            setupPrincipality(context.getPlayers().get(i), i);
         }
 
         // finishInit
@@ -142,25 +145,7 @@ public abstract class AbstractGame implements Game {
     public abstract int getBasicCardStacks();
     public abstract int getThemeCardStacks();
 
-    public UUID setupInitialDraw(Player player, List<CardStack<PlayableCard>> cardStacks, List<UUID> usedCardStackIds) {
-        CardStack<PlayableCard> stack = player.requestCardStack(cardStacks, usedCardStackIds, new RequestCause(RequestCauseEnum.INITIAL_DRAW));
-        if(usedCardStackIds.contains(stack.getUuid())) {
-            // Bad value from client, default to the next stack available
-            for(CardStack<PlayableCard> cardStack : cardStacks) {
-                if(!usedCardStackIds.contains(cardStack.getUuid())){
-                    stack = cardStack;
-                    break;
-                }
-            }
-        }
-
-        for(int i = 0; i < 3; i++) {
-            PlayableCard card = stack.takeTopCard();
-            player.addCardToHand(card);
-        }
-
-        return stack.getUuid();
-    }
+    public abstract UUID setupInitialDraw(Player player, List<CardStack<PlayableCard>> cardStacks, List<UUID> usedCardStackIds);
 
     public abstract void setupFinal();
 
@@ -258,27 +243,19 @@ public abstract class AbstractGame implements Game {
     public void actionPhase(Player activePlayer) {
         boolean hasEndedTurn = false;
         while(!hasEndedTurn) {
-            System.out.println("action 1");
             Pair<PlayerAction, BiConsumer<Boolean, String>> res = activePlayer.requestAction(getContext().getPhase());
-            System.out.println("action 2");
             if(res.first().getAction().equals(PlayerActionEnum.END_TURN)) {
-            System.out.println("action end turn");
                 hasEndedTurn = true;
                 res.second().accept(true, "");
             } else if(res.first().getAction().equals(PlayerActionEnum.PLAY_CARD)) {
-            System.out.println("action play");
                 handleCardPlayAction(activePlayer, res.first().getData(), res.second());
             } else if(res.first().getAction().equals(PlayerActionEnum.TRADE)) {
-            System.out.println("action trade");
                 handleTradeAction(activePlayer, res.first().getData(), res.second());
             } else if(res.first().getAction().equals(PlayerActionEnum.BUILD)) {
-            System.out.println("action build");
                 handleBuildAction(activePlayer, res.first().getData(), res.second());
             } else {
-            System.out.println("action invalid");
                 res.second().accept(false, ActionResponseType.INVALID_ACTION.toString());
             }
-            System.out.println("action 3");
         }
     }
 
@@ -308,12 +285,43 @@ public abstract class AbstractGame implements Game {
 
     public void handleTradeAction(Player player, Object data, BiConsumer<Boolean, String> callback) {
 
+
+
+        // ask which resource to pay
+        ResourceBundle toPay = player.requestResource(ResourceBundle.oneOfAll(), 1, new RequestCause(RequestCauseEnum.TRADE_PAY));
+        ResourceAmount firstToPay = toPay.iterator().next();
+        // ask which resource to get
+        ResourceBundle toGet = player.requestResource(ResourceBundle.oneOfAll(), 1, new RequestCause(RequestCauseEnum.TRADE_GET));
+        ResourceAmount firstToGet = toGet.iterator().next();
+        // fire event
+
+
+        PlayerTradeEvent event = new PlayerTradeEvent(
+                player,
+                new ResourceAmount(firstToPay.resourceType(), 3), // todo: hard-coded magical number (default trade value 3:1)
+                new ResourceAmount(firstToGet.resourceType(), 1));
+        getContext().getEventBus().fireEvent(event);
+        // get from event how many to pay
+        ResourceAmount amountToPay = event.getResourceToPay();
+        // check if the player has that amount of resources
+        boolean hasEnough = player.hasResources(ResourceBundle.fromAmount(amountToPay));
+        // if no - send back that you dont have enough reosurce
+        if(!hasEnough) {
+            callback.accept(false, ActionResponseType.NOT_ENOUGH_RESOURCES.toString());
+            return;
+        }
+        // ask region to take from x
+        player.removeResources(ResourceBundle.fromAmount(amountToPay));
+        // give resource
+        player.giveResources(ResourceBundle.fromAmount(event.getResourceToGet()));
+        // fire post_event
+        getContext().getEventBus().fireEvent(new PlayerTradeEvent.Post(player, amountToPay, event.getResourceToGet()));
+        // accept callback
+        callback.accept(true, "");
     }
 
     public void handleBuildAction(Player player, Object data, BiConsumer<Boolean, String> callback) {
-        System.out.println("Build 1");
         if(data instanceof String cardName) {
-        System.out.println("Build 2");
             StackContainer stacks = getContext().getStackContainer();
             CardStack<PlaceableCard> stack = switch (cardName) {
                 case "road" -> stacks.getRoadStack();
@@ -322,13 +330,11 @@ public abstract class AbstractGame implements Game {
                 // todo: Special face-up theme cards
                 default -> null;
             };
-        System.out.println("Build 3");
 
             if(stack == null) {
                 callback.accept(false, ActionResponseType.CARD_NOT_FOUND.toString());
                 return;
             }
-        System.out.println("Build 4");
 
             PlaceableCard card = stack.peekTopCard();
             boolean canPlay = card.canPlay(player, getContext());
@@ -337,15 +343,12 @@ public abstract class AbstractGame implements Game {
                 callback.accept(false, ActionResponseType.CARD_CANNOT_BE_PLAYED.toString());
                 return;
             }
-        System.out.println("Build 5");
 
             player.playCard(card, getContext());
             callback.accept(true, "");
-        System.out.println("Build 6");
             return;
 
         } else {
-        System.out.println("Build error");
             callback.accept(false, "INVALID_TYPE");
             return;
         }

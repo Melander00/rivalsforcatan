@@ -34,16 +34,15 @@ public class ResourceHelper {
     }
 
     public static RegionCard letPlayerChooseRegion(Player player, Class<? extends Resource> resourceClass, RequestCause cause) {
-        BoardPosition position;
-        boolean validPosition = false;
-        // todo: Can introduce deadlock, if the player doesn't have a region to change from
-        while(!validPosition) {
+        // Can introduce deadlock, if the player doesn't have a region to change from or if the player never selects the correct one.
+        int tries = 0;
+        int maxTries = 10;
+        while (tries++ <= maxTries) {
+            BoardPosition position = player.requestBoardPosition(player.getPrincipality().getBoardPositions(), cause);
+            if (position.isEmpty()) continue;
 
-            position = player.requestBoardPosition(player.getPrincipality().getBoardPositions(), cause);
-            if(position.isEmpty()) continue;
-
-            if(position.getCard() instanceof RegionCard region) {
-                if(region.getType().equals(resourceClass)) {
+            if (position.getCard() instanceof RegionCard region) {
+                if (region.getType().equals(resourceClass)) {
                     return region;
                 }
                 player.directMessage("Invalid region");
@@ -52,6 +51,7 @@ public class ResourceHelper {
 
             player.directMessage("Invalid position, not a region");
         }
+        player.directMessage("AUTO_STOP_DEADLOCK: You took too many tries to decide.");
         return null;
     }
 

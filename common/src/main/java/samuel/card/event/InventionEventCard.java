@@ -42,7 +42,7 @@ public class InventionEventCard implements EventCard {
         for(Player player : players) {
             int times = player.getPoints(ProgressPoint.class);
             while(times > 0) {
-                ResourceBundle bundle = player.requestResource(ResourceBundle.oneOfAll(), 1, new RequestCause(RequestCauseEnum.FREE_RESOURCE));
+                ResourceBundle bundle = player.requestResource(ResourceBundle.oneOfAll(), 1, new RequestCause(RequestCauseEnum.FREE_RESOURCES));
                 player.giveResources(bundle);
                 times--;
             }
