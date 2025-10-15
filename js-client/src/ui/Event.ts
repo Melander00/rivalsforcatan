@@ -3,7 +3,7 @@ import { GetEventInfo } from "../resources/ResourceHandler"
 import { CardID } from "../types/card/card"
 import { MessageType } from "../types/message"
 import { print } from "./Console"
-import { handleTemplate } from "./Helper"
+import { handleTemplate } from "./Template"
 
 type ServerEvent = {
     id: CardID

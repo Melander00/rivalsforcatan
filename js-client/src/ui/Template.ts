@@ -6,6 +6,7 @@
 // }
 
 import { GetResourceInfo } from "../resources/ResourceHandler";
+import { Color } from "./Color";
 
 export function handleTemplate(data: any, field: string | {template: string}, identifier = ""): string {
     if(typeof field === "string") return field;
@@ -24,6 +25,8 @@ const helpers: {
     resourceShort: (val) => GetResourceInfo(val).short,
     upper: (val) => val.toLocaleUpperCase(),
     lower: (val) => val.toLocaleLowerCase(),
+
+    red: Color.red
 }
 
 /**

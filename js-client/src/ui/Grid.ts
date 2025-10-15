@@ -1,6 +1,6 @@
 import { GetCardInfo } from "../resources/ResourceHandler";
 import { GridPosition } from "../types/board/board";
-import { handleTemplate } from "./Helper";
+import { handleTemplate } from "./Template";
 
 export function buildPrincipality(positions: GridPosition[][]) {
     const sb: string[] = [];

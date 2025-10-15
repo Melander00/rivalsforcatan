@@ -21,7 +21,7 @@
                 "template": "Gold Field D{diceRoll}"
             },
             "description": {
-                "template": "$resource{resourceAmount.resourceType} {resourceAmount.amount}/3"
+                "template": "$red{$resource{resourceAmount.resourceType}} {resourceAmount.amount}/3"
             }
         }
     },

@@ -1,6 +1,6 @@
 import { GetPhaseInfo } from "../resources/ResourceHandler";
 import { State } from "../types/state";
-import { handleTemplate } from "./Helper";
+import { handleTemplate } from "./Template";
 
 
 

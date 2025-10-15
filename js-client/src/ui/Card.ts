@@ -1,6 +1,6 @@
 import { GetCardInfo, GetResourceInfo } from "../resources/ResourceHandler";
 import { Card } from "../types/card/card";
-import { handleTemplate } from "./Helper";
+import { handleTemplate } from "./Template";
 
 type CardPrint = {
     width: number;

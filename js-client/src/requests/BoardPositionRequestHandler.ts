@@ -5,7 +5,7 @@ import { MessageType } from "../types/message"
 import { ServerRequest } from "../types/request"
 import { ask, print } from "../ui/Console"
 import { buildPrincipality } from "../ui/Grid"
-import { handleTemplate } from "../ui/Helper"
+import { handleTemplate } from "../ui/Template"
 import { isNumber } from "../util/Validator"
 
 type BoardPositionRequest = {
