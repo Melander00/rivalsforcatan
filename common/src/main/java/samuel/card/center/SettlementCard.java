@@ -43,13 +43,13 @@ public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, Set
         if(!board.isCenterRow(position)) return false;
 
         // check if either left or right is Road
-        PlaceableCard left = board.getLeftOfPosition(position).getCard();
-        if(left != null && left.getCardID().equals(RoadCard.id)) {// todo: high coupling
+        BoardPosition left = board.getLeftOfPosition(position);
+        if(left != null && left.getCard() != null && left.getCard().getCardID().equals(RoadCard.id)) {// todo: high coupling
             return true;
         }
 
-        PlaceableCard right = board.getRightOfPosition(position).getCard();
-        if(right != null && right.getCardID().equals(RoadCard.id)) {// todo: high coupling
+        BoardPosition right = board.getRightOfPosition(position);
+        if(right != null && right.getCard() != null && right.getCard().getCardID().equals(RoadCard.id)) {// todo: high coupling
             return true;
         }
 
@@ -59,7 +59,7 @@ public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, Set
 
     @Override
     public void onPlace(Player owner, GameContext context) {
-
+        // todo: take two region cards and allow player to place them
     }
 
 

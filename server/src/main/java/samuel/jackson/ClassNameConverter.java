@@ -44,7 +44,7 @@ public class ClassNameConverter {
         public Class<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             String simpleName = p.getValueAsString();
             String pkg = getBasePackage() != null ? getBasePackage() : "samuel.resource.resources"; // fallback
-            System.out.println(pkg + " | " + getBasePackage());
+//            System.out.println(pkg + " | " + getBasePackage());
             try {
                 return Class.forName(pkg + "." + simpleName);
             } catch (ClassNotFoundException e) {

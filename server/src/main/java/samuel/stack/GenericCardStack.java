@@ -17,6 +17,11 @@ public class GenericCardStack<CardType extends Card> implements CardStack<CardTy
     }
 
     @Override
+    public CardType peekTopCard() {
+        return cards.getFirst();
+    }
+
+    @Override
     public CardType takeTopCard() {
         return cards.removeFirst();
     }

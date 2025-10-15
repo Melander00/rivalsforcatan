@@ -218,6 +218,7 @@ public class ServerPlayer implements Player {
 
     @Override
     public <T extends Point> int getPoints(Class<T> pointClass) {
+        // todo: if we want to calculate victory points we need to also take into account trade/strength advantage
         PointBundle bundle = getPoints();
         return bundle.getAmount(pointClass);
     }
@@ -316,11 +317,15 @@ public class ServerPlayer implements Player {
             int amount = am.amount();
             while(amount > 0) {
                 int res = ResourceHelper.increaseRegionOfChoice(this, am.resourceType(), 1);
-                if(res < amount) {
-                    amount--;
-                } else {
-                    directMessage("That region already has max amount of resources.");
-                }
+
+//                    // todo: deadlock
+//                if(res < amount) {
+//                    amount--;
+//                } else {
+//                    directMessage("That region already has max amount of resources.");
+//                }
+                // fix by always lowering amount. we let the user make sure that the region isn't full
+                amount--;
             }
         }
     }
@@ -353,11 +358,13 @@ public class ServerPlayer implements Player {
             int amount = am.amount();
             while(amount > 0) {
                 int res = ResourceHelper.decreaseRegionOfChoice(this, am.resourceType(), 1);
-                if(res < amount) {
-                    amount--;
-                } else {
-                    directMessage("That region has no resources to remove from.");
-                }
+                // todo: deadlock see #giveResources
+//                if(res < amount) {
+//                    amount--;
+//                } else {
+//                    directMessage("That region has no resources to remove from.");
+//                }
+                amount--;
             }
         }
     }

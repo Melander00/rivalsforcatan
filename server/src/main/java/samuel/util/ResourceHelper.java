@@ -36,7 +36,7 @@ public class ResourceHelper {
     public static RegionCard letPlayerChooseRegion(Player player, Class<? extends Resource> resourceClass, RequestCause cause) {
         BoardPosition position;
         boolean validPosition = false;
-        // todo: Can introduce deadlock, if the player doesn't have a region to decrease from
+        // todo: Can introduce deadlock, if the player doesn't have a region to change from
         while(!validPosition) {
 
             position = player.requestBoardPosition(player.getPrincipality().getBoardPositions(), cause);

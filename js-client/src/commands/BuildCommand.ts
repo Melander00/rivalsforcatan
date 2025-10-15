@@ -1,4 +1,13 @@
+import { getActionQueue } from "../network/ActionQueue";
+import { Action } from "../types/message";
+import { print } from "../ui/Console";
 import { Command } from "./Command";
+
+const CENTER_CARDS = [
+    "road",
+    "settlement",
+    "city",
+]
 
 export class BuildCommand implements Command {
     private readonly name = "build"
@@ -14,12 +23,34 @@ export class BuildCommand implements Command {
             return false;
         }
 
-        
+        const cardName = args[0]
 
-        // get player cards
-        // find the card
-        // send message to server as a request
-        // return if the server accepts it
+        if(!CENTER_CARDS.includes(cardName)) return false;
+
+        const action = getActionQueue().firstElement()
+        if(action === null) {
+            print("Action queue is empty")
+            return false;
+        }
+        
+        getActionQueue().removeFirst();
+
+        const data = await action.respond({
+            action: Action.BUILD,
+            data: cardName
+        })
+
+        if(!data) {
+            print("\x1B[0;31m Something went wrong! \x1B[0m")
+            return false;
+        }
+
+        if(data.success) {
+            print("Build complete")
+            return true;
+        }
+        
+        print("\x1B[0;31m Couldn't build: "+data.code+"\x1B[0m")
 
         return true;
 

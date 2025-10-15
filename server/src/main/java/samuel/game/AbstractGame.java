@@ -1,6 +1,7 @@
 package samuel.game;
 
 import samuel.action.ActionResponseType;
+import samuel.card.PlaceableCard;
 import samuel.card.PlayableCard;
 import samuel.card.center.CityCard;
 import samuel.card.center.RoadCard;
@@ -36,6 +37,7 @@ public abstract class AbstractGame implements Game {
         this.deck = deck;
     }
 
+
     @Override
     public GameContext getContext() {
         return context;
@@ -64,6 +66,8 @@ public abstract class AbstractGame implements Game {
         // finishInit
         setupFinal();
     }
+
+    // todo: move some methods into their own helper class
 
     public abstract void setupPrincipality(Player player, int playerIndex);
 
@@ -248,23 +252,33 @@ public abstract class AbstractGame implements Game {
     }
 
     public void resolveProduction(int rollResults) {
-        System.out.println("Production has rolled " + rollResults);
+        // todo: remove? we use event-based to increase yield
     }
 
     public void actionPhase(Player activePlayer) {
         boolean hasEndedTurn = false;
         while(!hasEndedTurn) {
+            System.out.println("action 1");
             Pair<PlayerAction, BiConsumer<Boolean, String>> res = activePlayer.requestAction(getContext().getPhase());
+            System.out.println("action 2");
             if(res.first().getAction().equals(PlayerActionEnum.END_TURN)) {
+            System.out.println("action end turn");
                 hasEndedTurn = true;
                 res.second().accept(true, "");
             } else if(res.first().getAction().equals(PlayerActionEnum.PLAY_CARD)) {
+            System.out.println("action play");
                 handleCardPlayAction(activePlayer, res.first().getData(), res.second());
             } else if(res.first().getAction().equals(PlayerActionEnum.TRADE)) {
+            System.out.println("action trade");
                 handleTradeAction(activePlayer, res.first().getData(), res.second());
+            } else if(res.first().getAction().equals(PlayerActionEnum.BUILD)) {
+            System.out.println("action build");
+                handleBuildAction(activePlayer, res.first().getData(), res.second());
             } else {
+            System.out.println("action invalid");
                 res.second().accept(false, ActionResponseType.INVALID_ACTION.toString());
             }
+            System.out.println("action 3");
         }
     }
 
@@ -281,15 +295,60 @@ public abstract class AbstractGame implements Game {
                 player.playCard(card, getContext());
                 player.removeCardFromHand(card);
                 callback.accept(true, "");
+                return;
             } else {
                 callback.accept(false, ActionResponseType.CARD_CANNOT_BE_PLAYED.toString());
+                return;
             }
         } else {
-            callback.accept(false, "INVALID_UUID");
+            callback.accept(false, "INVALID_TYPE");
+            return;
         }
     }
 
     public void handleTradeAction(Player player, Object data, BiConsumer<Boolean, String> callback) {
+
+    }
+
+    public void handleBuildAction(Player player, Object data, BiConsumer<Boolean, String> callback) {
+        System.out.println("Build 1");
+        if(data instanceof String cardName) {
+        System.out.println("Build 2");
+            StackContainer stacks = getContext().getStackContainer();
+            CardStack<PlaceableCard> stack = switch (cardName) {
+                case "road" -> stacks.getRoadStack();
+                case "settlement" -> stacks.getSettlementStack();
+                case "city" -> stacks.getCityStack();
+                // todo: Special face-up theme cards
+                default -> null;
+            };
+        System.out.println("Build 3");
+
+            if(stack == null) {
+                callback.accept(false, ActionResponseType.CARD_NOT_FOUND.toString());
+                return;
+            }
+        System.out.println("Build 4");
+
+            PlaceableCard card = stack.peekTopCard();
+            boolean canPlay = card.canPlay(player, getContext());
+
+            if(!canPlay) {
+                callback.accept(false, ActionResponseType.CARD_CANNOT_BE_PLAYED.toString());
+                return;
+            }
+        System.out.println("Build 5");
+
+            player.playCard(card, getContext());
+            callback.accept(true, "");
+        System.out.println("Build 6");
+            return;
+
+        } else {
+        System.out.println("Build error");
+            callback.accept(false, "INVALID_TYPE");
+            return;
+        }
 
     }
 
@@ -336,7 +395,8 @@ public abstract class AbstractGame implements Game {
                 // ask which card in stack
                 PlayableCard c = activePlayer.requestCard(takeStack.getCards(), new RequestCause(RequestCauseEnum.EXCHANGE_SEARCH));
                 // add that card to player hand
-                activePlayer.addCardToHand(c);
+                PlayableCard removedCard = takeStack.takeCardByUuid(c.getUuid());
+                activePlayer.addCardToHand(removedCard);
                 // shuffle stack
                 takeStack.shuffleCards();
             } else {

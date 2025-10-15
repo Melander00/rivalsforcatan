@@ -58,7 +58,6 @@ public class TollBridge implements PlaceableCard, PriceTag, PointHolder, ActionP
 
     @Override
     public void onPlace(Player owner, GameContext context) {
-        System.out.println("placed");
         this.owner = owner;
         context.getEventBus().register(this);
     }
@@ -71,10 +70,9 @@ public class TollBridge implements PlaceableCard, PriceTag, PointHolder, ActionP
 
     @Subscribe
     public void onPlentifulHarvestEvent(PlentifulHarvestEvent event) {
-        System.out.println("event");
         if(this.owner != null) {
             ResourceBundle bundle = new ResourceBundle();
-            bundle.addResource(TimberResource.class, 2); //todo: fix
+            bundle.addResource(GoldResource.class, 2);
             this.owner.giveResources(bundle);
         }
     }

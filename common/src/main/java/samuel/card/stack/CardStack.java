@@ -8,6 +8,7 @@ import java.util.UUID;
 public interface CardStack<CardType extends Card> extends Iterable<CardType> {
 
     void addCardToBottom(CardType card);
+    CardType peekTopCard();
     CardType takeTopCard();
     CardType takeCardByUuid(UUID uuid);
     void shuffleCards();

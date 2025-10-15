@@ -46,7 +46,7 @@ public class CityCard implements PlaceableCard, PriceTag, PointHolder, Settlemen
     public ResourceBundle getCost() {
         ResourceBundle cost = new ResourceBundle();
         cost.addResource(GrainResource.class, 2);
-        cost.addResource(OreResource.class,  4);
+        cost.addResource(OreResource.class,  3);
         return cost;
     }
 
