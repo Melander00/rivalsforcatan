@@ -5,6 +5,7 @@ import samuel.board.BoardPosition;
 import samuel.card.center.CityCard;
 import samuel.card.center.SettlementCard;
 import samuel.card.center.SettlementLike;
+import samuel.card.region.RegionCard;
 
 import java.util.List;
 
@@ -47,4 +48,8 @@ public class ExpansionCardHelper {
         return Math.abs(settlementIndex - thisIndex) <= slots;
     }
 
+    public static List<RegionCard> getNeighbouringRegions(BoardPosition position) {
+        // todo: add method to get neighbouring regions
+        return List.of();
+    }
 }

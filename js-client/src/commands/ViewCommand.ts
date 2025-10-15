@@ -1,5 +1,6 @@
 import { requestData } from "../network/Socket";
 import { GridBoard } from "../types/board/board";
+import { CardStackResponse } from "../types/card/card";
 import { Hand } from "../types/hand/hand";
 import { MessageType } from "../types/message";
 import { Opponent } from "../types/opponent";
@@ -9,6 +10,7 @@ import { buildCardsList } from "../ui/Card";
 import { getTerminalProperties, print } from "../ui/Console";
 import { buildPrincipality } from "../ui/Grid";
 import { buildPoints } from "../ui/Point";
+import { buildStacksFromResponse } from "../ui/Stack";
 import { buildState } from "../ui/State";
 import { Command } from "./Command";
 
@@ -47,8 +49,9 @@ export class ViewCommand implements Command {
             print(buildState(data));
             return true;
         } else if(type === "stacks") {
-            const data = await requestData<any>(MessageType.REQUEST_STACKS);
-            print(data)
+            const data = await requestData<CardStackResponse>(MessageType.REQUEST_STACKS);
+            print(buildStacksFromResponse(data))
+            return true;
         } else if(type === "opponent") {
             const data = await requestData<Opponent>(MessageType.REQUEST_OPPONENT);
             

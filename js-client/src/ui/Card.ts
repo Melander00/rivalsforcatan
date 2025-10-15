@@ -78,7 +78,7 @@ function buildRow(cards: CardPrint[]) {
 }
 
 
-function buildCard(card: Card, index: number): CardPrint {
+export function buildCard(card: Card, index: number): CardPrint {
 
     const name = getName(card)
     const type = getType(card)

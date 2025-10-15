@@ -8,7 +8,7 @@ import samuel.card.CardID;
 
 import java.util.UUID;
 
-public class BrigittaTheWiseWoman implements ActionCard {
+public class BrigittaTheWiseWomanActionCard implements ActionCard {
 
     private static final CardID id = new CardID("action", "brigitta_the_wise_woman");
 

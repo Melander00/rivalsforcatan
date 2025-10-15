@@ -2,7 +2,7 @@ package samuel.introductory;
 
 import samuel.card.Card;
 import samuel.card.PlayableCard;
-import samuel.card.action.BrigittaTheWiseWoman;
+import samuel.card.action.*;
 import samuel.card.building.TollBridge;
 import samuel.card.event.EventCard;
 import samuel.card.event.InventionEventCard;
@@ -25,30 +25,44 @@ public class IntroductoryDeck implements Deck {
     );
 
     private final List<PlayableCard> basicCards = List.of(
+            // Buildings
+            new TollBridge(),
+
+            // Ships
+
+            // Heroes
+
+            // Action
+            new BrigittaTheWiseWomanActionCard(),
+            new BrigittaTheWiseWomanActionCard(),
+            new RelocationActionCard(),
+            new ScoutActionCard(),
+            new ScoutActionCard(),
+            new MerchantCaravanActionCard(),
+            new MerchantCaravanActionCard(),
+            new GoldsmithActionCard(),
+            new GoldsmithActionCard(),
+
+
+
+            new TollBridge(),
+            new TollBridge(),
+
+            new BrigittaTheWiseWomanActionCard(),
+            new BrigittaTheWiseWomanActionCard(),
+
             new TollBridge(),
             new TollBridge(),
             new TollBridge(),
             new TollBridge(),
 
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
+            new BrigittaTheWiseWomanActionCard(),
+            new BrigittaTheWiseWomanActionCard(),
+            new BrigittaTheWiseWomanActionCard(),
+            new BrigittaTheWiseWomanActionCard(),
 
             new TollBridge(),
-            new TollBridge(),
-            new TollBridge(),
-            new TollBridge(),
-
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman(),
-
-            new TollBridge(),
-            new TollBridge(),
-            new BrigittaTheWiseWoman(),
-            new BrigittaTheWiseWoman()
+            new TollBridge()
     );
 
     private final List<EventCard> eventCards = List.of(

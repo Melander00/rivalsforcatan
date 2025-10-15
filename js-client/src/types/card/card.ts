@@ -15,3 +15,7 @@ export type CardStack = {
     uuid: string,
     size: number
 }
+
+export type CardStackResponse = {
+    [key: string]: CardStack | CardStack[]
+}
