@@ -4,6 +4,7 @@ public enum PlayerActionEnum {
     ROLL_DICE,
     PLAY_CARD,
     TRADE,
+    BUILD,
     END_TURN,
     ;
 }

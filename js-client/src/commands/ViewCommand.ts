@@ -4,6 +4,7 @@ import { Hand } from "../types/hand/hand";
 import { MessageType } from "../types/message";
 import { Opponent } from "../types/opponent";
 import { Point } from "../types/point/point";
+import { State } from "../types/state";
 import { buildCardsList } from "../ui/Card";
 import { getTerminalProperties, print } from "../ui/Console";
 import { buildPrincipality } from "../ui/Grid";
@@ -41,6 +42,13 @@ export class ViewCommand implements Command {
             print(`Your points: ${buildPoints(data)}`)
             return true;
 
+        } else if(type === "state") {
+            const data = await requestData<State>(MessageType.REQUEST_STATE);
+            print(buildState(data));
+            return true;
+        } else if(type === "stacks") {
+            const data = await requestData<any>(MessageType.REQUEST_STACKS);
+            print(data)
         } else if(type === "opponent") {
             const data = await requestData<Opponent>(MessageType.REQUEST_OPPONENT);
             
@@ -50,16 +58,12 @@ export class ViewCommand implements Command {
             print(`Opponent Board:\n${board}\nOpponent Points: ${points}`);
 
             return true;
-        } else if(type === "state") {
-            const data = await requestData<any>(MessageType.REQUEST_STATE);
-            print(buildState(data));
-            return true;
         }
 
         return false;
     }
     help(): string {
-        return "view <board|hand|points|state|opponent>"
+        return "view <board|hand|points|state|stacks|opponent>"
     }
     
 }

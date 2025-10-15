@@ -19,9 +19,9 @@ export function initBoardPositionRequestHandler() {
         let causeDetails =  info?.fallback ?? cause.type
 
         if(cause.type === "CHOOSE_REGION_TO_INCREASE_RESOURCE" || cause.type === "CHOOSE_REGION_TO_DECREASE_RESOURCE") {
-            const metadata = cause.data as string; // containes which resource to change
+            const resourceType = cause.data?.resourceType ?? ""; // containes which resource to change
             if(info?.description) {
-                causeDetails = handleTemplate({resource: metadata}, info.description)
+                causeDetails = handleTemplate({resource: resourceType}, info.description)
             }
         }
 

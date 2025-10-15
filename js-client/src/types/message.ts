@@ -9,6 +9,7 @@ export enum MessageType {
     REQUEST_BOARD = "REQUEST_BOARD",
     REQUEST_STATE = "REQUEST_STATE",
     REQUEST_POINTS = "REQUEST_POINTS",
+    REQUEST_STACKS = "REQUEST_STACKS",
     REQUEST_OPPONENT = "REQUEST_OPPONENT",
     
     REQUEST_INT = "REQUEST_INT",
@@ -31,6 +32,7 @@ export enum Action {
     ROLL_DICE = "ROLL_DICE",
     PLAY_CARD = "PLAY_CARD",
     TRADE = "TRADE",
+    BUILD = "BUILD",
     END_TURN = "END_TURN",
 }
 

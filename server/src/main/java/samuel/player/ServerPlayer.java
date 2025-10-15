@@ -8,7 +8,6 @@ import samuel.action.ActionResponse;
 import samuel.board.Board;
 import samuel.board.BoardPosition;
 import samuel.card.*;
-import samuel.card.region.RegionCard;
 import samuel.card.stack.CardStack;
 import samuel.effect.Effect;
 import samuel.event.Event;
@@ -25,6 +24,7 @@ import samuel.point.PointAmount;
 import samuel.point.PointBundle;
 import samuel.point.points.ProgressPoint;
 import samuel.request.*;
+import samuel.resource.Resource;
 import samuel.resource.ResourceAmount;
 import samuel.resource.ResourceBundle;
 import samuel.util.ResourceHelper;
@@ -218,19 +218,8 @@ public class ServerPlayer implements Player {
 
     @Override
     public <T extends Point> int getPoints(Class<T> pointClass) {
-        int points = 0;
-
-        for(BoardPosition position : this.principality) {
-            PlaceableCard card = position.getCard();
-            if(card == null) continue;
-
-            if(card instanceof PointHolder holder) {
-                PointBundle bundle = holder.getPoints();
-                points += bundle.getAmount(pointClass);
-            }
-        }
-        return points;
-
+        PointBundle bundle = getPoints();
+        return bundle.getAmount(pointClass);
     }
 
     @Override
@@ -305,7 +294,7 @@ public class ServerPlayer implements Player {
             BoardPosition position = null;
             boolean isValid = false;
             while(!isValid) {
-                position = requestBoardPosition(getPrincipality().getBoardPositions(), new RequestCause(RequestCauseEnum.PLACE_CARD));
+                position = requestBoardPosition(getPrincipality().getBoardPositions(), new RequestCause(RequestCauseEnum.PLACE_CARD, card));
                 isValid = placeableCard.validatePlacement(position);
                 if(!isValid) {
                     directMessage("Invalid Placement");
@@ -341,8 +330,10 @@ public class ServerPlayer implements Player {
         ResourceBundle has = new ResourceBundle();
         for(BoardPosition position : principality) {
             if(position.getCard() instanceof ResourceHolder holder) {
-                ResourceAmount am = holder.getResourceAmount();
-                has.addResource(am.resourceType(), am.amount());
+                ResourceBundle b = holder.getResources();
+                for(ResourceAmount am : b) {
+                    has.addResource(am.resourceType(), am.amount());
+                }
             }
         }
 
@@ -372,6 +363,31 @@ public class ServerPlayer implements Player {
     }
 
     @Override
+    public ResourceBundle getResources() {
+        ResourceBundle resources = new ResourceBundle();
+
+        for(BoardPosition position : this.principality) {
+            PlaceableCard card = position.getCard();
+            if(card == null) continue;
+
+            if(card instanceof ResourceHolder holder) {
+                ResourceBundle bundle = holder.getResources();
+                for(ResourceAmount am : bundle) {
+                    resources.addResource(am.resourceType(), am.amount());
+                }
+            }
+        }
+
+        return resources;
+    }
+
+    @Override
+    public <T extends Resource> int getResources(Class<T> resource) {
+        ResourceBundle bundle = getResources();
+        return bundle.getAmount(resource);
+    }
+
+    @Override
     public void directMessage(String msg) {
         sendMessage(new Message(MessageType.DIRECT_MESSAGE, new DirectMessage("Server", msg)));
     }
@@ -391,6 +407,8 @@ public class ServerPlayer implements Player {
     }
 
     private void clientRequestHandler(Message request) {
+        if(request == null || request.getType() == null) return;
+
         Object data = switch(request.getType()) {
             case REQUEST_BOARD -> principality;
             case REQUEST_HAND -> hand;

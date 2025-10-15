@@ -19,13 +19,11 @@ import samuel.player.action.PlayerAction;
 import samuel.player.action.PlayerActionEnum;
 import samuel.player.request.RequestCause;
 import samuel.player.request.RequestCauseEnum;
+import samuel.resource.ResourceBundle;
 import samuel.stack.GenericCardStack;
 import samuel.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 public abstract class AbstractGame implements Game {
@@ -329,12 +327,18 @@ public abstract class AbstractGame implements Game {
 
             boolean searchStack = activePlayer.requestBoolean(new RequestCause(RequestCauseEnum.EXCHANGE_SEARCH));
             if(searchStack) {
-                // todo
+                // todo: parish hall, event?
+
                 // ask which resources to pay with
+                ResourceBundle toPayWith = activePlayer.requestResource(activePlayer.getResources(), 2, new RequestCause(RequestCauseEnum.EXCHANGE_SEARCH));
                 // pay resources
+                activePlayer.removeResources(toPayWith);
                 // ask which card in stack
+                PlayableCard c = activePlayer.requestCard(takeStack.getCards(), new RequestCause(RequestCauseEnum.EXCHANGE_SEARCH));
                 // add that card to player hand
+                activePlayer.addCardToHand(c);
                 // shuffle stack
+                takeStack.shuffleCards();
             } else {
                 activePlayer.addCardToHand(takeStack.takeTopCard());
             }

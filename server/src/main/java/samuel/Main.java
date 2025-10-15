@@ -57,6 +57,7 @@ public class Main {
     }
 
     private static void contextRequestHandler(Message request, Player player) {
+        if(request == null || request.getType() == null) return;
 
         if(context != null && player instanceof ServerPlayer serverPlayer) {
 
@@ -75,6 +76,7 @@ public class Main {
                     yield new OpponentResponse(opponent.getPrincipality().getBoardPositions(), opponent.getPoints());
                 }
                 case REQUEST_STATE -> new StateResponse(context.getActivePlayer().equals(player), context.getPhase().toString());
+                case REQUEST_STACKS -> context.getStackContainer();
                 default -> null;
             };
 

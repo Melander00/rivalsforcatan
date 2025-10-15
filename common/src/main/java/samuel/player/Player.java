@@ -15,6 +15,7 @@ import samuel.player.action.PlayerAction;
 import samuel.player.request.RequestCause;
 import samuel.point.Point;
 import samuel.point.PointBundle;
+import samuel.resource.Resource;
 import samuel.resource.ResourceBundle;
 import samuel.util.Pair;
 
@@ -136,4 +137,7 @@ public interface Player {
     void giveResources(ResourceBundle bundle);
     boolean hasResources(ResourceBundle bundle);
     void removeResources(ResourceBundle bundle);
+
+    ResourceBundle  getResources();
+    <T extends Resource> int getResources(Class<T> resource);
 }

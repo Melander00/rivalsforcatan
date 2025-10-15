@@ -5,6 +5,7 @@ import samuel.game.GameContext;
 import samuel.player.Player;
 import samuel.resource.Resource;
 import samuel.resource.ResourceAmount;
+import samuel.resource.ResourceBundle;
 
 import java.util.UUID;
 
@@ -37,8 +38,10 @@ public abstract class AbstractRegionCard implements RegionCard {
     }
 
     @Override
-    public ResourceAmount getResourceAmount() {
-        return new ResourceAmount(resourceType, resourceAmount);
+    public ResourceBundle getResources() {
+        ResourceBundle bundle = new ResourceBundle();
+        bundle.addResource(resourceType, resourceAmount);
+        return bundle;
     }
 
     @Override
@@ -94,5 +97,10 @@ public abstract class AbstractRegionCard implements RegionCard {
     public boolean canPlay(Player player, GameContext context) {
         return true;
     }
+
+    public ResourceAmount getResourceAmount() {
+        return new ResourceAmount(resourceType, resourceAmount);
+    }
+
 
 }

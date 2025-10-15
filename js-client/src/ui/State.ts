@@ -1,10 +1,8 @@
 import { GetPhaseInfo } from "../resources/ResourceHandler";
+import { State } from "../types/state";
 import { handleTemplate } from "./Helper";
 
-type State = {
-    yourTurn: boolean,
-    phase: string
-}
+
 
 export function buildState(state: State): string {
     const turn = state.yourTurn ? "Your" : "Opponent's"

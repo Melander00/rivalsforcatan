@@ -6,6 +6,7 @@ import samuel.player.Player;
 import samuel.player.request.RequestCause;
 import samuel.player.request.RequestCauseEnum;
 import samuel.resource.Resource;
+import samuel.resource.ResourceAmount;
 
 public class ResourceHelper {
 
@@ -17,7 +18,7 @@ public class ResourceHelper {
      * @param resourceClass
      */
     public static int increaseRegionOfChoice(Player player, Class<? extends Resource> resourceClass, int amount) {
-        RegionCard region = letPlayerChooseRegion(player, resourceClass, new RequestCause(RequestCauseEnum.CHOOSE_REGION_TO_INCREASE_RESOURCE, resourceClass));
+        RegionCard region = letPlayerChooseRegion(player, resourceClass, new RequestCause(RequestCauseEnum.CHOOSE_REGION_TO_INCREASE_RESOURCE, new ResourceAmount(resourceClass, 1)));
         if(region != null) {
             return region.increaseResource(amount);
         }
@@ -25,8 +26,7 @@ public class ResourceHelper {
     }
 
     public static int decreaseRegionOfChoice(Player player, Class<? extends Resource> resourceClass, int amount) {
-        // todo: Can introduce deadlock, if the player doesn't have a region to decrease from
-        RegionCard region = letPlayerChooseRegion(player, resourceClass, new RequestCause(RequestCauseEnum.CHOOSE_REGION_TO_DECREASE_RESOURCE, resourceClass));
+        RegionCard region = letPlayerChooseRegion(player, resourceClass, new RequestCause(RequestCauseEnum.CHOOSE_REGION_TO_DECREASE_RESOURCE, new ResourceAmount(resourceClass, 1)));
         if(region != null) {
             return region.decreaseAmount(amount);
         }
@@ -36,6 +36,7 @@ public class ResourceHelper {
     public static RegionCard letPlayerChooseRegion(Player player, Class<? extends Resource> resourceClass, RequestCause cause) {
         BoardPosition position;
         boolean validPosition = false;
+        // todo: Can introduce deadlock, if the player doesn't have a region to decrease from
         while(!validPosition) {
 
             position = player.requestBoardPosition(player.getPrincipality().getBoardPositions(), cause);

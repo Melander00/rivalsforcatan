@@ -12,6 +12,7 @@ public enum MessageType {
     REQUEST_BOARD,
     REQUEST_STATE,
     REQUEST_POINTS,
+    REQUEST_STACKS,
     REQUEST_OPPONENT,
 
     // Server requests

@@ -1,9 +1,9 @@
 package samuel.card;
 
-import samuel.resource.ResourceAmount;
+import samuel.resource.ResourceBundle;
 
 public interface ResourceHolder {
-    ResourceAmount getResourceAmount();
+    ResourceBundle getResources();
     /**
      * Adds to the resource pile.
      * @param amount
