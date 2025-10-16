@@ -1,6 +1,6 @@
 package samuel.die;
 
-import samuel.die.face.PlentifulHarvestFace;
+import samuel.die.face.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,12 @@ public class EventDie implements Die<EventDieFace> {
 
     private final Random random = new Random();
     private List<EventDieFace> faces = List.of(
-            new PlentifulHarvestFace()
+            new BrigandAttackFace(),
+            new TradeFace(),
+            new CelebrationFace(),
+            new PlentifulHarvestFace(),
+            new EventCardFace(),
+            new EventCardFace()
     );
 
     @Override

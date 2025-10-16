@@ -30,19 +30,19 @@ public class IntroductoryDeck implements Deck {
             // Buildings
             new TollBridgeBuildingCard(),
             new StorehouseBuildingCard(),
-
             new StorehouseBuildingCard(),
+
+            // Boosters
             new IronFoundryBuildingCard(),
             new GrainMillBuildingCard(),
-
             new LumberCampBuildingCard(),
             new BrickFactoryBuildingCard(),
             new WeaverShopBuildingCard(),
 
+            // Unique buildings
             new AbbeyBuildingCard(),
             new AbbeyBuildingCard(),
             new MarketplaceBuildingCard(),
-
             new MarketplaceBuildingCard(),
             new ParishHallBuildingCard(),
             new ParishHallBuildingCard(),
