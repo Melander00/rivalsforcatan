@@ -16,7 +16,7 @@ import samuel.resource.resources.LumberResource;
 
 import java.util.UUID;
 
-public class TollBridge implements PlaceableCard, PriceTag, PointHolder, ActionPhaseCard {
+public class TollBridgeBuildingCard implements PlaceableCard, PriceTag, PointHolder, ActionPhaseCard {
 
     private static final CardID cardId = new CardID("building", "toll_bridge");
 

@@ -3,7 +3,7 @@ package samuel.introductory;
 import samuel.card.Card;
 import samuel.card.PlayableCard;
 import samuel.card.action.*;
-import samuel.card.building.TollBridge;
+import samuel.card.building.*;
 import samuel.card.event.*;
 import samuel.card.hero.*;
 import samuel.card.region.ForestRegionCard;
@@ -27,25 +27,24 @@ public class IntroductoryDeck implements Deck {
 
     private final List<PlayableCard> basicCards = List.of(
             // Buildings
-            new TollBridge(),
-            new TollBridge(),
+            new TollBridgeBuildingCard(),
+            new StorehouseBuildingCard(),
 
-            new TollBridge(),
-            new TollBridge(),
-            new TollBridge(),
+            new StorehouseBuildingCard(),
+            new TollBridgeBuildingCard(), // booster
+            new TollBridgeBuildingCard(), // booster
 
-            new TollBridge(),
-            new TollBridge(),
-            new TollBridge(),
+            new TollBridgeBuildingCard(), // booster
+            new TollBridgeBuildingCard(), // booster
+            new TollBridgeBuildingCard(), // booster
 
-            new TollBridge(),
-            new TollBridge(),
-            new TollBridge(),
+            new AbbeyBuildingCard(),
+            new AbbeyBuildingCard(),
+            new MarketplaceBuildingCard(),
 
-            new TollBridge(),
-            new TollBridge(),
-            new TollBridge(),
-
+            new MarketplaceBuildingCard(),
+            new ParishHallBuildingCard(),
+            new ParishHallBuildingCard(),
 
             // Ships
             new LargeTradeShipCard(),

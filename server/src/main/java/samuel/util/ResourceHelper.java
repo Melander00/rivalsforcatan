@@ -11,6 +11,8 @@ import samuel.resource.ResourceAmount;
 public class ResourceHelper {
 
 
+    // todo: change this to a more general ResourceHolder (for example Gold Cache which isn't a region)
+
     /**
      * Helper function for the player implementation
      * - asks which region to increase the resource of.
