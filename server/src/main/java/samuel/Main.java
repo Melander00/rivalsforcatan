@@ -75,8 +75,8 @@ public class Main {
 
                     yield new OpponentResponse(opponent.getPrincipality().getBoardPositions(), opponent.getPoints());
                 }
-                case REQUEST_STATE -> context.getPlayers();
-//                case REQUEST_STATE -> new StateResponse(context.getActivePlayer().equals(player), context.getPhase().toString());
+//                case REQUEST_STATE -> context.getPlayers();
+                case REQUEST_STATE -> new StateResponse(context.getActivePlayer().equals(player), context.getPhase().toString());
                 case REQUEST_STACKS -> context.getStackContainer();
                 default -> null;
             };

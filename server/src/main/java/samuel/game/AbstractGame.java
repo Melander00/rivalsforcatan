@@ -357,6 +357,7 @@ public abstract class AbstractGame implements Game {
 
     // todo: add events
     public void replenishCards(Player activePlayer) {
+        // todo: discard if player hand is overfull
         while(!activePlayer.isHandFull()) {
             CardStack<PlayableCard> stack = activePlayer.requestCardStack(
                     getContext().getStackContainer().getBasicStacks(),
