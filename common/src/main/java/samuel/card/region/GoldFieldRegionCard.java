@@ -4,7 +4,6 @@ import samuel.card.CardID;
 import samuel.event.die.ProductionDieEvent;
 import samuel.eventmanager.Subscribe;
 import samuel.resource.resources.GoldResource;
-import samuel.resource.resources.TimberResource;
 
 public class GoldFieldRegionCard extends AbstractRegionCard {
 

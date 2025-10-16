@@ -2,9 +2,7 @@ package samuel.card.region;
 
 import samuel.event.die.ProductionDieEvent;
 import samuel.eventmanager.Subscribe;
-import samuel.game.GameContext;
-import samuel.player.Player;
-import samuel.resource.resources.TimberResource;
+import samuel.resource.resources.LumberResource;
 import samuel.card.CardID;
 
 public class ForestRegionCard extends AbstractRegionCard {
@@ -17,7 +15,7 @@ public class ForestRegionCard extends AbstractRegionCard {
     }
 
     public ForestRegionCard(int diceRoll) {
-        super(TimberResource.class, diceRoll);
+        super(LumberResource.class, diceRoll);
     }
 
     @Subscribe

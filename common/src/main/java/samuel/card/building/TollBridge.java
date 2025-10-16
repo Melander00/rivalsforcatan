@@ -6,14 +6,13 @@ import samuel.card.util.ExpansionCardHelper;
 import samuel.event.die.PlentifulHarvestEvent;
 import samuel.eventmanager.Subscribe;
 import samuel.game.GameContext;
-import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.point.PointBundle;
 import samuel.point.points.CommercePoint;
 import samuel.resource.ResourceBundle;
 import samuel.resource.resources.BrickResource;
 import samuel.resource.resources.GoldResource;
-import samuel.resource.resources.TimberResource;
+import samuel.resource.resources.LumberResource;
 
 import java.util.UUID;
 
@@ -45,7 +44,7 @@ public class TollBridge implements PlaceableCard, PriceTag, PointHolder, ActionP
     @Override
     public ResourceBundle getCost() {
         ResourceBundle bundle = new ResourceBundle();
-        bundle.addResource(TimberResource.class, 1);
+        bundle.addResource(LumberResource.class, 1);
         bundle.addResource(BrickResource.class, 1);
         return bundle;
     }

@@ -3,17 +3,17 @@ package samuel.card.ship;
 import samuel.card.CardID;
 import samuel.event.player.PlayerTradeEvent;
 import samuel.eventmanager.Subscribe;
-import samuel.resource.Resource;
+import samuel.resource.resources.BrickResource;
 import samuel.resource.resources.GoldResource;
 
 import java.util.UUID;
 
-public class GoldShip extends AbstractTradeShip {
-    private static final CardID id = new CardID("ship", "gold_ship");
+public class BrickShipCard extends AbstractTradeShipCard {
+    private static final CardID id = new CardID("ship", "brick_ship");
     private final UUID uuid = UUID.randomUUID();
 
-    public GoldShip() {
-        super(GoldResource.class);
+    public BrickShipCard() {
+        super(BrickResource.class);
     }
 
     @Override

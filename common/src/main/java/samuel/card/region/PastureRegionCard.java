@@ -3,7 +3,6 @@ package samuel.card.region;
 import samuel.card.CardID;
 import samuel.event.die.ProductionDieEvent;
 import samuel.eventmanager.Subscribe;
-import samuel.resource.resources.TimberResource;
 import samuel.resource.resources.WoolResource;
 
 public class PastureRegionCard extends AbstractRegionCard {

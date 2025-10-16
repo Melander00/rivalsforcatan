@@ -41,7 +41,7 @@ public class ResourceBundle implements Iterable<ResourceAmount> {
 
     public static ResourceBundle oneOfAll() {
         ResourceBundle bundle = new ResourceBundle();
-        bundle.addResource(TimberResource.class, 1);
+        bundle.addResource(LumberResource.class, 1);
         bundle.addResource(GoldResource.class, 1);
         bundle.addResource(GrainResource.class, 1);
         bundle.addResource(BrickResource.class, 1);
