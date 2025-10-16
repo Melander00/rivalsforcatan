@@ -16,7 +16,7 @@ import samuel.resource.resources.LumberResource;
 
 import java.util.UUID;
 
-public class TollBridgeBuildingCard implements PlaceableCard, PriceTag, PointHolder, ActionPhaseCard {
+public class TollBridgeBuildingCard implements BuildingCard, PointHolder {
 
     private static final CardID cardId = new CardID("building", "toll_bridge");
 
@@ -78,7 +78,7 @@ public class TollBridgeBuildingCard implements PlaceableCard, PriceTag, PointHol
 
     @Override
     public boolean canPlay(Player player, GameContext context) {
-        if(!ActionPhaseCard.super.canPlay(player, context)) return false;
+        if(!BuildingCard.super.canPlay(player, context)) return false;
 
         if(!player.hasResources(getCost())) return false;
 
