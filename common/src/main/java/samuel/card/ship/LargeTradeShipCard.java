@@ -1,5 +1,6 @@
 package samuel.card.ship;
 
+import samuel.board.BoardPosition;
 import samuel.card.CardID;
 import samuel.card.ExpansionCard;
 import samuel.card.region.RegionCard;
@@ -10,7 +11,6 @@ import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.resource.Resource;
 import samuel.resource.ResourceAmount;
-import samuel.resource.resources.GoldResource;
 
 import java.util.List;
 import java.util.UUID;
@@ -47,7 +47,7 @@ public class LargeTradeShipCard implements ExpansionCard {
     }
 
     @Override
-    public void onPlace(Player owner, GameContext context) {
+    public void onPlace(Player owner, GameContext context, BoardPosition position) {
         this.owner = owner;
         context.getEventBus().register(this);
     }

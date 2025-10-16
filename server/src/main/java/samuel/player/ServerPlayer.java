@@ -44,6 +44,8 @@ public class ServerPlayer implements Player {
 
     private final List<Effect> effects = new ArrayList<>();
 
+    private final UUID uuid = UUID.randomUUID();
+
 
     public ServerPlayer(Board principality, PlayerHand hand, SocketClient client) {
         this.principality = principality;
@@ -53,7 +55,9 @@ public class ServerPlayer implements Player {
     }
 
 
-
+    public UUID getUuid() {
+        return uuid;
+    }
 
     @Override
     public Board getPrincipality() {
@@ -279,7 +283,7 @@ public class ServerPlayer implements Player {
     public void placeCard(PlaceableCard card, BoardPosition position, GameContext context) {
         if(card.validatePlacement(position)) {
             this.principality.place(card, position);
-            card.onPlace(this, context);
+            card.onPlace(this, context, position);
         }
     }
 

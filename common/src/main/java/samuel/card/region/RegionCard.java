@@ -15,5 +15,4 @@ public interface RegionCard extends PlaceableCard, ResourceHolder {
      */
     int getDiceRoll();
 
-    Class<? extends Resource> getType();
 }

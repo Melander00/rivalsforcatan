@@ -1,5 +1,6 @@
 package samuel.card.ship;
 
+import samuel.board.BoardPosition;
 import samuel.event.player.PlayerTradeEvent;
 import samuel.game.GameContext;
 import samuel.phase.Phase;
@@ -35,7 +36,7 @@ public abstract class AbstractTradeShipCard implements TradeShipCard {
     }
 
     @Override
-    public void onPlace(Player owner, GameContext context) {
+    public void onPlace(Player owner, GameContext context, BoardPosition position) {
         this.owner = owner;
         context.getEventBus().register(this);
     }

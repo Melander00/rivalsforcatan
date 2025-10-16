@@ -47,8 +47,9 @@ public class IntrodoctoryPrincipality {
         // stalemate => force road without validation.
 
         RoadCard road = new RoadCard();
-        grid.getPositionFromGrid(centerRow, centerCol).setCard(road);
-        road.onPlace(player, context);
+        BoardPosition roadPosition = grid.getPositionFromGrid(centerRow, centerCol);
+        roadPosition.setCard(road);
+        road.onPlace(player, context, roadPosition);
         player.placeCard(new SettlementCard(), grid.getPositionFromGrid(centerRow, centerCol - 1), context);
         player.placeCard(new SettlementCard(), grid.getPositionFromGrid(centerRow, centerCol + 1), context);
 

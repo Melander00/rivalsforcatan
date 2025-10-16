@@ -58,7 +58,7 @@ public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, Set
     }
 
     @Override
-    public void onPlace(Player owner, GameContext context) {
+    public void onPlace(Player owner, GameContext context, BoardPosition position) {
         // todo: take two region cards and allow player to place them
     }
 

@@ -31,7 +31,7 @@ public class CityCard implements PlaceableCard, PriceTag, PointHolder, Settlemen
     }
 
     @Override
-    public void onPlace(Player owner, GameContext context) {
+    public void onPlace(Player owner, GameContext context, BoardPosition position) {
 
     }
 

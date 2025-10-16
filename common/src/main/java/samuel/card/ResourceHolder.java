@@ -1,8 +1,9 @@
 package samuel.card;
 
+import samuel.resource.Resource;
 import samuel.resource.ResourceBundle;
 
-public interface ResourceHolder {
+public interface ResourceHolder extends Card {
     ResourceBundle getResources();
     /**
      * Adds to the resource pile.
@@ -17,4 +18,6 @@ public interface ResourceHolder {
      * @return The amount still left to remove.
      */
     int decreaseAmount(int amount);
+
+    Class<? extends Resource> getType();
 }

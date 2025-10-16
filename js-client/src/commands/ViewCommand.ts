@@ -11,7 +11,6 @@ import { getTerminalProperties, print } from "../ui/Console";
 import { buildPrincipality } from "../ui/Grid";
 import { buildPoints } from "../ui/Point";
 import { buildStacksFromResponse } from "../ui/Stack";
-import { buildState } from "../ui/State";
 import { Command } from "./Command";
 
 export class ViewCommand implements Command {
@@ -46,7 +45,8 @@ export class ViewCommand implements Command {
 
         } else if(type === "state") {
             const data = await requestData<State>(MessageType.REQUEST_STATE);
-            print(buildState(data));
+            print(data)
+            // print(buildState(data));
             return true;
         } else if(type === "stacks") {
             const data = await requestData<CardStackResponse>(MessageType.REQUEST_STACKS);

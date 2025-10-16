@@ -56,7 +56,7 @@ public class TollBridgeBuildingCard implements PlaceableCard, PriceTag, PointHol
     }
 
     @Override
-    public void onPlace(Player owner, GameContext context) {
+    public void onPlace(Player owner, GameContext context, BoardPosition position) {
         this.owner = owner;
         context.getEventBus().register(this);
     }

@@ -19,6 +19,7 @@ export function initEventListener() {
 function handler(event: ServerEvent) {
     const eventInfo = GetEventInfo(event.id)
     if(!eventInfo) {
+        print(event)
         return;
     }
 

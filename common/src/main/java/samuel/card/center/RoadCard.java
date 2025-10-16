@@ -43,7 +43,7 @@ public class RoadCard implements PlaceableCard, PriceTag {
     }
 
     @Override
-    public void onPlace(Player owner, GameContext context) {
+    public void onPlace(Player owner, GameContext context, BoardPosition position) {
 
     }
 

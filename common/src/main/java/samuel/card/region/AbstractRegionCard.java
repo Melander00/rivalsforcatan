@@ -84,7 +84,7 @@ public abstract class AbstractRegionCard implements RegionCard {
 
 
     @Override
-    public void onPlace(Player owner, GameContext context) {
+    public void onPlace(Player owner, GameContext context, BoardPosition position) {
         context.getEventBus().register(this);
     }
 

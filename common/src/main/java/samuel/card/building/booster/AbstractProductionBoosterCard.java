@@ -1,16 +1,14 @@
 package samuel.card.building.booster;
 
-import samuel.card.CardID;
+import samuel.board.BoardPosition;
 import samuel.card.region.RegionCard;
 import samuel.event.die.ProductionDieEvent;
 import samuel.game.GameContext;
 import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.resource.Resource;
-import samuel.resource.ResourceBundle;
 
 import java.util.List;
-import java.util.UUID;
 
 public abstract class AbstractProductionBoosterCard implements ProductionBoosterCard {
 
@@ -28,7 +26,7 @@ public abstract class AbstractProductionBoosterCard implements ProductionBooster
     }
 
     @Override
-    public void onPlace(Player owner, GameContext context) {
+    public void onPlace(Player owner, GameContext context, BoardPosition position) {
         this.owner = owner;
     }
 

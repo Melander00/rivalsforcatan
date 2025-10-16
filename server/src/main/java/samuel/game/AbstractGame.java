@@ -230,7 +230,7 @@ public abstract class AbstractGame implements Game {
         if(eventResults.hasPriorityOverProduction()) {
             eventResults.resolve(getContext());
             resolveProduction(rollResults);
-        } {
+        } else {
             resolveProduction(rollResults);
             eventResults.resolve(getContext());
         }
