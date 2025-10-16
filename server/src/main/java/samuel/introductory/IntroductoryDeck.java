@@ -4,6 +4,7 @@ import samuel.card.Card;
 import samuel.card.PlayableCard;
 import samuel.card.action.*;
 import samuel.card.building.*;
+import samuel.card.building.booster.*;
 import samuel.card.event.*;
 import samuel.card.hero.*;
 import samuel.card.region.ForestRegionCard;
@@ -31,12 +32,12 @@ public class IntroductoryDeck implements Deck {
             new StorehouseBuildingCard(),
 
             new StorehouseBuildingCard(),
-            new TollBridgeBuildingCard(), // booster
-            new TollBridgeBuildingCard(), // booster
+            new IronFoundryBuildingCard(),
+            new GrainMillBuildingCard(),
 
-            new TollBridgeBuildingCard(), // booster
-            new TollBridgeBuildingCard(), // booster
-            new TollBridgeBuildingCard(), // booster
+            new LumberCampBuildingCard(),
+            new BrickFactoryBuildingCard(),
+            new WeaverShopBuildingCard(),
 
             new AbbeyBuildingCard(),
             new AbbeyBuildingCard(),

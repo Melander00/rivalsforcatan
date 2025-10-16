@@ -1,26 +1,24 @@
-package samuel.card.building;
+package samuel.card.building.booster;
 
 import samuel.card.CardID;
-import samuel.game.GameContext;
-import samuel.phase.Phase;
-import samuel.player.Player;
+import samuel.event.die.ProductionDieEvent;
+import samuel.eventmanager.Subscribe;
 import samuel.resource.ResourceBundle;
 import samuel.resource.resources.BrickResource;
 import samuel.resource.resources.GrainResource;
 import samuel.resource.resources.LumberResource;
-import samuel.resource.resources.WoolResource;
+import samuel.resource.resources.OreResource;
 
 import java.util.UUID;
 
-public class StorehouseBuildingCard implements BuildingCard {
+public class GrainMillBuildingCard extends AbstractProductionBoosterCard {
 
-    private static final CardID id = new CardID("building", "storehouse");
-
+    private static final CardID id = new CardID("building", "grain_mill");
     private final UUID uuid = UUID.randomUUID();
 
-    @Override
-    public boolean canPlay(Player player, GameContext context) {
-        return context.getPhase().equals(Phase.ACTION);
+
+    public GrainMillBuildingCard() {
+        super(GrainResource.class);
     }
 
     @Override
@@ -37,9 +35,14 @@ public class StorehouseBuildingCard implements BuildingCard {
     public ResourceBundle getCost() {
         ResourceBundle bundle = new ResourceBundle();
         bundle.addResource(LumberResource.class, 1);
-        bundle.addResource(WoolResource.class, 1);
+        bundle.addResource(GrainResource.class, 1);
         return bundle;
     }
 
-    // todo: implement
+    @Subscribe
+    @Override
+    public void onProductionEvent(ProductionDieEvent.Post event) {
+        super.onProductionEvent(event);
+    }
 }
+
