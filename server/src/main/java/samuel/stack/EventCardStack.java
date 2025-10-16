@@ -6,7 +6,7 @@ public class EventCardStack extends GenericCardStack<EventCard> {
 
     @Override
     public void shuffleCards() {
-        //
+        // todo
         super.shuffleCards();
     }
 }

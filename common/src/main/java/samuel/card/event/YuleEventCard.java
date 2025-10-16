@@ -1,0 +1,32 @@
+package samuel.card.event;
+
+import samuel.card.CardID;
+import samuel.game.GameContext;
+
+import java.util.UUID;
+
+public class YuleEventCard implements EventCard {
+
+    private static final CardID id = new CardID("event", "yule");
+
+    private final UUID uuid = UUID.randomUUID();
+
+    @Override
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    @Override
+    public CardID getCardID() {
+        return id;
+    }
+
+
+    @Override
+    public void resolveEvent(GameContext context) {
+        // todo
+        // shuffle event cards (EventCardFace returns this card to the stack before resolving)
+        // either call EventCardFace.resolve <-- reusability
+        // or draw an event card and handle here. <-- less coupling (if EventCardFace changes we need to change here to make sure the card is working correctly)
+    }
+}

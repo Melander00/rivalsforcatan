@@ -4,8 +4,7 @@ import samuel.card.Card;
 import samuel.card.PlayableCard;
 import samuel.card.action.*;
 import samuel.card.building.TollBridge;
-import samuel.card.event.EventCard;
-import samuel.card.event.InventionEventCard;
+import samuel.card.event.*;
 import samuel.card.hero.*;
 import samuel.card.region.ForestRegionCard;
 import samuel.card.region.RegionCard;
@@ -79,11 +78,14 @@ public class IntroductoryDeck implements Deck {
 
     private final List<EventCard> eventCards = List.of(
             new InventionEventCard(),
-            new InventionEventCard(),
-            new InventionEventCard(),
-            new InventionEventCard(),
-            new InventionEventCard(),
-            new InventionEventCard()
+            new YuleEventCard(),
+            new YearOfPlentyEventCard(),
+            new YearOfPlentyEventCard(),
+            new FraternalFeudsEventCard(),
+            new FeudEventCard(),
+            new TravelingMerchantEventCard(),
+            new TravelingMerchantEventCard(),
+            new TradeShipsRaceEventCard()
     );
 
 

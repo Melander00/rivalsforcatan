@@ -8,6 +8,7 @@ import samuel.card.CardID;
 import samuel.player.request.RequestCause;
 import samuel.player.request.RequestCauseEnum;
 import samuel.point.points.ProgressPoint;
+import samuel.resource.ResourceAmount;
 import samuel.resource.ResourceBundle;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public class InventionEventCard implements EventCard {
 
     private final UUID uuid = UUID.randomUUID();
 
+    private final static int maxResources = 2;
+
     @Override
     public UUID getUuid() {
         return uuid;
@@ -29,9 +32,6 @@ public class InventionEventCard implements EventCard {
         return id;
     }
 
-    public InventionEventCard() {
-    }
-
     @Override
     public void resolveEvent(GameContext context) {
         InventionEvent event = new InventionEvent();
@@ -40,12 +40,16 @@ public class InventionEventCard implements EventCard {
 
         List<Player> players = context.getPlayers();
         for(Player player : players) {
-            int times = player.getPoints(ProgressPoint.class);
+            int times = Math.min(player.getPoints(ProgressPoint.class), maxResources);
+            ResourceBundle bundle = new ResourceBundle();
             while(times > 0) {
-                ResourceBundle bundle = player.requestResource(ResourceBundle.oneOfAll(), 1, new RequestCause(RequestCauseEnum.FREE_RESOURCES));
-                player.giveResources(bundle);
+                ResourceBundle toGet = player.requestResource(ResourceBundle.oneOfAll(), 1, new RequestCause(RequestCauseEnum.FREE_RESOURCES));
+                for(ResourceAmount am : toGet) {
+                    bundle.addResource(am.resourceType(), am.amount());
+                }
                 times--;
             }
+            player.giveResources(bundle);
         }
 
         context.getEventBus().fireEvent(new InventionEvent.Post());
