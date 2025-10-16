@@ -2,6 +2,7 @@
     {
         "id": "hills",
         "name": "Hills",
+        "type": "Region",
         "description": "Gains resources based on production die roll. 1 building site for brown.",
         "board": {
             "name": {
@@ -15,6 +16,7 @@
     {
         "id": "gold_field",
         "name": "Gold Field",
+        "type": "Region",
         "description": "Gains resources based on production die roll. 1 building site for brown.",
         "board": {
             "name": {
@@ -28,6 +30,7 @@
     {
         "id": "fields",
         "name": "Fields",
+        "type": "Region",
         "description": "Gains resources based on production die roll. 1 building site for brown.",
         "board": {
             "name": {
@@ -41,6 +44,7 @@
     {
         "id": "mountains",
         "name": "Mountains",
+        "type": "Region",
         "description": "Gains resources based on production die roll. 1 building site for brown.",
         "board": {
             "name": {
@@ -54,6 +58,7 @@
     {
         "id": "forest",
         "name": "Forest",
+        "type": "Region",
         "description": "Gains resources based on production die roll. 1 building site for brown.",
         "board": {
             "name": {
@@ -67,6 +72,7 @@
     {
         "id": "pasture",
         "name": "Pasture",
+        "type": "Region",
         "description": "Gains resources based on production die roll. 1 building site for brown.",
         "board": {
             "name": {

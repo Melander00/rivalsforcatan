@@ -20,9 +20,9 @@
         "short": "O"
     },
     {
-        "id": "TimberResource",
-        "name": "Timber",
-        "short": "T"
+        "id": "LumberResource",
+        "name": "Lumber",
+        "short": "L"
     },
     {
         "id": "WoolResource",
