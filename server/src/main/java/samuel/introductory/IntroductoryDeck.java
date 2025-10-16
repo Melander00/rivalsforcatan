@@ -6,8 +6,10 @@ import samuel.card.action.*;
 import samuel.card.building.TollBridge;
 import samuel.card.event.EventCard;
 import samuel.card.event.InventionEventCard;
+import samuel.card.hero.*;
 import samuel.card.region.ForestRegionCard;
 import samuel.card.region.RegionCard;
+import samuel.card.ship.*;
 import samuel.deck.Deck;
 
 import java.util.List;
@@ -27,10 +29,41 @@ public class IntroductoryDeck implements Deck {
     private final List<PlayableCard> basicCards = List.of(
             // Buildings
             new TollBridge(),
+            new TollBridge(),
+
+            new TollBridge(),
+            new TollBridge(),
+            new TollBridge(),
+
+            new TollBridge(),
+            new TollBridge(),
+            new TollBridge(),
+
+            new TollBridge(),
+            new TollBridge(),
+            new TollBridge(),
+
+            new TollBridge(),
+            new TollBridge(),
+            new TollBridge(),
+
 
             // Ships
+            new LargeTradeShipCard(),
+            new GoldShipCard(),
+            new OreShipCard(),
+            new GrainShipCard(),
+            new LumberShipCard(),
+            new BrickShipCard(),
+            new WoolShipCard(),
 
             // Heroes
+            new AustinHeroCard(),
+            new HaraldHeroCard(),
+            new IngaHeroCard(),
+            new OsmundHeroCard(),
+            new CandamirHeroCard(),
+            new SiglindHeroCard(),
 
             // Action
             new BrigittaTheWiseWomanActionCard(),
@@ -41,28 +74,7 @@ public class IntroductoryDeck implements Deck {
             new MerchantCaravanActionCard(),
             new MerchantCaravanActionCard(),
             new GoldsmithActionCard(),
-            new GoldsmithActionCard(),
-
-
-
-            new TollBridge(),
-            new TollBridge(),
-
-            new BrigittaTheWiseWomanActionCard(),
-            new BrigittaTheWiseWomanActionCard(),
-
-            new TollBridge(),
-            new TollBridge(),
-            new TollBridge(),
-            new TollBridge(),
-
-            new BrigittaTheWiseWomanActionCard(),
-            new BrigittaTheWiseWomanActionCard(),
-            new BrigittaTheWiseWomanActionCard(),
-            new BrigittaTheWiseWomanActionCard(),
-
-            new TollBridge(),
-            new TollBridge()
+            new GoldsmithActionCard()
     );
 
     private final List<EventCard> eventCards = List.of(
