@@ -24,7 +24,11 @@ public abstract class AbstractProductionBoosterCard implements ProductionBooster
 
     @Override
     public boolean canPlay(Player player, GameContext context) {
-        return context.getPhase().equals(Phase.ACTION);
+        boolean correctPhase = context.getPhase().equals(Phase.ACTION);
+
+        boolean canPay = player.hasResources(getCost());
+
+        return correctPhase && canPay;
     }
 
     @Override
@@ -41,7 +45,6 @@ public abstract class AbstractProductionBoosterCard implements ProductionBooster
     }
 
     private List<RegionCard> adjacentRegions() {
-        // todo
         return ExpansionCardHelper.getNeighbouringRegions(position);
     }
 

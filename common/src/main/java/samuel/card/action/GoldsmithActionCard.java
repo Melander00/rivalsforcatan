@@ -6,6 +6,7 @@ import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.player.request.RequestCause;
 import samuel.player.request.RequestCauseEnum;
+import samuel.resource.ResourceAmount;
 import samuel.resource.ResourceBundle;
 import samuel.resource.resources.GoldResource;
 
@@ -27,9 +28,11 @@ public class GoldsmithActionCard implements ActionCard {
 
     @Override
     public boolean canPlay(Player player, GameContext context) {
-        if(!context.getPhase().equals(Phase.ACTION)) return false;
+        boolean correctPhase = context.getPhase().equals(Phase.ACTION);
 
-        return player.getResources(GoldResource.class) >= 3;
+        boolean canPay = player.getResources(GoldResource.class) >= 3;
+
+        return correctPhase && canPay;
     }
 
     @Override

@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import samuel.card.action.ActionCard;
 import samuel.card.action.BrigittaTheWiseWomanActionCard;
@@ -75,14 +73,14 @@ public class BrigittaTheWiseWomanTest {
     }
 
     @Test
-    void testCorrectPhase() {
+    void testCanPlay() {
         when(context.getPhase()).thenReturn(Phase.DICE_ROLL);
 
         assertTrue(card.canPlay(player, context));
     }
 
     @Test
-    void testWrongPhase() {
+    void testCantPlay() {
         when(context.getPhase()).thenReturn(Phase.ACTION);
 
         assertFalse(card.canPlay(player, context));

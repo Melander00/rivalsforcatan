@@ -57,4 +57,18 @@ public class ScoutTest {
         // todo
     }
 
+    @Test
+    void testCanPlay() {
+        when(context.getPhase()).thenReturn(Phase.ACTION);
+
+        assertTrue(card.canPlay(player, context));
+    }
+
+    @Test
+    void testCantPlay() {
+        when(context.getPhase()).thenReturn(Phase.DICE_ROLL);
+
+        assertFalse(card.canPlay(player, context));
+    }
+
 }

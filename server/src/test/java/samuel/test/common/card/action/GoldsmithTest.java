@@ -27,6 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static samuel.test.common.ResourceBundleHelper.createBundle;
 
 @ExtendWith(MockitoExtension.class)
 public class GoldsmithTest {
@@ -82,13 +83,11 @@ public class GoldsmithTest {
         verify(player, times(1)).giveResources(bundle);
     }
 
-    @SafeVarargs
-    private static ResourceBundle createBundle(Class<? extends Resource>... resources) {
-        ResourceBundle bundle = new ResourceBundle();
+    @Test
+    void testCantPlay() {
+        when(context.getPhase()).thenReturn(Phase.DICE_ROLL);
 
-        Arrays.stream(resources).forEach(res -> bundle.addResource(res, 1));
-
-        return bundle;
+        assertFalse(card.canPlay(player, context));
     }
 
 }

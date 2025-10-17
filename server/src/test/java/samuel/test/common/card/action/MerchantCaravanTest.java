@@ -31,6 +31,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static samuel.test.common.ResourceBundleHelper.createBundle;
 
 @ExtendWith(MockitoExtension.class)
 public class MerchantCaravanTest {
@@ -132,16 +133,4 @@ public class MerchantCaravanTest {
         assertTrue(card.canPlay(player, context));
     }
 
-
-
-
-
-    @SafeVarargs
-    private static ResourceBundle createBundle(Class<? extends Resource>... resources) {
-        ResourceBundle bundle = new ResourceBundle();
-
-        Arrays.stream(resources).forEach(res -> bundle.addResource(res, 1));
-
-        return bundle;
-    }
 }
