@@ -3,25 +3,34 @@ package samuel.card.ship;
 import samuel.board.BoardPosition;
 import samuel.card.CardID;
 import samuel.card.ExpansionCard;
+import samuel.card.PointHolder;
+import samuel.card.PriceTag;
 import samuel.card.region.RegionCard;
+import samuel.card.util.ExpansionCardHelper;
 import samuel.event.player.PlayerTradeEvent;
 import samuel.eventmanager.Subscribe;
 import samuel.game.GameContext;
 import samuel.phase.Phase;
 import samuel.player.Player;
+import samuel.point.PointBundle;
+import samuel.point.points.CommercePoint;
 import samuel.resource.Resource;
 import samuel.resource.ResourceAmount;
+import samuel.resource.ResourceBundle;
+import samuel.resource.resources.LumberResource;
+import samuel.resource.resources.WoolResource;
 
 import java.util.List;
 import java.util.UUID;
 
-public class LargeTradeShipCard implements ExpansionCard {
+public class LargeTradeShipCard implements ExpansionCard, PriceTag, PointHolder {
 
     private static final int tradeRatio = 2;
 
     private static final CardID id = new CardID("ship", "large_trade_ship");
     private final UUID uuid = UUID.randomUUID();
 
+    private BoardPosition position;
 
     private Player owner = null;
 
@@ -49,11 +58,20 @@ public class LargeTradeShipCard implements ExpansionCard {
     @Override
     public void onPlace(Player owner, GameContext context, BoardPosition position) {
         this.owner = owner;
+        this.position = position;
         context.getEventBus().register(this);
     }
 
+    @Override
+    public ResourceBundle getCost() {
+        ResourceBundle bundle = new ResourceBundle();
+        bundle.addResource(LumberResource.class, 1);
+        bundle.addResource(WoolResource.class, 1);
+        return bundle;
+    }
+
     private List<RegionCard> adjacentRegions() {
-        return List.of();
+        return ExpansionCardHelper.getNeighbouringRegions(position);
     }
 
     @Subscribe
@@ -70,5 +88,12 @@ public class LargeTradeShipCard implements ExpansionCard {
                 }
             }
         }
+    }
+
+    @Override
+    public PointBundle getPoints() {
+        PointBundle bundle = new PointBundle();
+        bundle.addPoint(CommercePoint.class, 1);
+        return bundle;
     }
 }
