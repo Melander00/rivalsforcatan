@@ -36,6 +36,7 @@ public abstract class AbstractProductionBoosterCard implements ProductionBooster
     }
 
     private List<RegionCard> adjacentRegions() {
+        // todo
         return List.of();
     }
 
