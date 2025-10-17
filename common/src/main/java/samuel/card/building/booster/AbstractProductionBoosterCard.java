@@ -2,6 +2,7 @@ package samuel.card.building.booster;
 
 import samuel.board.BoardPosition;
 import samuel.card.region.RegionCard;
+import samuel.card.util.ExpansionCardHelper;
 import samuel.event.die.ProductionDieEvent;
 import samuel.game.GameContext;
 import samuel.phase.Phase;
@@ -14,6 +15,7 @@ public abstract class AbstractProductionBoosterCard implements ProductionBooster
 
     private final Class<? extends Resource> resourceType;
     private Player owner = null;
+    private BoardPosition position;
 
     public AbstractProductionBoosterCard(Class<? extends Resource> resourceType) {
         this.resourceType = resourceType;
@@ -28,16 +30,19 @@ public abstract class AbstractProductionBoosterCard implements ProductionBooster
     @Override
     public void onPlace(Player owner, GameContext context, BoardPosition position) {
         this.owner = owner;
+        this.position = position;
+        context.getEventBus().register(this);
     }
 
     @Override
     public void onRemove(GameContext context) {
         this.owner = null;
+        context.getEventBus().register(this);
     }
 
     private List<RegionCard> adjacentRegions() {
         // todo
-        return List.of();
+        return ExpansionCardHelper.getNeighbouringRegions(position);
     }
 
     public void onProductionEvent(ProductionDieEvent.Post event) {

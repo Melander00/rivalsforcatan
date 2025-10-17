@@ -1,8 +1,6 @@
 package samuel.test.common.card.building.booster;
 
-
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -10,24 +8,26 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import samuel.board.Board;
 import samuel.board.GridBoard;
 import samuel.card.building.BuildingCard;
+import samuel.card.building.booster.BrickFactoryBuildingCard;
 import samuel.card.building.booster.IronFoundryBuildingCard;
-import samuel.card.region.*;
+import samuel.card.region.ForestRegionCard;
+import samuel.card.region.HillsRegionCard;
+import samuel.card.region.MountainsRegionCard;
+import samuel.card.region.RegionCard;
 import samuel.event.GenericEventBus;
 import samuel.event.die.ProductionDieEvent;
 import samuel.eventmanager.EventBus;
 import samuel.game.GameContext;
 import samuel.player.Player;
+import samuel.resource.resources.BrickResource;
 import samuel.resource.resources.LumberResource;
 import samuel.resource.resources.OreResource;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class IronFoundryTest {
+public class BrickFactoryTest {
     @Mock
     private GameContext context;
 
@@ -36,7 +36,7 @@ public class IronFoundryTest {
 
     private EventBus eventBus;
     private Board board;
-    private RegionCard mountains;
+    private RegionCard hills;
     private RegionCard forest;
 
     private final int roll = 1;
@@ -44,14 +44,14 @@ public class IronFoundryTest {
     @BeforeEach
     void setup() {
         eventBus = new GenericEventBus();
-        mountains = new MountainsRegionCard(roll);
+        hills = new HillsRegionCard(roll);
         forest = new ForestRegionCard(2);
         board = GridBoard.createGridBoard(5,7);
 
         when(context.getEventBus()).thenReturn(eventBus);
 
-        board.place(mountains, board.getPositionFromGrid(1, 1));
-        mountains.onPlace(player, context, board.getPositionFromGrid(1, 1));
+        board.place(hills, board.getPositionFromGrid(1, 1));
+        hills.onPlace(player, context, board.getPositionFromGrid(1, 1));
         board.place(forest, board.getPositionFromGrid(1, 3));
         forest.onPlace(player, context, board.getPositionFromGrid(1, 3));
     }
@@ -59,14 +59,13 @@ public class IronFoundryTest {
 
     @Test
     void testProduction() {
-        BuildingCard foundry = new IronFoundryBuildingCard();
+        BuildingCard foundry = new BrickFactoryBuildingCard();
 
         board.place(foundry, board.getPositionFromGrid(1, 2));
         foundry.onPlace(player, context, board.getPositionFromGrid(1, 2));
         eventBus.fireEvent(new ProductionDieEvent.Post(roll));
 
         assertEquals(0, forest.getResources().getAmount(LumberResource.class));
-        assertEquals(2, mountains.getResources().getAmount(OreResource.class));
+        assertEquals(2, hills.getResources().getAmount(BrickResource.class));
     }
-
 }

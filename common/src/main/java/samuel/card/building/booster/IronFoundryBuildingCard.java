@@ -42,4 +42,9 @@ public class IronFoundryBuildingCard extends AbstractProductionBoosterCard {
     public void onProductionEvent(ProductionDieEvent.Post event) {
         super.onProductionEvent(event);
     }
+
+//    @Subscribe
+//    public void onEvent(ProductionDieEvent.Post event) {
+//        super.onProductionEvent(event);
+//    }
 }
