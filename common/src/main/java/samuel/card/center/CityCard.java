@@ -5,6 +5,7 @@ import samuel.card.PlaceableCard;
 import samuel.card.PointHolder;
 import samuel.card.PriceTag;
 import samuel.game.GameContext;
+import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.point.PointBundle;
 import samuel.point.points.VictoryPoint;
@@ -67,7 +68,6 @@ public class CityCard implements PlaceableCard, PriceTag, PointHolder, Settlemen
 
     @Override
     public boolean canPlay(Player player, GameContext context) {
-        if(!player.hasResources(getCost())) return false;
-        return true;
+        return context.getPhase().equals(Phase.ACTION) && player.hasResources(getCost());
     }
 }

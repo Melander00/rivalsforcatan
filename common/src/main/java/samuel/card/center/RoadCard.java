@@ -4,8 +4,10 @@ import samuel.board.BoardPosition;
 import samuel.card.PlaceableCard;
 import samuel.card.PriceTag;
 import samuel.game.GameContext;
+import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.resource.resources.BrickResource;
+import samuel.resource.resources.LumberResource;
 import samuel.resource.resources.OreResource;
 import samuel.resource.ResourceBundle;
 import samuel.card.CardID;
@@ -50,14 +52,13 @@ public class RoadCard implements PlaceableCard, PriceTag {
     @Override
     public ResourceBundle getCost() {
         ResourceBundle cost = new ResourceBundle();
-        cost.addResource(OreResource.class, 1);
+        cost.addResource(LumberResource.class, 1);
         cost.addResource(BrickResource.class,  2);
         return cost;
     }
 
     @Override
     public boolean canPlay(Player player, GameContext context) {
-        if(!player.hasResources(getCost())) return false;
-        return true;
+        return context.getPhase().equals(Phase.ACTION) && player.hasResources(getCost());
     }
 }

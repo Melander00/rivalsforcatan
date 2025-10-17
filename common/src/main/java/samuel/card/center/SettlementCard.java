@@ -6,15 +6,13 @@ import samuel.card.PlaceableCard;
 import samuel.card.PointHolder;
 import samuel.card.PriceTag;
 import samuel.game.GameContext;
+import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.point.PointBundle;
 import samuel.point.points.VictoryPoint;
 import samuel.resource.*;
 import samuel.card.CardID;
-import samuel.resource.resources.BrickResource;
-import samuel.resource.resources.GrainResource;
-import samuel.resource.resources.OreResource;
-import samuel.resource.resources.WoolResource;
+import samuel.resource.resources.*;
 
 import java.util.UUID;
 
@@ -73,7 +71,7 @@ public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, Set
     @Override
     public ResourceBundle getCost() {
         ResourceBundle cost = new ResourceBundle();
-        cost.addResource(OreResource.class, 1);
+        cost.addResource(LumberResource.class, 1);
         cost.addResource(BrickResource.class,  1);
         cost.addResource(GrainResource.class,  1);
         cost.addResource(WoolResource.class,  1);
@@ -87,7 +85,6 @@ public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, Set
 
     @Override
     public boolean canPlay(Player player, GameContext context) {
-        if(!player.hasResources(getCost())) return false;
-        return true;
+        return context.getPhase().equals(Phase.ACTION) && player.hasResources(getCost());
     }
 }
