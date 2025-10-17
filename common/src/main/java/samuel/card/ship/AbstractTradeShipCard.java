@@ -26,7 +26,7 @@ public abstract class AbstractTradeShipCard implements TradeShipCard {
 
     @Override
     public boolean canPlay(Player player, GameContext context) {
-        return context.getPhase().equals(Phase.ACTION);
+        return context.getPhase().equals(Phase.ACTION) && player.hasResources(getCost());
     }
 
     @Override
