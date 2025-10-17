@@ -6,6 +6,7 @@ import samuel.player.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GameServer {
@@ -20,6 +21,9 @@ public class GameServer {
     }
 
     public void start(List<Player> players) {
+        // shuffle order
+        Collections.shuffle(players);
+
         // add players
         this.game.addPlayers(players);
 

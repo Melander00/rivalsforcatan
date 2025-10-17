@@ -288,6 +288,12 @@ public class ServerPlayer implements Player {
     }
 
     @Override
+    public void removeCard(PlaceableCard card, BoardPosition position, GameContext context) {
+        position.setCard(null);
+        card.onRemove(context);
+    }
+
+    @Override
     public void playCard(PlayableCard card, GameContext context) {
 
         if(card instanceof PriceTag price) {

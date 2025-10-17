@@ -2,10 +2,7 @@ package samuel.resource;
 
 import samuel.resource.resources.*;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ResourceBundle implements Iterable<ResourceAmount> {
 
@@ -39,6 +36,25 @@ public class ResourceBundle implements Iterable<ResourceAmount> {
         };
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ResourceBundle that)) return false;
+
+        for(Map.Entry<Class<? extends Resource>, Integer> res : resources.entrySet()) {
+            if(that.getAmount(res.getKey()) != res.getValue()) {
+                return false;
+            }
+        }
+
+        return Objects.equals(resources, that.resources);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(resources);
+    }
+
     public static ResourceBundle oneOfAll() {
         ResourceBundle bundle = new ResourceBundle();
         bundle.addResource(LumberResource.class, 1);
@@ -47,6 +63,17 @@ public class ResourceBundle implements Iterable<ResourceAmount> {
         bundle.addResource(BrickResource.class, 1);
         bundle.addResource(WoolResource.class, 1);
         bundle.addResource(OreResource.class, 1);
+        return bundle;
+    }
+
+    public static ResourceBundle oneOfAll(int amount) {
+        ResourceBundle bundle = new ResourceBundle();
+        bundle.addResource(LumberResource.class, amount);
+        bundle.addResource(GoldResource.class, amount);
+        bundle.addResource(GrainResource.class, amount);
+        bundle.addResource(BrickResource.class, amount);
+        bundle.addResource(WoolResource.class, amount);
+        bundle.addResource(OreResource.class, amount);
         return bundle;
     }
 

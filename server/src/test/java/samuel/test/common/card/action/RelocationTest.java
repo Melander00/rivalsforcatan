@@ -1,0 +1,115 @@
+package samuel.test.common.card.action;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import samuel.board.Board;
+import samuel.board.BoardPosition;
+import samuel.board.GridBoard;
+import samuel.card.Card;
+import samuel.card.PlaceableCard;
+import samuel.card.PlayableCard;
+import samuel.card.action.ActionCard;
+import samuel.card.action.RelocationActionCard;
+import samuel.card.building.TollBridgeBuildingCard;
+import samuel.card.building.booster.IronFoundryBuildingCard;
+import samuel.card.region.FieldsRegionCard;
+import samuel.card.region.MountainsRegionCard;
+import samuel.card.stack.CardStack;
+import samuel.effect.Effect;
+import samuel.event.Event;
+import samuel.event.GenericEventBus;
+import samuel.eventmanager.EventBus;
+import samuel.game.GameContext;
+import samuel.introductory.IntrodoctoryPrincipality;
+import samuel.phase.Phase;
+import samuel.player.Player;
+import samuel.player.PlayerHand;
+import samuel.player.action.PlayerAction;
+import samuel.player.request.RequestCause;
+import samuel.player.request.RequestCauseEnum;
+import samuel.point.Point;
+import samuel.point.PointBundle;
+import samuel.resource.Resource;
+import samuel.resource.ResourceBundle;
+import samuel.util.Pair;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.function.BiConsumer;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+public class RelocationTest {
+
+    @Mock
+    private Player player;
+
+    @Mock
+    private GameContext context;
+
+    private EventBus eventBus;
+    private ActionCard card;
+    private Board board;
+
+    @BeforeEach
+    void setup() {
+        eventBus = new GenericEventBus();
+        card = new RelocationActionCard();
+        board = GridBoard.createGridBoard(5, 7);
+
+//        when(context.getPhase()).thenReturn(Phase.ACTION);
+        when(context.getEventBus()).thenReturn(eventBus);
+        when(player.getPrincipality()).thenReturn(board);
+        doAnswer(invocation -> {
+            PlaceableCard card = invocation.getArgument(0);
+            BoardPosition pos = invocation.getArgument(1);
+            GameContext ctx = invocation.getArgument(2);
+
+            board.place(card, pos);
+            card.onPlace(player, ctx, pos);
+
+            return null;
+        }).when(player).placeCard(any(), any(), any());
+
+        IntrodoctoryPrincipality.setupPrincipality(player, 0, context);
+
+        PlaceableCard exp1 = new TollBridgeBuildingCard();
+        board.place(exp1, board.getPositionFromGrid(1,2));
+        PlaceableCard exp2 = new IronFoundryBuildingCard();
+        board.place(exp2, board.getPositionFromGrid(1,4));
+    }
+
+    @Test
+    void testExpansions() {
+        when(player.requestBoolean(any())).thenReturn(true);
+        when(player.requestBoardPosition(any(), any()))
+                .thenReturn(board.getPositionFromGrid(1,2))
+                .thenReturn(board.getPositionFromGrid(1,4));
+
+        card.onPlay(player, context);
+
+        assertInstanceOf(TollBridgeBuildingCard.class, board.getPositionFromGrid(1,4).getCard());
+        assertInstanceOf(IronFoundryBuildingCard.class, board.getPositionFromGrid(1,2).getCard());
+    }
+
+    @Test
+    void testRegions() {
+        when(player.requestBoolean(new RequestCause(RequestCauseEnum.RELOCATION_SHOULD_MOVE_EXPANSION, any()))).thenReturn(false);
+        when(player.requestBoardPosition(any(), any()))
+                .thenReturn(board.getPositionFromGrid(1,5))
+                .thenReturn(board.getPositionFromGrid(3,5));
+
+        card.onPlay(player, context);
+
+        assertInstanceOf(MountainsRegionCard.class, board.getPositionFromGrid(1,5).getCard());
+        assertInstanceOf(FieldsRegionCard.class, board.getPositionFromGrid(3,5).getCard());
+    }
+
+}

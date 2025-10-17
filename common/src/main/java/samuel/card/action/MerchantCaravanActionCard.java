@@ -4,11 +4,15 @@ import samuel.card.CardID;
 import samuel.game.GameContext;
 import samuel.phase.Phase;
 import samuel.player.Player;
+import samuel.player.request.RequestCause;
+import samuel.player.request.RequestCauseEnum;
+import samuel.resource.ResourceAmount;
+import samuel.resource.ResourceBundle;
 
 import java.util.UUID;
 
 public class MerchantCaravanActionCard implements ActionCard {
-    private static final CardID id = new CardID("action", "brigitta_the_wise_woman");
+    private static final CardID id = new CardID("action", "merchant_caravan");
     private final UUID uuid = UUID.randomUUID();
 
     @Override
@@ -24,11 +28,36 @@ public class MerchantCaravanActionCard implements ActionCard {
 
     @Override
     public boolean canPlay(Player player, GameContext context) {
-        return context.getPhase().equals(Phase.ACTION);
+        if(!context.getPhase().equals(Phase.ACTION)) return false;
+        int amount = 0;
+        for(ResourceAmount am : player.getResources()) {
+            amount += am.amount();
+        }
+        return amount >= 2;
     }
 
     @Override
     public void onPlay(Player player, GameContext context) {
         // todo: implement
+        /*
+
+        Merchant Caravan Discard exactly 2 of your resources and
+        take any 2 resources of your choice in return.
+
+        You may discard 2 resources
+        of the same type or 2 different
+        resources. The resources
+        may come from the same
+        or different regions. You
+        may also take 2 of the same resource if it seems
+        reasonable to you. However, you must have at
+        least 2 resources to play the Merchant Caravan
+
+         */
+
+        ResourceBundle toRemove = player.requestResource(player.getResources(), 2, new RequestCause(RequestCauseEnum.TO_PAY_WITH));
+        player.removeResources(toRemove);
+        ResourceBundle toGet = player.requestResource(ResourceBundle.oneOfAll(2), 2, new RequestCause(RequestCauseEnum.FREE_RESOURCES));
+        player.giveResources(toGet);
     }
 }

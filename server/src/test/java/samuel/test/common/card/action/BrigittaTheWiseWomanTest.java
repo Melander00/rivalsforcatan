@@ -16,6 +16,7 @@ import samuel.event.GenericEventBus;
 import samuel.event.die.ProductionDieEvent;
 import samuel.eventmanager.EventBus;
 import samuel.game.GameContext;
+import samuel.phase.Phase;
 import samuel.player.Player;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -71,6 +72,20 @@ public class BrigittaTheWiseWomanTest {
 
         // Assert
         assertEquals(roll, event.getRollResults());
+    }
+
+    @Test
+    void testCorrectPhase() {
+        when(context.getPhase()).thenReturn(Phase.DICE_ROLL);
+
+        assertTrue(card.canPlay(player, context));
+    }
+
+    @Test
+    void testWrongPhase() {
+        when(context.getPhase()).thenReturn(Phase.ACTION);
+
+        assertFalse(card.canPlay(player, context));
     }
 
 }
