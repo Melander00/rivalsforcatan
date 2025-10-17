@@ -44,7 +44,7 @@ public class BrigittaTheWiseWomanTest {
     @ValueSource(ints = {1,2,3,4,5,6})
     void testFunctionality(int roll) {
         // Arrange
-        when(player.requestInt(eq(1), eq(6), any())).thenReturn(roll); // Simulate rigging a 5
+        when(player.requestInt(eq(1), eq(6), any())).thenReturn(roll); // Simulate rigging
         when(context.getEventBus()).thenReturn(eventBus);
         ProductionDieEvent event = new ProductionDieEvent(player, 1);
 

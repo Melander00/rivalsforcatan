@@ -7,18 +7,27 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import samuel.board.Board;
 import samuel.board.GridBoard;
+import samuel.card.center.SettlementCard;
 import samuel.card.hero.AustinHeroCard;
 import samuel.card.hero.HeroCard;
 import samuel.game.GameContext;
 import samuel.network.SocketClient;
+import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.player.PlayerHand;
 import samuel.player.ServerPlayer;
 import samuel.point.PointBundle;
 import samuel.point.points.SkillPoint;
 import samuel.point.points.StrengthPoint;
+import samuel.resource.resources.BrickResource;
+import samuel.resource.resources.GrainResource;
+import samuel.resource.resources.OreResource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static samuel.test.common.ResourceBundleHelper.createBundle;
 
 @ExtendWith(MockitoExtension.class)
 public class AustinTest {
@@ -58,5 +67,37 @@ public class AustinTest {
         assertEquals(skillPoints, bundle.getAmount(SkillPoint.class));
     }
 
+    @Test
+    void testCorrectResources() {
+        assertEquals(createBundle(GrainResource.class, OreResource.class), hero.getCost());
+    }
+
+    @Test
+    void testCanPlay() {
+        Player testPlayer = mock(Player.class);
+        when(context.getPhase()).thenReturn(Phase.ACTION);
+        when(testPlayer.hasResources(any())).thenReturn(true);
+
+        assertTrue(hero.canPlay(testPlayer, context));
+    }
+
+    @Test
+    void testCantPlay() {
+        when(context.getPhase()).thenReturn(Phase.DICE_ROLL);
+
+        assertFalse(hero.canPlay(player, context));
+    }
+
+    @Test
+    void testCorrectPlacement() {
+        board.place(new SettlementCard(), board.getPositionFromGrid(2,2));
+
+        assertTrue(hero.validatePlacement(board.getPositionFromGrid(1,2)));
+    }
+
+    @Test
+    void testIncorrectPlacement() {
+        assertFalse(hero.validatePlacement(board.getPositionFromGrid(1,2)));
+    }
 
 }
