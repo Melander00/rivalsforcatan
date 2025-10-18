@@ -21,7 +21,6 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-@Disabled
 public class ScoutTest {
 
     @Mock
@@ -38,14 +37,14 @@ public class ScoutTest {
 
     @BeforeEach
     void setup() {
-        when(context.getPhase()).thenReturn(Phase.ACTION);
-        when(context.getStackContainer()).thenReturn(stackContainer);
         eventBus = new GenericEventBus();
         card = new ScoutActionCard();
     }
 
     @Test
+    @Disabled
     void testFunctionality() {
+        when(context.getStackContainer()).thenReturn(stackContainer);
 
         card.onPlay(player, context);
         PlayerTakeRegionCardsEvent event = new PlayerTakeRegionCardsEvent();
