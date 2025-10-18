@@ -65,6 +65,7 @@ public class GridBoard implements Board {
     @Override
     public boolean existsById(CardID id) {
         for(BoardPosition pos : this.grid) {
+            if(pos.isEmpty()) continue;
             if(pos.getCard().getCardID().equals(id)) {
                 return true;
             }
