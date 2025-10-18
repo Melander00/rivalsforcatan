@@ -23,10 +23,11 @@ public class StorehouseBuildingCard implements BuildingCard {
     private final UUID uuid = UUID.randomUUID();
 
     private BoardPosition position;
+    private Player owner;
 
     @Override
     public boolean canPlay(Player player, GameContext context) {
-        return context.getPhase().equals(Phase.ACTION);
+        return context.getPhase().equals(Phase.ACTION) && player.hasResources(getCost());
     }
 
     @Override
@@ -49,21 +50,27 @@ public class StorehouseBuildingCard implements BuildingCard {
 
     @Override
     public void onPlace(Player owner, GameContext context, BoardPosition position) {
+        this.position = position;
+        this.owner = owner;
         context.getEventBus().register(this);
     }
 
     @Override
     public void onRemove(GameContext context) {
+        this.position = null;
+        this.owner = null;
         context.getEventBus().unregister(this);
     }
 
     @Subscribe
     public void onBrigandAttack(BrigandAttackEvent event) {
-        // get nearby regions
-        List<RegionCard> neighbours = ExpansionCardHelper.getNeighbouringRegions(position);
-        // remove their resource contributions from event
-        for(RegionCard region : neighbours) {
-            event.setResourceAmount(region, 0);
+        if(event.getPlayer().equals(owner)) {
+            // get nearby regions
+            List<RegionCard> neighbours = ExpansionCardHelper.getNeighbouringRegions(position);
+            // remove their resource contributions from event
+            for(RegionCard region : neighbours) {
+                event.setResourceAmount(region, 0);
+            }
         }
     }
 }
