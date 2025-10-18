@@ -32,7 +32,6 @@ import static org.mockito.Mockito.when;
 import static samuel.test.common.ResourceBundleHelper.createBundle;
 
 @ExtendWith(MockitoExtension.class)
-@Disabled
 public class AbbeyTest {
 
     @Mock
