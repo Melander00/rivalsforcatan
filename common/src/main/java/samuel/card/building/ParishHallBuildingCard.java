@@ -19,8 +19,11 @@ public class ParishHallBuildingCard implements BuildingCard, SingletonCard {
 
     @Override
     public boolean canPlay(Player player, GameContext context) {
-        if(!context.getPhase().equals(Phase.ACTION)) return false;
-        return !player.getPrincipality().existsById(id); // <- only one per principality
+        boolean phase = context.getPhase().equals(Phase.ACTION);
+        boolean canPay = player.hasResources(getCost());
+        boolean unique = !player.getPrincipality().existsById(id);
+
+        return phase && canPay && unique;
     }
 
     @Override

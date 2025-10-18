@@ -56,4 +56,6 @@ public class MarketplaceBuildingCard implements BuildingCard, SingletonCard, Poi
         return bundle;
     }
 
+    // todo implement
+
 }
