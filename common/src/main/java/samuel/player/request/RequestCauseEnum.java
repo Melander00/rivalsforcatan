@@ -24,6 +24,7 @@ public enum RequestCauseEnum {
     RELOCATION_FROM,
     RELOCATION_TO,
 
+    AMOUNT_TO_TRADE,
 
     RIG_PRODUCTION_DIE,
     ;
