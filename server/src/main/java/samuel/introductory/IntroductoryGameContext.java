@@ -11,6 +11,8 @@ import samuel.event.GenericEventBus;
 import samuel.eventmanager.EventBus;
 import samuel.phase.Phase;
 import samuel.player.Player;
+import samuel.point.points.CommercePoint;
+import samuel.point.points.StrengthPoint;
 import samuel.stack.GenericStackContainer;
 
 import java.util.ArrayList;
@@ -90,5 +92,41 @@ public class IntroductoryGameContext implements GameContext {
     @Override
     public Integer rollProductionDie() {
         return productionDie.rollDie();
+    }
+
+    @Override
+    public Player getStrengthAdvantage() {
+        int strengthPoints = 0;
+        Player winner = null;
+
+        for(Player player : getPlayers()) {
+            int points = player.getPoints(StrengthPoint.class);
+            if(points > strengthPoints) {
+                strengthPoints = points;
+                winner = player;
+            }
+        }
+
+        if(strengthPoints >= 3) return winner;
+
+        return null;
+    }
+
+    @Override
+    public Player getTradeAdvantage() {
+        int commercePoints = 0;
+        Player winner = null;
+
+        for(Player player : getPlayers()) {
+            int points = player.getPoints(CommercePoint.class);
+            if(points > commercePoints) {
+                commercePoints = points;
+                winner = player;
+            }
+        }
+
+        if(commercePoints >= 3) return winner;
+
+        return null;
     }
 }

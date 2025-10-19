@@ -121,6 +121,16 @@ public interface Player {
      */
     <T extends Point> int getPoints(Class<T> point);
 
+    /**
+     * Whether this player has the most points of a type among all players in the context.
+     * Cannot be used alone for determining strength advantage since we don't check for minimum points.
+     * We only compare to other players.
+     * @param pointType
+     * @param context
+     * @return true if this player has the most points of all players.
+     */
+    boolean hasPointAdvantage(Class<? extends Point> pointType, GameContext context);
+
     PointBundle getPoints();
 
     PlayerHand getHand();

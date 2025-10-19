@@ -247,6 +247,19 @@ public class ServerPlayer implements Player {
     }
 
     @Override
+    public boolean hasPointAdvantage(Class<? extends Point> pointType, GameContext context) {
+        boolean hasAdvantage = true;
+        for(Player player : context.getPlayers()) {
+            if(player.equals(this)) continue;
+            if(player.getPoints(pointType) > this.getPoints(pointType)) {
+                hasAdvantage = false;
+                break;
+            }
+        }
+        return hasAdvantage;
+    }
+
+    @Override
     public PlayerHand getHand() {
         return hand;
     }

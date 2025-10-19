@@ -63,4 +63,6 @@ public interface GameContext {
     EventDieFace rollEventDice();
     Integer rollProductionDie();
 
+    Player getStrengthAdvantage();
+    Player getTradeAdvantage();
 }
