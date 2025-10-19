@@ -11,6 +11,7 @@ public interface CardStack<CardType extends Card> extends Iterable<CardType> {
     CardType peekTopCard();
     CardType takeTopCard();
     CardType takeCardByUuid(UUID uuid);
+    CardType removeCard(CardType card);
     void shuffleCards();
     List<CardType> getCards();
     int getSize();

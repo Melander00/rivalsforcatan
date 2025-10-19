@@ -38,6 +38,17 @@ public class GenericCardStack<CardType extends Card> implements CardStack<CardTy
     }
 
     @Override
+    public CardType removeCard(CardType card) {
+        for(CardType c : cards) {
+            if(c.equals(card)) {
+                this.cards.remove(card);
+                return card;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void shuffleCards() {
         Collections.shuffle(this.cards);
     }

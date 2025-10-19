@@ -11,11 +11,7 @@ import samuel.card.region.RegionCard;
 import samuel.card.stack.CardStack;
 import samuel.card.stack.StackContainer;
 import samuel.deck.Deck;
-import samuel.die.EventDieFace;
-import samuel.event.die.EventDieEvent;
-import samuel.event.die.ProductionDieEvent;
 import samuel.event.player.PlayerTradeEvent;
-import samuel.event.player.exchange.PlayerExchangeSearchEvent;
 import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.player.action.PlayerAction;
@@ -30,10 +26,16 @@ import samuel.util.Pair;
 import java.util.*;
 import java.util.function.BiConsumer;
 
+
 public abstract class AbstractGame implements Game {
 
     private final GameContext context;
     private final Deck deck;
+
+    private final ActionHandler actionHandler = new DefaultActionHandler();
+    private final DiceHandler diceHandler = new DefaultDiceHandler();
+    private final ReplenishHandler replenishHandler = new DefaultReplenishHandler();
+    private final ExchangeHandler exchangeHandler = new DefaultExchangeHandler();
 
     public AbstractGame(GameContext context, Deck deck) {
         this.context = context;
@@ -51,7 +53,7 @@ public abstract class AbstractGame implements Game {
         context.setPhase(Phase.INIT);
 
         // setup card deck and stacks
-        setupCardDeckAndStacks();
+        setupCardDeckAndStacks(deck, context);
 
 
         // initial draw
@@ -71,77 +73,31 @@ public abstract class AbstractGame implements Game {
         setupFinal();
     }
 
+    public ActionHandler getActionHandler() {
+        return actionHandler;
+    }
+
+    public DiceHandler getDiceHandler() {
+        return diceHandler;
+    }
+
+    public ReplenishHandler getReplenishHandler() {
+        return replenishHandler;
+    }
+
+    public ExchangeHandler getExchangeHandler() {
+        return exchangeHandler;
+    }
+
     // todo: move some methods into their own helper class
 
     public abstract void setupPrincipality(Player player, int playerIndex);
 
-    public void setupCardDeckAndStacks() {
-        StackContainer container = getContext().getStackContainer();
-
-
-        // --- Center Cards ---
-        for(int i = 0; i < deck.getAmountOfRoadCards(); i++) {
-            container.getRoadStack().addCardToBottom(new RoadCard());
-        }
-
-        for(int i = 0; i < deck.getAmountOfSettlementCards(); i++) {
-            container.getSettlementStack().addCardToBottom(new SettlementCard());
-        }
-
-        for(int i = 0; i < deck.getAmountOfCityCards(); i++) {
-            container.getCityStack().addCardToBottom(new CityCard());
-        }
-
-
-        // --- Region Cards ---
-        for(RegionCard card : deck.getRegionCards()) {
-            container.getRegionStack().addCardToBottom(card);
-        }
-        container.getRegionStack().shuffleCards();
-
-
-        // --- Event Cards ---
-        for(EventCard card : deck.getEventCards()) {
-            container.getEventStack().addCardToBottom(card);
-        }
-        container.getEventStack().shuffleCards();
-
-        // --- Basic Cards ---
-
-        // We divide the cards into X stacks at random
-        List<PlayableCard> cards = new ArrayList<>(deck.getBasicCards());
-        Collections.shuffle(cards);
-        int cardsPerStack = cards.size() / getBasicCardStacks();
-
-        // Get sub-lists for each stack
-        for(int i = 0; i < getBasicCardStacks(); i++) {
-            CardStack<PlayableCard> stack = new GenericCardStack<>();
-            List<PlayableCard> sublist = cards.subList(i*cardsPerStack, i*cardsPerStack + cardsPerStack);
-            for(PlayableCard card : sublist) {
-                stack.addCardToBottom(card);
-            }
-            container.addToBasicStacks(stack);
-        }
-
-        // --- Theme Cards ---
-
-        // We divide the cards into X stacks at random
-        if(deck.getThemeCards() != null) {
-            List<PlayableCard> themeCards = new ArrayList<>(deck.getThemeCards());
-            Collections.shuffle(themeCards);
-            int themeCardsPerStack = themeCards.size() / getThemeCardStacks();
-
-            // Get sub-lists for each stack
-            for(int i = 0; i < getThemeCardStacks(); i++) {
-                CardStack<PlayableCard> stack = new GenericCardStack<>();
-                List<PlayableCard> sublist = themeCards.subList(i*themeCardsPerStack, i*themeCardsPerStack + themeCardsPerStack);
-                for(PlayableCard card : sublist) {
-                    stack.addCardToBottom(card);
-                }
-                container.addToThemeStacks(stack);
-            }
-        }
+    public void setupCardDeckAndStacks(Deck deck, GameContext context) {
+        DefaultStackHandler.setupCardDeckAndStacks(deck, context, getBasicCardStacks(), getThemeCardStacks());
     }
+
+
 
     public abstract int getBasicCardStacks();
     public abstract int getThemeCardStacks();
@@ -174,16 +130,16 @@ public abstract class AbstractGame implements Game {
     public void runTurn(Player activePlayer) {
         getContext().setPhase(Phase.DICE_ROLL);
         preDiceRolls(activePlayer);
-        rollAndResolveDice(activePlayer);
+        getDiceHandler().rollAndResolveDice(activePlayer, context);
 
         getContext().setPhase(Phase.ACTION);
-        actionPhase(activePlayer);
+        getActionHandler().handleActionPhase(activePlayer, context);
 
         getContext().setPhase(Phase.REPLENISH);
-        replenishCards(activePlayer);
+        getReplenishHandler().handleReplenish(activePlayer, context);
 
         getContext().setPhase(Phase.EXCHANGE);
-        exchangeCards(activePlayer);
+        getExchangeHandler().handleExchange(activePlayer, getContext());
     }
 
     public abstract void switchTurn();
@@ -198,217 +154,26 @@ public abstract class AbstractGame implements Game {
         }
     }
 
+
+
     public void preDiceRolls(Player activePlayer) {
         boolean hasRolledDice = false;
         while(!hasRolledDice) {
             Pair<PlayerAction, BiConsumer<Boolean, String>> res = activePlayer.requestAction(getContext().getPhase());
+
             if(res.first().getAction().equals(PlayerActionEnum.ROLL_DICE)) {
                 hasRolledDice = true;
                 res.second().accept(true, "");
+
             } else if(res.first().getAction().equals(PlayerActionEnum.PLAY_CARD)) {
-                handleCardPlayAction(activePlayer, res.first().getData(), res.second());
+                getActionHandler().handlePlayCardAction(activePlayer, context, res.first().getData(), res.second());
+
             } else {
                 res.second().accept(false, ActionResponseType.INVALID_ACTION.toString());
+
             }
         }
     }
 
-    public void rollAndResolveDice(Player activePlayer) {
-        // roll dice
 
-        int res = getContext().rollProductionDie();
-        ProductionDieEvent productionEvent = new ProductionDieEvent(activePlayer, res);
-        getContext().getEventBus().fireEvent(productionEvent);
-        int rollResults = productionEvent.getRollResults();
-        getContext().getEventBus().fireEvent(new ProductionDieEvent.Post(rollResults, getContext()));
-
-        EventDieFace face = getContext().rollEventDice();
-        EventDieEvent eventEvent = new EventDieEvent(activePlayer, face);
-        getContext().getEventBus().fireEvent(eventEvent);
-        EventDieFace eventResults = eventEvent.getRollResults();
-        getContext().getEventBus().fireEvent(new EventDieEvent.Post(eventResults));
-
-        if(eventResults.hasPriorityOverProduction()) {
-            eventResults.resolve(getContext());
-            resolveProduction(rollResults);
-        } else {
-            resolveProduction(rollResults);
-            eventResults.resolve(getContext());
-        }
-    }
-
-    public void resolveProduction(int rollResults) {
-        // todo: remove? we use event-based to increase yield
-    }
-
-    public void actionPhase(Player activePlayer) {
-        boolean hasEndedTurn = false;
-        while(!hasEndedTurn) {
-            Pair<PlayerAction, BiConsumer<Boolean, String>> res = activePlayer.requestAction(getContext().getPhase());
-            if(res.first().getAction().equals(PlayerActionEnum.END_TURN)) {
-                hasEndedTurn = true;
-                res.second().accept(true, "");
-            } else if(res.first().getAction().equals(PlayerActionEnum.PLAY_CARD)) {
-                handleCardPlayAction(activePlayer, res.first().getData(), res.second());
-            } else if(res.first().getAction().equals(PlayerActionEnum.TRADE)) {
-                handleTradeAction(activePlayer, res.first().getData(), res.second());
-            } else if(res.first().getAction().equals(PlayerActionEnum.BUILD)) {
-                handleBuildAction(activePlayer, res.first().getData(), res.second());
-            } else {
-                res.second().accept(false, ActionResponseType.INVALID_ACTION.toString());
-            }
-        }
-    }
-
-    public void handleCardPlayAction(Player player, Object data, BiConsumer<Boolean, String> callback) {
-        if(data instanceof String uuid) {
-            UUID cardToPlay = UUID.fromString(uuid);
-            PlayableCard card = player.getCardInHandFromUuid(cardToPlay);
-            if(card == null) {
-                callback.accept(false, ActionResponseType.CARD_NOT_FOUND.toString());
-                return;
-            }
-
-            if(card.canPlay(player, getContext())) {
-                player.playCard(card, getContext());
-                player.removeCardFromHand(card);
-                callback.accept(true, "");
-                return;
-            } else {
-                callback.accept(false, ActionResponseType.CARD_CANNOT_BE_PLAYED.toString());
-                return;
-            }
-        } else {
-            callback.accept(false, "INVALID_TYPE");
-            return;
-        }
-    }
-
-    public void handleTradeAction(Player player, Object data, BiConsumer<Boolean, String> callback) {
-
-
-
-        // ask which resource to pay
-        ResourceBundle toPay = player.requestResource(ResourceBundle.oneOfAll(), 1, new RequestCause(RequestCauseEnum.TRADE_PAY));
-        ResourceAmount firstToPay = toPay.iterator().next();
-        // ask which resource to get
-        ResourceBundle toGet = player.requestResource(ResourceBundle.oneOfAll(), 1, new RequestCause(RequestCauseEnum.TRADE_GET));
-        ResourceAmount firstToGet = toGet.iterator().next();
-        // fire event
-
-
-        PlayerTradeEvent event = new PlayerTradeEvent(
-                player,
-                new ResourceAmount(firstToPay.resourceType(), 3), // todo: hard-coded magical number (default trade value 3:1)
-                new ResourceAmount(firstToGet.resourceType(), 1));
-        getContext().getEventBus().fireEvent(event);
-        // get from event how many to pay
-        ResourceAmount amountToPay = event.getResourceToPay();
-        // check if the player has that amount of resources
-        boolean hasEnough = player.hasResources(ResourceBundle.fromAmount(amountToPay));
-        // if no - send back that you dont have enough reosurce
-        if(!hasEnough) {
-            callback.accept(false, ActionResponseType.NOT_ENOUGH_RESOURCES.toString());
-            return;
-        }
-        // ask region to take from x
-        player.removeResources(ResourceBundle.fromAmount(amountToPay));
-        // give resource
-        player.giveResources(ResourceBundle.fromAmount(event.getResourceToGet()));
-        // fire post_event
-        getContext().getEventBus().fireEvent(new PlayerTradeEvent.Post(player, amountToPay, event.getResourceToGet()));
-        // accept callback
-        callback.accept(true, "");
-    }
-
-    public void handleBuildAction(Player player, Object data, BiConsumer<Boolean, String> callback) {
-        if(data instanceof String cardName) {
-            StackContainer stacks = getContext().getStackContainer();
-            CardStack<PlaceableCard> stack = switch (cardName) {
-                case "road" -> stacks.getRoadStack();
-                case "settlement" -> stacks.getSettlementStack();
-                case "city" -> stacks.getCityStack();
-                // todo: Special face-up theme cards
-                default -> null;
-            };
-
-            if(stack == null) {
-                callback.accept(false, ActionResponseType.CARD_NOT_FOUND.toString());
-                return;
-            }
-
-            PlaceableCard card = stack.peekTopCard();
-            boolean canPlay = card.canPlay(player, getContext());
-
-            if(!canPlay) {
-                callback.accept(false, ActionResponseType.CARD_CANNOT_BE_PLAYED.toString());
-                return;
-            }
-
-            player.playCard(card, getContext());
-            callback.accept(true, "");
-            return;
-
-        } else {
-            callback.accept(false, "INVALID_TYPE");
-            return;
-        }
-
-    }
-
-    // todo: add events
-    public void replenishCards(Player activePlayer) {
-        // todo: discard if player hand is overfull
-        while(!activePlayer.isHandFull()) {
-            CardStack<PlayableCard> stack = activePlayer.requestCardStack(
-                    getContext().getStackContainer().getBasicStacks(),
-                    getContext().getStackContainer().getBasicStacks().stream().filter((s) -> s.getSize() == 0).map(CardStack::getUuid).toList(),
-                    new RequestCause(RequestCauseEnum.REPLENISH_STACK));
-            if(stack.getSize() == 0) {
-                // todo:
-            }
-            PlayableCard card = stack.takeTopCard();
-            activePlayer.addCardToHand(card);
-        }
-    }
-
-    // todo: add events
-    public void exchangeCards(Player activePlayer) {
-        boolean shouldExchange = activePlayer.requestBoolean(new RequestCause(RequestCauseEnum.EXCHANGE));
-        if(shouldExchange) {
-
-            // Choose which card to discard and where
-            PlayableCard card = activePlayer.requestCard(activePlayer.getHand().getCards(), new RequestCause(RequestCauseEnum.EXCHANGE_DISCARD_CARD));
-            CardStack<PlayableCard> discardStack = activePlayer.requestCardStack(getContext().getStackContainer().getBasicStacks(), List.of(), new RequestCause(RequestCauseEnum.EXCHANGE_DISCARD_STACK));
-            discardStack.addCardToBottom(card);
-            activePlayer.removeCardFromHand(card);
-
-            // Choose which stack to take from
-            CardStack<PlayableCard> takeStack = activePlayer.requestCardStack(
-                    getContext().getStackContainer().getBasicStacks(),
-                    getContext().getStackContainer().getBasicStacks().stream().filter((s) -> s.getSize() == 0).map(CardStack::getUuid).toList(),
-                    new RequestCause(RequestCauseEnum.EXCHANGE_TAKE_STACK));
-
-            boolean searchStack = activePlayer.requestBoolean(new RequestCause(RequestCauseEnum.EXCHANGE_SEARCH));
-            if(searchStack) {
-
-                PlayerExchangeSearchEvent event = new PlayerExchangeSearchEvent(activePlayer, 2);
-                getContext().getEventBus().fireEvent(event);
-
-                // ask which resources to pay with
-                ResourceBundle toPayWith = activePlayer.requestResource(activePlayer.getResources(), event.getResourcesToPay(), new RequestCause(RequestCauseEnum.EXCHANGE_SEARCH));
-                // pay resources
-                activePlayer.removeResources(toPayWith);
-                // ask which card in stack
-                PlayableCard c = activePlayer.requestCard(takeStack.getCards(), new RequestCause(RequestCauseEnum.EXCHANGE_SEARCH));
-                // add that card to player hand
-                PlayableCard removedCard = takeStack.takeCardByUuid(c.getUuid());
-                activePlayer.addCardToHand(removedCard);
-                // shuffle stack
-                takeStack.shuffleCards();
-            } else {
-                activePlayer.addCardToHand(takeStack.takeTopCard());
-            }
-        }
-    }
 }
