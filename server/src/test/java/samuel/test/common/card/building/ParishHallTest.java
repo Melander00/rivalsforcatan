@@ -7,12 +7,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import samuel.board.Board;
+import samuel.board.BoardPosition;
 import samuel.board.GridBoard;
 import samuel.card.building.AbbeyBuildingCard;
 import samuel.card.building.BuildingCard;
 import samuel.card.building.ParishHallBuildingCard;
 import samuel.card.center.SettlementCard;
 import samuel.event.GenericEventBus;
+import samuel.event.player.exchange.PlayerExchangeSearchEvent;
 import samuel.eventmanager.EventBus;
 import samuel.game.GameContext;
 import samuel.network.SocketClient;
@@ -60,14 +62,19 @@ public class ParishHallTest {
     }
 
     @Test
-    @Disabled
     void testExchangeSearch() {
-        // todo:
+        when(context.getEventBus()).thenReturn(eventBus);
         // place parish hall
+        BoardPosition pos = board.getPositionFromGrid(1,1);
+        board.place(card, pos);
+        card.onPlace(player, context, pos);
 
         // fire exchange event
+        PlayerExchangeSearchEvent event = new PlayerExchangeSearchEvent(player, 2);
+        eventBus.fireEvent(event);
 
         // make sure only one resource was taken.
+        assertEquals(1, event.getResourcesToPay());
     }
 
 

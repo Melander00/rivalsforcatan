@@ -1,7 +1,10 @@
 package samuel.card.building;
 
+import samuel.board.BoardPosition;
 import samuel.card.CardID;
 import samuel.card.SingletonCard;
+import samuel.event.player.exchange.PlayerExchangeSearchEvent;
+import samuel.eventmanager.Subscribe;
 import samuel.game.GameContext;
 import samuel.phase.Phase;
 import samuel.player.Player;
@@ -16,6 +19,11 @@ public class ParishHallBuildingCard implements BuildingCard, SingletonCard {
     private static final CardID id = new CardID("building", "parish_hall");
 
     private final UUID uuid = UUID.randomUUID();
+
+    private Player owner;
+    private BoardPosition position;
+
+    private static final int resourcesToPay = 1;
 
     @Override
     public boolean canPlay(Player player, GameContext context) {
@@ -44,5 +52,27 @@ public class ParishHallBuildingCard implements BuildingCard, SingletonCard {
         return bundle;
     }
 
-    // todo: implement
+    @Override
+    public void onPlace(Player owner, GameContext context, BoardPosition position) {
+        this.owner = owner;
+        this.position = position;
+        context.getEventBus().register(this);
+    }
+
+    @Override
+    public void onRemove(GameContext context) {
+        this.owner = null;
+        this.position = null;
+        context.getEventBus().unregister(this);
+    }
+
+
+    @Subscribe
+    public void onExchangeSearchEvent(PlayerExchangeSearchEvent event) {
+        if(event.getPlayer().equals(owner)) {
+            if(event.getResourcesToPay() > resourcesToPay) {
+                event.setResourcesToPay(resourcesToPay);
+            }
+        }
+    }
 }

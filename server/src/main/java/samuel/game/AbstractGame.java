@@ -15,6 +15,7 @@ import samuel.die.EventDieFace;
 import samuel.event.die.EventDieEvent;
 import samuel.event.die.ProductionDieEvent;
 import samuel.event.player.PlayerTradeEvent;
+import samuel.event.player.exchange.PlayerExchangeSearchEvent;
 import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.player.action.PlayerAction;
@@ -390,10 +391,12 @@ public abstract class AbstractGame implements Game {
 
             boolean searchStack = activePlayer.requestBoolean(new RequestCause(RequestCauseEnum.EXCHANGE_SEARCH));
             if(searchStack) {
-                // todo: parish hall, event?
+
+                PlayerExchangeSearchEvent event = new PlayerExchangeSearchEvent(activePlayer, 2);
+                getContext().getEventBus().fireEvent(event);
 
                 // ask which resources to pay with
-                ResourceBundle toPayWith = activePlayer.requestResource(activePlayer.getResources(), 2, new RequestCause(RequestCauseEnum.EXCHANGE_SEARCH));
+                ResourceBundle toPayWith = activePlayer.requestResource(activePlayer.getResources(), event.getResourcesToPay(), new RequestCause(RequestCauseEnum.EXCHANGE_SEARCH));
                 // pay resources
                 activePlayer.removeResources(toPayWith);
                 // ask which card in stack
