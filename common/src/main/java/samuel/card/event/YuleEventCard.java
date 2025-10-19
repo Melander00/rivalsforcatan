@@ -1,6 +1,8 @@
 package samuel.card.event;
 
 import samuel.card.CardID;
+import samuel.card.stack.CardStack;
+import samuel.event.card.YuleEvent;
 import samuel.game.GameContext;
 
 import java.util.UUID;
@@ -24,9 +26,16 @@ public class YuleEventCard implements EventCard {
 
     @Override
     public void resolveEvent(GameContext context) {
-        // todo
-        // shuffle event cards (EventCardFace returns this card to the stack before resolving)
-        // either call EventCardFace.resolve <-- reusability
-        // or draw an event card and handle here. <-- less coupling (if EventCardFace changes we need to change here to make sure the card is working correctly)
+
+        CardStack<EventCard> eventStack = context.getStackContainer().getEventStack();
+
+        context.getEventBus().fireEvent(new YuleEvent());
+
+        eventStack.shuffleCards();
+
+        EventCard card = eventStack.takeTopCard();
+        eventStack.addCardToBottom(card);
+
+        card.resolveEvent(context);
     }
 }

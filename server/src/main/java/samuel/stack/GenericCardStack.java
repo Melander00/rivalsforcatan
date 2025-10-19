@@ -7,7 +7,7 @@ import java.util.*;
 
 public class GenericCardStack<CardType extends Card> implements CardStack<CardType> {
 
-    private final List<CardType> cards = new ArrayList<>();
+    private List<CardType> cards = new ArrayList<>();
 
     private final UUID uuid = UUID.randomUUID();
 
@@ -60,5 +60,10 @@ public class GenericCardStack<CardType extends Card> implements CardStack<CardTy
     @Override
     public Iterator<CardType> iterator() {
         return cards.iterator();
+    }
+
+    @Override
+    public void setCards(List<CardType> cards) {
+        this.cards = cards;
     }
 }

@@ -15,5 +15,7 @@ public interface CardStack<CardType extends Card> extends Iterable<CardType> {
     List<CardType> getCards();
     int getSize();
 
+    void setCards(List<CardType> cards);
+
     UUID getUuid();
 }

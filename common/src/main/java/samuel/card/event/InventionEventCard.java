@@ -41,14 +41,18 @@ public class InventionEventCard implements EventCard {
         List<Player> players = context.getPlayers();
         for(Player player : players) {
             int times = Math.min(player.getPoints(ProgressPoint.class), maxResources);
-            ResourceBundle bundle = new ResourceBundle();
-            while(times > 0) {
-                ResourceBundle toGet = player.requestResource(ResourceBundle.oneOfAll(), 1, new RequestCause(RequestCauseEnum.FREE_RESOURCES));
-                for(ResourceAmount am : toGet) {
-                    bundle.addResource(am.resourceType(), am.amount());
-                }
-                times--;
-            }
+            if(times == 0) continue;
+
+//            ResourceBundle bundle = new ResourceBundle();
+
+            ResourceBundle bundle = player.requestResource(ResourceBundle.oneOfAll(times), times, new RequestCause(RequestCauseEnum.FREE_RESOURCES));
+//            while(times > 0) {
+//                ResourceBundle toGet = player.requestResource(ResourceBundle.oneOfAll(), 1, new RequestCause(RequestCauseEnum.FREE_RESOURCES));
+//                for(ResourceAmount am : toGet) {
+//                    bundle.addResource(am.resourceType(), am.amount());
+//                }
+//                times--;
+//            }
             player.giveResources(bundle);
         }
 
