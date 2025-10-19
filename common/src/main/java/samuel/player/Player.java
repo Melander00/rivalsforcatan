@@ -136,6 +136,7 @@ public interface Player {
     PlayerHand getHand();
     void removeCardFromHand(PlayableCard card);
     boolean isHandFull();
+    int getMaxHandSize();
     void addCardToHand(PlayableCard card);
 
     PlayableCard getCardInHandFromUuid(UUID uuid);

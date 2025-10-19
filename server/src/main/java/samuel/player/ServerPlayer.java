@@ -50,7 +50,7 @@ public class ServerPlayer implements Player {
     public ServerPlayer(Board principality, PlayerHand hand, SocketClient client) {
         this.principality = principality;
         this.hand = hand;
-        this.client = client;
+        this.client = client; // todo, byt ut SocketClient mot ett interface för future modifiability.
         client.addListener(this::clientRequestHandler);
     }
 
@@ -264,6 +264,12 @@ public class ServerPlayer implements Player {
         return hand;
     }
 
+    @Override
+    public int getMaxHandSize() {
+        int points = getPoints(ProgressPoint.class);
+
+        return 3 + points;
+    }
 
     @Override
     public void removeCardFromHand(PlayableCard card) {
@@ -272,9 +278,9 @@ public class ServerPlayer implements Player {
 
     @Override
     public boolean isHandFull() {
-        int points = getPoints(ProgressPoint.class);
+        int maxSize = getMaxHandSize();
 
-        return hand.getSize() >= 3 + points;
+        return hand.getSize() >= maxSize;
     }
 
     @Override

@@ -66,26 +66,6 @@ public class RelocationTest {
         eventBus = new GenericEventBus();
         card = new RelocationActionCard();
         board = GridBoard.createGridBoard(5, 7);
-
-//        when(context.getPhase()).thenReturn(Phase.ACTION);
-//        when(player.getPrincipality()).thenReturn(board);
-//        doAnswer(invocation -> {
-//            PlaceableCard card = invocation.getArgument(0);
-//            BoardPosition pos = invocation.getArgument(1);
-//            GameContext ctx = invocation.getArgument(2);
-//
-//            board.place(card, pos);
-//            card.onPlace(player, ctx, pos);
-//
-//            return null;
-//        }).when(player).placeCard(any(), any(), any());
-//
-////        IntrodoctoryPrincipality.setupPrincipality(player, 0, context);
-//
-//        PlaceableCard exp1 = new TollBridgeBuildingCard();
-//        board.place(exp1, board.getPositionFromGrid(1,2));
-//        PlaceableCard exp2 = new IronFoundryBuildingCard();
-//        board.place(exp2, board.getPositionFromGrid(1,4));
     }
 
     @Test
