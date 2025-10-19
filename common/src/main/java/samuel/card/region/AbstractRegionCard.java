@@ -1,6 +1,7 @@
 package samuel.card.region;
 
 import samuel.board.BoardPosition;
+import samuel.card.util.RegionCardHelper;
 import samuel.game.GameContext;
 import samuel.player.Player;
 import samuel.resource.Resource;
@@ -78,7 +79,7 @@ public abstract class AbstractRegionCard implements RegionCard {
 
     @Override
     public boolean validatePlacement(BoardPosition position) {
-        return true;
+        return RegionCardHelper.validatePlacement(position);
     }
 
 

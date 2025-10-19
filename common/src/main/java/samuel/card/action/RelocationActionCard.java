@@ -38,9 +38,6 @@ public class RelocationActionCard implements ActionCard {
 
     @Override
     public void onPlay(Player player, GameContext context) {
-        // todo: implement
-        // if yes, relocate expansions if no, relocate regions
-
         boolean moveExpansions = player.requestBoolean(new RequestCause(RequestCauseEnum.RELOCATION_SHOULD_MOVE_EXPANSION));
         if(moveExpansions) {
             moveExpansions(player, context);

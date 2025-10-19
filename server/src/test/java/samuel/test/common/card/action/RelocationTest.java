@@ -9,14 +9,17 @@ import samuel.board.Board;
 import samuel.board.BoardPosition;
 import samuel.board.GridBoard;
 import samuel.card.Card;
+import samuel.card.ExpansionCard;
 import samuel.card.PlaceableCard;
 import samuel.card.PlayableCard;
 import samuel.card.action.ActionCard;
 import samuel.card.action.RelocationActionCard;
+import samuel.card.building.BuildingCard;
 import samuel.card.building.TollBridgeBuildingCard;
 import samuel.card.building.booster.IronFoundryBuildingCard;
-import samuel.card.region.FieldsRegionCard;
-import samuel.card.region.MountainsRegionCard;
+import samuel.card.center.SettlementCard;
+import samuel.card.hero.AustinHeroCard;
+import samuel.card.region.*;
 import samuel.card.stack.CardStack;
 import samuel.effect.Effect;
 import samuel.event.Event;
@@ -65,12 +68,49 @@ public class RelocationTest {
         board = GridBoard.createGridBoard(5, 7);
 
 //        when(context.getPhase()).thenReturn(Phase.ACTION);
+//        when(player.getPrincipality()).thenReturn(board);
+//        doAnswer(invocation -> {
+//            PlaceableCard card = invocation.getArgument(0);
+//            BoardPosition pos = invocation.getArgument(1);
+//            GameContext ctx = invocation.getArgument(2);
+//
+//            board.place(card, pos);
+//            card.onPlace(player, ctx, pos);
+//
+//            return null;
+//        }).when(player).placeCard(any(), any(), any());
+//
+////        IntrodoctoryPrincipality.setupPrincipality(player, 0, context);
+//
+//        PlaceableCard exp1 = new TollBridgeBuildingCard();
+//        board.place(exp1, board.getPositionFromGrid(1,2));
+//        PlaceableCard exp2 = new IronFoundryBuildingCard();
+//        board.place(exp2, board.getPositionFromGrid(1,4));
+    }
+
+    @Test
+    void testExpansions() {
         when(context.getEventBus()).thenReturn(eventBus);
+        when(player.requestBoolean(any())).thenReturn(true);
         when(player.getPrincipality()).thenReturn(board);
-        doAnswer(invocation -> {
-            PlaceableCard card = invocation.getArgument(0);
-            BoardPosition pos = invocation.getArgument(1);
-            GameContext ctx = invocation.getArgument(2);
+
+        board.place(new SettlementCard(), board.getPositionFromGrid(2,1));
+        board.place(new SettlementCard(), board.getPositionFromGrid(2,3));
+        ExpansionCard c1 = new TollBridgeBuildingCard();
+        ExpansionCard c2 = new AustinHeroCard();
+        BoardPosition pos1 = board.getPositionFromGrid(1,1);
+        BoardPosition pos2 = board.getPositionFromGrid(1,3);
+        board.place(c1, pos1);
+        board.place(c2, pos2);
+
+        when(player.requestBoardPosition(any(), any()))
+                .thenReturn(pos1)
+                .thenReturn(pos2);
+
+        doAnswer(args -> {
+            PlaceableCard card = args.getArgument(0);
+            BoardPosition pos = args.getArgument(1);
+            GameContext ctx = args.getArgument(2);
 
             board.place(card, pos);
             card.onPlace(player, ctx, pos);
@@ -78,38 +118,68 @@ public class RelocationTest {
             return null;
         }).when(player).placeCard(any(), any(), any());
 
-        IntrodoctoryPrincipality.setupPrincipality(player, 0, context);
+        doAnswer(args -> {
+            PlaceableCard card = args.getArgument(0);
+            BoardPosition pos = args.getArgument(1);
+            GameContext ctx = args.getArgument(2);
 
-        PlaceableCard exp1 = new TollBridgeBuildingCard();
-        board.place(exp1, board.getPositionFromGrid(1,2));
-        PlaceableCard exp2 = new IronFoundryBuildingCard();
-        board.place(exp2, board.getPositionFromGrid(1,4));
-    }
+            pos.setCard(null);
+            card.onRemove(context);
 
-    @Test
-    void testExpansions() {
-        when(player.requestBoolean(any())).thenReturn(true);
-        when(player.requestBoardPosition(any(), any()))
-                .thenReturn(board.getPositionFromGrid(1,2))
-                .thenReturn(board.getPositionFromGrid(1,4));
+            return null;
+        }).when(player).removeCard(any(), any(), any());
 
         card.onPlay(player, context);
 
-        assertInstanceOf(TollBridgeBuildingCard.class, board.getPositionFromGrid(1,4).getCard());
-        assertInstanceOf(IronFoundryBuildingCard.class, board.getPositionFromGrid(1,2).getCard());
+        assertEquals(c1, pos2.getCard());
+        assertEquals(c2, pos1.getCard());
     }
 
     @Test
     void testRegions() {
-        when(player.requestBoolean(new RequestCause(RequestCauseEnum.RELOCATION_SHOULD_MOVE_EXPANSION, any()))).thenReturn(false);
+
+        when(context.getEventBus()).thenReturn(eventBus);
+        when(player.requestBoolean(any())).thenReturn(false);
+        when(player.getPrincipality()).thenReturn(board);
+
+        board.place(new SettlementCard(), board.getPositionFromGrid(2,2));
+        RegionCard c1 = new GoldFieldRegionCard(1);
+        RegionCard c2 = new ForestRegionCard(1);
+        BoardPosition pos1 = board.getPositionFromGrid(1,1);
+        BoardPosition pos2 = board.getPositionFromGrid(1,3);
+        board.place(c1, pos1);
+        board.place(c2, pos2);
+
         when(player.requestBoardPosition(any(), any()))
-                .thenReturn(board.getPositionFromGrid(1,5))
-                .thenReturn(board.getPositionFromGrid(3,5));
+                .thenReturn(pos1)
+                .thenReturn(pos2);
+
+        doAnswer(args -> {
+            PlaceableCard card = args.getArgument(0);
+            BoardPosition pos = args.getArgument(1);
+            GameContext ctx = args.getArgument(2);
+
+            board.place(card, pos);
+            card.onPlace(player, ctx, pos);
+
+            return null;
+        }).when(player).placeCard(any(), any(), any());
+
+        doAnswer(args -> {
+            PlaceableCard card = args.getArgument(0);
+            BoardPosition pos = args.getArgument(1);
+            GameContext ctx = args.getArgument(2);
+
+            pos.setCard(null);
+            card.onRemove(context);
+
+            return null;
+        }).when(player).removeCard(any(), any(), any());
 
         card.onPlay(player, context);
 
-        assertInstanceOf(MountainsRegionCard.class, board.getPositionFromGrid(1,5).getCard());
-        assertInstanceOf(FieldsRegionCard.class, board.getPositionFromGrid(3,5).getCard());
+        assertEquals(c1, pos2.getCard());
+        assertEquals(c2, pos1.getCard());
     }
 
     @Test

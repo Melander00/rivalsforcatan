@@ -5,6 +5,9 @@ import samuel.board.BoardPosition;
 import samuel.card.PlaceableCard;
 import samuel.card.PointHolder;
 import samuel.card.PriceTag;
+import samuel.card.region.RegionCard;
+import samuel.card.stack.CardStack;
+import samuel.event.player.PlayerTakeRegionCardsEvent;
 import samuel.game.GameContext;
 import samuel.phase.Phase;
 import samuel.player.Player;
@@ -14,6 +17,8 @@ import samuel.resource.*;
 import samuel.card.CardID;
 import samuel.resource.resources.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, SettlementLike {
@@ -57,7 +62,22 @@ public class SettlementCard implements PlaceableCard, PriceTag, PointHolder, Set
 
     @Override
     public void onPlace(Player owner, GameContext context, BoardPosition position) {
-        // todo: take two region cards and allow player to place them
+
+        CardStack<RegionCard> regionStack = context.getStackContainer().getRegionStack();
+
+        int toTake = Math.min(2, regionStack.getSize());
+        List<RegionCard> take = new ArrayList<>();
+        for(int i = 0; i < toTake; i++) {
+            take.add(regionStack.getCards().get(i));
+        }
+
+        PlayerTakeRegionCardsEvent event = new PlayerTakeRegionCardsEvent(owner, take, context);
+        context.getEventBus().fireEvent(event);
+
+        List<RegionCard> toPlace = event.getRegions();
+        for(RegionCard region : toPlace) {
+            owner.playCard(region, context);
+        }
     }
 
 

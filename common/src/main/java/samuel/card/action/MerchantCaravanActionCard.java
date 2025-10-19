@@ -38,22 +38,6 @@ public class MerchantCaravanActionCard implements ActionCard {
 
     @Override
     public void onPlay(Player player, GameContext context) {
-        // todo: implement
-        /*
-
-        Merchant Caravan Discard exactly 2 of your resources and
-        take any 2 resources of your choice in return.
-
-        You may discard 2 resources
-        of the same type or 2 different
-        resources. The resources
-        may come from the same
-        or different regions. You
-        may also take 2 of the same resource if it seems
-        reasonable to you. However, you must have at
-        least 2 resources to play the Merchant Caravan
-
-         */
 
         ResourceBundle toRemove = player.requestResource(player.getResources(), 2, new RequestCause(RequestCauseEnum.TO_PAY_WITH));
         player.removeResources(toRemove);

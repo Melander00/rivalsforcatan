@@ -1,6 +1,8 @@
 package samuel.card.action;
 
 import samuel.card.CardID;
+import samuel.effect.ChooseRegionCardsEffect;
+import samuel.effect.RigProductionDieEffect;
 import samuel.game.GameContext;
 import samuel.phase.Phase;
 import samuel.player.Player;
@@ -20,7 +22,7 @@ public class ScoutActionCard implements ActionCard {
 
     @Override
     public void onPlay(Player player, GameContext context) {
-        // todo: implement
+        player.giveEffect(new ChooseRegionCardsEffect(player, context));
     }
 
     @Override
