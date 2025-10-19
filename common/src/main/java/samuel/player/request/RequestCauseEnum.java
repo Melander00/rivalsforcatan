@@ -14,6 +14,10 @@ public enum RequestCauseEnum {
     TRADE_PAY,
     TRADE_GET,
 
+    STACK_TO_PLACE_CARD_IN,
+
+    FRATERNAL_FEUDS_REMOVE_CARD,
+
     FEUD_SELECT_BUILDINGS,
     REMOVE_CARD,
 
