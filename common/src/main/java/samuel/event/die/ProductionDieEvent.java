@@ -1,8 +1,10 @@
 package samuel.event.die;
 
 import samuel.event.CancelableEvent;
+import samuel.event.ContextEvent;
 import samuel.event.Event;
 import samuel.event.EventID;
+import samuel.game.GameContext;
 import samuel.player.Player;
 
 public class ProductionDieEvent implements Event {
@@ -34,12 +36,19 @@ public class ProductionDieEvent implements Event {
         return id;
     }
 
-    public static class Post implements Event {
+    public static class Post implements ContextEvent {
         private final static EventID id = new EventID("dice", "production_post");
         private final int rollResults;
+        private final GameContext context;
 
-        public Post(int rollResults) {
+        public Post(int rollResults, GameContext context) {
             this.rollResults = rollResults;
+            this.context = context;
+        }
+
+        @Override
+        public GameContext getContext() {
+            return context;
         }
 
         public int getRollResults() {

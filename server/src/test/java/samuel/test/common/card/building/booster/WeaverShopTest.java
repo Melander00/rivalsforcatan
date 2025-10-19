@@ -69,7 +69,7 @@ public class WeaverShopTest {
     void testProduction() {
         board.place(booster, board.getPositionFromGrid(1, 2));
         booster.onPlace(player, context, board.getPositionFromGrid(1, 2));
-        eventBus.fireEvent(new ProductionDieEvent.Post(roll));
+        eventBus.fireEvent(new ProductionDieEvent.Post(roll, context));
 
         assertEquals(0, forest.getResources().getAmount(LumberResource.class));
         assertEquals(2, pasture.getResources().getAmount(WoolResource.class));

@@ -44,7 +44,7 @@ public class ForestTest {
         card = new ForestRegionCard(roll);
 
         card.onPlace(player, context, mock(BoardPosition.class));
-        eventBus.fireEvent(new ProductionDieEvent.Post(roll));
+        eventBus.fireEvent(new ProductionDieEvent.Post(roll, context));
 
         assertEquals(1, card.getResources().getAmount(LumberResource.class));
     }
@@ -56,7 +56,7 @@ public class ForestTest {
         card = new ForestRegionCard(1);
 
         card.onPlace(player, context, mock(BoardPosition.class));
-        eventBus.fireEvent(new ProductionDieEvent.Post(roll));
+        eventBus.fireEvent(new ProductionDieEvent.Post(roll, context));
 
         assertEquals(0, card.getResources().getAmount(LumberResource.class));
     }

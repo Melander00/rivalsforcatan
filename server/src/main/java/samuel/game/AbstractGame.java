@@ -219,7 +219,7 @@ public abstract class AbstractGame implements Game {
         ProductionDieEvent productionEvent = new ProductionDieEvent(activePlayer, res);
         getContext().getEventBus().fireEvent(productionEvent);
         int rollResults = productionEvent.getRollResults();
-        getContext().getEventBus().fireEvent(new ProductionDieEvent.Post(rollResults));
+        getContext().getEventBus().fireEvent(new ProductionDieEvent.Post(rollResults, getContext()));
 
         EventDieFace face = getContext().rollEventDice();
         EventDieEvent eventEvent = new EventDieEvent(activePlayer, face);

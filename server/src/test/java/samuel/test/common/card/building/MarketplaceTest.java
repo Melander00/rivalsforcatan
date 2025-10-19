@@ -28,6 +28,8 @@ import samuel.point.points.ProgressPoint;
 import samuel.resource.ResourceBundle;
 import samuel.resource.resources.*;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
@@ -63,7 +65,6 @@ public class MarketplaceTest {
 
 
     @Test
-    @Disabled
     void testProductionOpponentHasMore() {
         ForestRegionCard op1 = new ForestRegionCard(1);
         GoldFieldRegionCard op2 = new GoldFieldRegionCard(1);
@@ -74,10 +75,11 @@ public class MarketplaceTest {
         when(player.getPrincipality()).thenReturn(board);
         when(opponent.getPrincipality()).thenReturn(opponentBoard);
         when(context.getEventBus()).thenReturn(eventBus);
+        when(context.getPlayers()).thenReturn(List.of(player, opponent));
 
         board.place(card, board.getPositionFromGrid(1,1));
         card.onPlace(player, context, board.getPositionFromGrid(1,1));
-        eventBus.fireEvent(new ProductionDieEvent.Post(1));
+        eventBus.fireEvent(new ProductionDieEvent.Post(1, context));
 
         verify(player, times(1)).requestResource(eq(createBundle(LumberResource.class, GoldResource.class)), eq(1), any());
         verify(player, times(1)).giveResources(toGet);

@@ -46,7 +46,7 @@ public class MountainsTest {
         card = new MountainsRegionCard(roll);
 
         card.onPlace(player, context, mock(BoardPosition.class));
-        eventBus.fireEvent(new ProductionDieEvent.Post(roll));
+        eventBus.fireEvent(new ProductionDieEvent.Post(roll, context));
 
         assertEquals(1, card.getResources().getAmount(OreResource.class));
     }
@@ -58,7 +58,7 @@ public class MountainsTest {
         card = new MountainsRegionCard(1);
 
         card.onPlace(player, context, mock(BoardPosition.class));
-        eventBus.fireEvent(new ProductionDieEvent.Post(roll));
+        eventBus.fireEvent(new ProductionDieEvent.Post(roll, context));
 
         assertEquals(0, card.getResources().getAmount(OreResource.class));
     }

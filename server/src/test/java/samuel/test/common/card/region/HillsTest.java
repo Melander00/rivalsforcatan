@@ -46,7 +46,7 @@ public class HillsTest {
         card = new HillsRegionCard(roll);
 
         card.onPlace(player, context, mock(BoardPosition.class));
-        eventBus.fireEvent(new ProductionDieEvent.Post(roll));
+        eventBus.fireEvent(new ProductionDieEvent.Post(roll, context));
 
         assertEquals(1, card.getResources().getAmount(BrickResource.class));
     }
@@ -58,7 +58,7 @@ public class HillsTest {
         card = new HillsRegionCard(1);
 
         card.onPlace(player, context, mock(BoardPosition.class));
-        eventBus.fireEvent(new ProductionDieEvent.Post(roll));
+        eventBus.fireEvent(new ProductionDieEvent.Post(roll, context));
 
         assertEquals(0, card.getResources().getAmount(BrickResource.class));
     }
