@@ -8,10 +8,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import samuel.board.Board;
 import samuel.board.GridBoard;
 import samuel.card.center.SettlementCard;
-import samuel.card.hero.AustinHeroCard;
-import samuel.card.hero.HeroCard;
 import samuel.card.ship.OreShipCard;
-import samuel.card.ship.TradeShipCard;
+import samuel.card.ship.SingleResourceTradeShipCard;
 import samuel.event.GenericEventBus;
 import samuel.event.player.PlayerTradeEvent;
 import samuel.eventmanager.EventBus;
@@ -21,10 +19,7 @@ import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.player.PlayerHand;
 import samuel.player.ServerPlayer;
-import samuel.point.PointBundle;
 import samuel.point.points.CommercePoint;
-import samuel.point.points.SkillPoint;
-import samuel.point.points.StrengthPoint;
 import samuel.resource.Resource;
 import samuel.resource.ResourceAmount;
 import samuel.resource.resources.GoldResource;
@@ -53,7 +48,7 @@ public class OreShipTest {
     private Board board;
     private EventBus eventBus;
 
-    private TradeShipCard ship;
+    private SingleResourceTradeShipCard ship;
 
     private final int commercePoints = 1;
     private final Class<? extends Resource> toTrade = OreResource.class;

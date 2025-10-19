@@ -9,8 +9,7 @@ import samuel.board.Board;
 import samuel.board.GridBoard;
 import samuel.card.center.SettlementCard;
 import samuel.card.ship.BrickShipCard;
-import samuel.card.ship.OreShipCard;
-import samuel.card.ship.TradeShipCard;
+import samuel.card.ship.SingleResourceTradeShipCard;
 import samuel.event.GenericEventBus;
 import samuel.event.player.PlayerTradeEvent;
 import samuel.eventmanager.EventBus;
@@ -46,7 +45,7 @@ public class BrickShipTest {
     private Board board;
     private EventBus eventBus;
 
-    private TradeShipCard ship;
+    private SingleResourceTradeShipCard ship;
 
     private final int commercePoints = 1;
     private final Class<? extends Resource> toTrade = BrickResource.class;

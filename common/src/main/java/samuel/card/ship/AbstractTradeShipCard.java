@@ -13,7 +13,7 @@ import samuel.resource.ResourceBundle;
 import samuel.resource.resources.LumberResource;
 import samuel.resource.resources.WoolResource;
 
-public abstract class AbstractTradeShipCard implements TradeShipCard {
+public abstract class AbstractTradeShipCard implements SingleResourceTradeShipCard {
 
     private static final int tradeRatio = 2;
 

@@ -23,7 +23,7 @@ import samuel.resource.resources.WoolResource;
 import java.util.List;
 import java.util.UUID;
 
-public class LargeTradeShipCard implements ExpansionCard, PriceTag, PointHolder {
+public class LargeTradeShipCard implements TradeShipCard {
 
     private static final int tradeRatio = 2;
 

@@ -8,8 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import samuel.board.Board;
 import samuel.board.GridBoard;
 import samuel.card.center.SettlementCard;
-import samuel.card.ship.OreShipCard;
-import samuel.card.ship.TradeShipCard;
+import samuel.card.ship.SingleResourceTradeShipCard;
 import samuel.card.ship.WoolShipCard;
 import samuel.event.GenericEventBus;
 import samuel.event.player.PlayerTradeEvent;
@@ -25,7 +24,6 @@ import samuel.resource.Resource;
 import samuel.resource.ResourceAmount;
 import samuel.resource.resources.GoldResource;
 import samuel.resource.resources.LumberResource;
-import samuel.resource.resources.OreResource;
 import samuel.resource.resources.WoolResource;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,7 +47,7 @@ public class WoolShipTest {
     private Board board;
     private EventBus eventBus;
 
-    private TradeShipCard ship;
+    private SingleResourceTradeShipCard ship;
 
     private final int commercePoints = 1;
     private final Class<? extends Resource> toTrade = WoolResource.class;
