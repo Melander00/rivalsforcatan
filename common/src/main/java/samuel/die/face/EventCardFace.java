@@ -1,7 +1,11 @@
 package samuel.die.face;
 
 import samuel.card.CardID;
+import samuel.card.event.EventCard;
+import samuel.card.stack.CardStack;
+import samuel.card.stack.StackContainer;
 import samuel.die.EventDieFace;
+import samuel.event.die.EventCardEvent;
 import samuel.event.die.PlentifulHarvestEvent;
 import samuel.game.GameContext;
 import samuel.player.Player;
@@ -15,11 +19,14 @@ public class EventCardFace implements EventDieFace {
 
     @Override
     public void resolve(GameContext context) {
-        // todo
+        context.getEventBus().fireEvent(new EventCardEvent(context));
 
-        // pick a card from the event cards
-        // return it to the bottom of the stack
-        // resolve the event
+        CardStack<EventCard> stack = context.getStackContainer().getEventStack();
+
+        EventCard card = stack.takeTopCard();
+        stack.addCardToBottom(card);
+        card.resolveEvent(context);
+
     }
 
     @Override
