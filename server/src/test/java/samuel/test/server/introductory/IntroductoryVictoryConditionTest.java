@@ -1,4 +1,4 @@
-package samuel.test.server.victorycondition;
+package samuel.test.server.introductory;
 
 
 import org.junit.jupiter.api.Test;
