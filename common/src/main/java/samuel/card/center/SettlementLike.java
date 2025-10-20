@@ -1,5 +1,8 @@
 package samuel.card.center;
 
+/**
+ * Anything that is similar to Settlement and City
+ */
 public interface SettlementLike {
 
     /**

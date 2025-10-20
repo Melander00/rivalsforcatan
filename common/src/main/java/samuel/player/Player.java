@@ -100,14 +100,6 @@ public interface Player {
     Pair<PlayerAction, BiConsumer<Boolean,String>> requestAction(Phase phase);
 
     /**
-     * Emits that an event has happened.
-     *
-     * @param event
-     */
-    @Subscribe
-    void onEvent(Event event);
-
-    /**
      * Send a message to the player from the server
      * @param msg
      */
@@ -131,26 +123,103 @@ public interface Player {
      */
     boolean hasPointAdvantage(Class<? extends Point> pointType, GameContext context);
 
+    /**
+     * Returns all the points a player has on the board.
+     * Not including Victory Points from advantages or other sources which aren't from the board.
+     * @return
+     */
     PointBundle getPoints();
 
+    /**
+     * Returns the player's hand.
+     * @return
+     */
     PlayerHand getHand();
+
+    /**
+     * Removes the card from the player's hand.
+     * @param card
+     */
     void removeCardFromHand(PlayableCard card);
+
+    /**
+     * Whether the player's hand is full.
+     * @return
+     */
     boolean isHandFull();
+
+    /**
+     * Returns the maximum allowed number of cards that the player may hold.
+     * @return
+     */
     int getMaxHandSize();
+
+    /**
+     * Adds the card to the hand.
+     * @param card
+     */
     void addCardToHand(PlayableCard card);
 
+    /**
+     * Returns the card with the same UUID as supplied.
+     * @param uuid
+     * @return
+     */
     PlayableCard getCardInHandFromUuid(UUID uuid);
 
+    /**
+     * Places the card on the board and initializes it.
+     * @param card
+     * @param position
+     * @param context
+     */
     void placeCard(PlaceableCard card, BoardPosition position, GameContext context);
 
+    /**
+     * Removes the card from the board.
+     * @param card
+     * @param position
+     * @param context
+     */
     void removeCard(PlaceableCard card, BoardPosition position, GameContext context);
 
+    /**
+     * Plays the card
+     * @param card
+     * @param context
+     */
     void playCard(PlayableCard card, GameContext context);
 
+    /**
+     * Gives the player the resources.
+     * @param bundle
+     */
     void giveResources(ResourceBundle bundle);
+
+    /**
+     * Whether the player has at least a certain amount of resources.
+     * @param bundle
+     * @return
+     */
     boolean hasResources(ResourceBundle bundle);
+
+    /**
+     * Removes resources from the player.
+     * @param bundle
+     */
     void removeResources(ResourceBundle bundle);
 
+    /**
+     * Gets all the resources the player has on the board.
+     * @return
+     */
     ResourceBundle  getResources();
+
+    /**
+     * Gets the amount of a specific resource the player has on the board.
+     * @param resource
+     * @return
+     * @param <T>
+     */
     <T extends Resource> int getResources(Class<T> resource);
 }

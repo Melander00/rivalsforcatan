@@ -75,17 +75,6 @@ public interface Board extends Iterable<BoardPosition> {
      */
     boolean isCenterRow(BoardPosition position);
 
-
-    /**
-     * Allows for filtering of board positions.
-     * Example usage is to find all board positions that has a card with a victory point,
-     * to calculate the amount of points on the board.
-     * @param positionPredicate
-     * @return
-     */
-    List<BoardPosition> filterPositions(Predicate<BoardPosition> positionPredicate);
-
-
     /**
      * Returns a grid list of all the positions. Doesn't enforce grid implementation but helps with how the game is built.
      * @return

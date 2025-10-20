@@ -1,8 +1,7 @@
 package samuel.card;
 
-public interface SingletonCard {
-
-
-
-
+/**
+ * A card that can only exist once per board.
+ */
+public interface SingletonCard extends PlaceableCard {
 }

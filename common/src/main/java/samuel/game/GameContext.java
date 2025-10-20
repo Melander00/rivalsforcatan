@@ -56,15 +56,46 @@ public interface GameContext {
      */
     StackContainer getStackContainer();
 
+    /**
+     * Returns the phase of the game.
+     * @return
+     */
     Phase getPhase();
 
+    /**
+     * Sets the phase of the game.
+     * @param phase
+     */
     void setPhase(Phase phase);
 
+    /**
+     * Rolls the event dice and returns the result.
+     * @return
+     */
     EventDieFace rollEventDice();
+
+    /**
+     * Rolls the production dice and returns the result.
+     * @return
+     */
     Integer rollProductionDie();
 
+    /**
+     * Returns which player has the strength advantage.
+     * @return null if no player has it.
+     */
     Player getStrengthAdvantage();
+
+    /**
+     * Returns which player has the trade advantage.
+     * @return null if no player has it.
+     */
     Player getTradeAdvantage();
 
+    /**
+     * Returns the amount of victory points for the supplied player.
+     * @param player
+     * @return
+     */
     int getVictoryPoints(Player player);
 }

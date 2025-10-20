@@ -3,6 +3,9 @@ package samuel.card;
 import samuel.board.BoardPosition;
 import samuel.card.util.ExpansionCardHelper;
 
+/**
+ * Cards that can be placed above and below settlements/cities.
+ */
 public interface ExpansionCard extends PlaceableCard {
 
 

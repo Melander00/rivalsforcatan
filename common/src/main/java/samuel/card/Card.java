@@ -10,6 +10,10 @@ public interface Card {
      */
     CardID getCardID();
 
+    /**
+     * Returns a unique identifier for this card.
+     * @return
+     */
     UUID getUuid();
 
 //    static CardID getCardID() {

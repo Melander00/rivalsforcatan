@@ -3,8 +3,17 @@ package samuel.card;
 import samuel.resource.Resource;
 import samuel.resource.ResourceBundle;
 
+/**
+ * Card that can hold resources. Example: Regions and Gold Cache (from era of gold)
+ */
 public interface ResourceHolder extends Card {
+
+    /**
+     * Returns the resources currently held by this card.
+     * @return
+     */
     ResourceBundle getResources();
+
     /**
      * Adds to the resource pile.
      * @param amount
@@ -19,5 +28,9 @@ public interface ResourceHolder extends Card {
      */
     int decreaseAmount(int amount);
 
+    /**
+     * Returns the type of resource this card holds.
+     * @return
+     */
     Class<? extends Resource> getType();
 }

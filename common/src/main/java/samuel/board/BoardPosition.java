@@ -19,6 +19,10 @@ public interface BoardPosition {
      */
     PlaceableCard getCard();
 
+    /**
+     * Sets the card on this position.
+     * @param card
+     */
     void setCard(PlaceableCard card);
 
     /**

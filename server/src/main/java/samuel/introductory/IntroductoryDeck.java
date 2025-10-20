@@ -115,12 +115,12 @@ public class IntroductoryDeck implements Deck {
 
     @Override
     public List<PlayableCard> getThemeCards() {
-        return null;
+        return List.of();
     }
 
     @Override
     public List<Card> getFaceUpThemeCards() {
-        return null;
+        return List.of();
     }
 
     @Override

@@ -20,5 +20,9 @@ public interface Game {
      */
     void addPlayers(List<Player> players);
 
+    /**
+     * Returns the game context for this game.
+     * @return
+     */
     GameContext getContext();
 }

@@ -4,7 +4,16 @@ import samuel.board.BoardPosition;
 import samuel.game.GameContext;
 import samuel.player.Player;
 
+/**
+ * Cards that can be placed on a board.
+ */
 public interface PlaceableCard extends Card, PlayableCard {
+
+    /**
+     * Checks whether the supplied position is a valid placement for this card.
+     * @param position
+     * @return
+     */
     boolean validatePlacement(BoardPosition position);
 
     /**

@@ -67,7 +67,7 @@ public class DefaultStackHandler {
         // --- Theme Cards ---
 
         // We divide the cards into X stacks at random
-        if(deck.getThemeCards() != null) {
+        if(!deck.getThemeCards().isEmpty()) {
             List<PlayableCard> themeCards = new ArrayList<>(deck.getThemeCards());
             Collections.shuffle(themeCards);
             int themeCardsPerStack = themeCards.size() / themeCardStacks;

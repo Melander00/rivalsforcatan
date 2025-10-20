@@ -98,18 +98,6 @@ public class GridBoard implements Board {
         return this.grid.getCenterRow().contains(position);
     }
 
-    @Override
-    public List<BoardPosition> filterPositions(Predicate<BoardPosition> positionPredicate) {
-        List<BoardPosition> positions = new ArrayList<>();
-
-        for(BoardPosition pos : this.grid) {
-            if(positionPredicate.test(pos)) {
-                positions.add(pos);
-            }
-        }
-
-        return positions;
-    }
 
     @Override
     public List<List<BoardPosition>> getBoardPositions() {

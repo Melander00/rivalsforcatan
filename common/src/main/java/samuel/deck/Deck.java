@@ -11,39 +11,50 @@ public interface Deck {
 
 
     /**
-     * Does NOT return the cards used in principality
+     * Returns all the cards to be placed in the region card stack.
      * @return
      */
     List<RegionCard> getRegionCards();
 
+    /**
+     * Returns all the cards to be placed in the region card stack.
+     * @return
+     */
     List<EventCard> getEventCards();
 
+    /**
+     * Returns all the cards to be placed in basic card stacks.
+     * @return
+     */
     List<PlayableCard> getBasicCards();
 
     /**
-     * For game-expansions
-     * @return null if there is no theme
+     * Returns all the theme cards
+     * @return empty list if not theme game.
      */
     List<PlayableCard> getThemeCards();
 
     /**
      * For game-expansions
-     * @return null if there is no theme
+     * @return empty list if not theme game.
      */
     List<Card> getFaceUpThemeCards();
 
     /**
-     * Does NOT include starting principality cards.
-     * Instead of returning a <code>List < RoadCard ></code> (which increases coupling) we let the game context handle how to create the road cards.
+     * Returns the amount of Road cards for the center stack.
      * @return
      */
     int getAmountOfRoadCards();
 
     /**
-     * Does NOT include starting principality cards
+     * Returns the amount of Settlement cards for the center stack.
      * @return
      */
     int getAmountOfSettlementCards();
 
+    /**
+     * Returns the amount of City cards for the center stack.
+     * @return
+     */
     int getAmountOfCityCards();
 }

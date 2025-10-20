@@ -158,7 +158,6 @@ public class ServerPlayer implements Player {
     }
 
     @Subscribe
-    @Override
     public void onEvent(Event event) {
         if(event instanceof PlayerEvent playerEvent) {
             if(!playerEvent.getPlayer().equals(this)) return;
