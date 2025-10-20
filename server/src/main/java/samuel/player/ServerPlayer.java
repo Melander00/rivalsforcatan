@@ -15,7 +15,6 @@ import samuel.event.PlayerEvent;
 import samuel.eventmanager.Subscribe;
 import samuel.game.GameContext;
 import samuel.network.NetworkClient;
-import samuel.network.SocketClient;
 import samuel.phase.Phase;
 import samuel.player.action.PlayerAction;
 import samuel.player.request.RequestCause;
@@ -31,7 +30,6 @@ import samuel.resource.ResourceBundle;
 import samuel.util.ResourceHelper;
 import samuel.util.Pair;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -294,7 +292,7 @@ public class ServerPlayer implements Player {
         for(ResourceAmount am : bundle) {
             int amount = am.amount();
             while(amount > 0) {
-                int res = ResourceHelper.increaseRegionOfChoice(this, am.resourceType(), 1);
+                int res = ResourceHelper.increaseHolderOfChoice(this, am.resourceType(), 1);
 
 //                deadlock if there is no region without max resources.
 //                if(res < amount) {
@@ -335,7 +333,7 @@ public class ServerPlayer implements Player {
         for(ResourceAmount am : bundle) {
             int amount = am.amount();
             while(amount > 0) {
-                int res = ResourceHelper.decreaseRegionOfChoice(this, am.resourceType(), 1);
+                int res = ResourceHelper.decreaseHolderOfChoice(this, am.resourceType(), 1);
 //                  deadlock
 //                if(res < amount) {
 //                    amount--;
