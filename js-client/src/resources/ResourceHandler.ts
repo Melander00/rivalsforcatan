@@ -1,20 +1,27 @@
 import { CardID } from "../types/card/card"
-import actions from "./action/cards.json"
-import buildings from "./building/cards.json"
+import actions from "./cards/action/cards.json"
+import buildings from "./cards/building/cards.json"
+import centers from "./cards/center/cards.json"
+import heroes from "./cards/hero/cards.json"
+import regions from "./cards/region/cards.json"
+import ships from "./cards/ship/cards.json"
 import dice from "./event/dice.json"
 import dice_events from "./event/dice_event.json"
 import events from "./event/event.json"
+import player_events from "./event/player.json"
 import phases from "./phase/phases.json"
-import regions from "./region/cards.json"
 import requests from "./request/requests.json"
 import resources from "./resource/resources.json"
 
 const mapper: {
     [key: string]: any[]
 } = {
-    "region": regions,
+    "action": actions,
     "building": buildings,
-    "action": actions
+    "center": centers,
+    "hero": heroes,
+    "region": regions,
+    "ship": ships,
 }
 
 const eventMapper: {
@@ -23,6 +30,7 @@ const eventMapper: {
     "dice": dice,
     "event": events,
     "dice_event": dice_events,
+    "player": player_events,
 }
 
 

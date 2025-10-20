@@ -36,7 +36,6 @@ public class InventionEventCard implements EventCard {
     public void resolveEvent(GameContext context) {
         InventionEvent event = new InventionEvent();
         context.getEventBus().fireEvent(event);
-        if(event.isCanceled()) return;
 
         List<Player> players = context.getPlayers();
         for(Player player : players) {
@@ -55,7 +54,5 @@ public class InventionEventCard implements EventCard {
 //            }
             player.giveResources(bundle);
         }
-
-        context.getEventBus().fireEvent(new InventionEvent.Post());
     }
 }

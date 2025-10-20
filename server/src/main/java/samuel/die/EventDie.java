@@ -10,12 +10,12 @@ public class EventDie implements Die<EventDieFace> {
 
     private final Random random = new Random();
     private List<EventDieFace> faces = List.of(
-            new BrigandAttackFace()
-//            new TradeFace(),
-//            new CelebrationFace(),
-//            new PlentifulHarvestFace(),
-//            new EventCardFace(),
-//            new EventCardFace()
+            new BrigandAttackFace(),
+            new TradeFace(),
+            new CelebrationFace(),
+            new PlentifulHarvestFace(),
+            new EventCardFace(),
+            new EventCardFace()
     );
 
     @Override

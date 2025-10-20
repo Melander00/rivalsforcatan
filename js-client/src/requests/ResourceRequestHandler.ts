@@ -1,8 +1,9 @@
 import { setRequestListener } from "../network/Socket"
-import { GetRequestCauseInfo, GetResourceInfo } from "../resources/ResourceHandler"
+import { GetResourceInfo } from "../resources/ResourceHandler"
 import { MessageType } from "../types/message"
 import { ServerRequest } from "../types/request"
 import { ask, print } from "../ui/Console"
+import { getCauseDescription } from "./Description"
 
 type ResourceAmount = {
     resourceType: string,
@@ -19,6 +20,7 @@ type ResourceRequest = {
 export function initResourceRequestHandler() {
     setRequestListener(MessageType.REQUEST_RESOURCE, async ({data, cause}: ServerRequest<ResourceRequest>): Promise<ResourceBundle> => {
 
+        const causeDetails = getCauseDescription(cause)
 
         let arr: ResourceBundle = []
 
@@ -37,7 +39,7 @@ export function initResourceRequestHandler() {
         }
         
         async function q(): Promise<ResourceAmount> {
-            const question = `${GetRequestCauseInfo(cause.type)?.description ?? cause.type} | Choose one of the available ${getResources()}: `
+            const question = `${causeDetails} | Choose one of the available ${getResources()}: `
 
             const answer = await ask(question)
 

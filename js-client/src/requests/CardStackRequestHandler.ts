@@ -1,9 +1,11 @@
 import { setRequestListener } from "../network/Socket";
-import { GetRequestCauseInfo } from "../resources/ResourceHandler";
 import { CardStack } from "../types/card/card";
 import { MessageType } from "../types/message";
 import { ServerRequest } from "../types/request";
 import { ask, print } from "../ui/Console";
+import { getCauseDescription } from "./Description";
+
+
 
 
 type CardStackRequest = {
@@ -16,6 +18,8 @@ type CardStackRequest = {
 export default function initCardStackRequestHandler() {
     setRequestListener(MessageType.REQUEST_CARD_STACK, async ({cause, data}: ServerRequest<CardStackRequest>) => {
         const { cardStacks, forbiddenStackIds } = data
+        
+        const causeDetails = getCauseDescription(cause)
 
         const sb: string[] = []
         for(let i = 0; i < cardStacks.length; i++) {
@@ -29,7 +33,7 @@ export default function initCardStackRequestHandler() {
             sb.push(`[Stack ${i}]`)
         }
 
-        const question = `${GetRequestCauseInfo(cause.type)?.description ?? cause.type} | Choose a card stack from: ${sb.join(" ")}\nWhich card stack do you want? `
+        const question = `${causeDetails} | Choose a card stack from: ${sb.join(" ")}\nWhich card stack do you want? `
 
         async function q() {
             const answer = await ask(question)

@@ -1,27 +1,155 @@
 [
     {
         "cause": "INITIAL_DRAW",
-        "description": "Initial Draw"
-    },
-    {
-        "cause": "EXCHANGE_SEARCH",
-        "description": "Do you want to pay to search the stack?"
+        "description": {
+            "template": "Initial draw."
+        }
     },
     {
         "cause": "CHOOSE_REGION_TO_INCREASE_RESOURCE",
         "fallback": "Pick the region for which you want to increase resources on.",
         "description": {
-            "template": "Pick the region for which you want to increase $resource{resource}"
+            "template": "Pick the region for which you want to increase $green{$resource{resourceType}}"
         }
     },
     {
         "cause": "CHOOSE_REGION_TO_DECREASE_RESOURCE",
         "description": {
-            "template": "Pick the region to use for paying $resource{resource}"
+            "template": "Pick the region to use for paying $red{$resource{resourceType}}"
         }
     },
     {
         "cause": "PLACE_CARD",
-        "description": "Where do you want to place the card?"
+        "description": {
+            "template": "Where do you want to place $orange{$card{cardID}}?"
+        }
+    },
+
+    {
+        "cause": "REPLENISH_STACK",
+        "description": {
+            "template": "Which stack to take a card from?"
+        }
+    },
+    {
+        "cause": "REPLENISH_DISCARD",
+        "description": {
+            "template": "Your hand is overfull, you need to discard a card."
+        }
+    },
+
+    {
+        "cause": "EXCHANGE",
+        "description": {
+            "template": "Do you want to exchange one of your cards?"
+        }
+    },
+    {
+        "cause": "EXCHANGE_DISCARD_CARD",
+        "description": {
+            "template": "Which card to $red{'remove'}?"
+        }
+    },
+    {
+        "cause": "EXCHANGE_DISCARD_STACK",
+        "description": {
+            "template": "Which stack to put the card in?"
+        }
+    },
+    {
+        "cause": "EXCHANGE_TAKE_STACK",
+        "description": {
+            "template": "Which stack to take from?"
+        }
+    },
+    {
+        "cause": "EXCHANGE_SEARCH",
+        "description": {
+            "template": "Exchange Search"
+        }
+    },
+    {
+        "cause": "TRADE_PAY",
+        "description": {
+            "template": "Which resource do you want to $red{'pay'}."
+        }
+    },
+    {
+        "cause": "TRADE_GET",
+        "description": {
+            "template": "Which resource do you want to $green{'get'}."
+        }
+    },
+    {
+        "cause": "PICK_CARD",
+        "description": {
+            "template": ""
+        }
+    },
+    {
+        "cause": "STACK_TO_PLACE_CARD_IN",
+        "description": {
+            "template": "Which stack to place the card in?"
+        }
+    },
+    {
+        "cause": "FRATERNAL_FEUDS_REMOVE_CARD",
+        "description": {
+            "template": "Which card to $red{'remove'} from your opponent's hand?"
+        }
+    },
+    {
+        "cause": "FEUD_SELECT_BUILDINGS",
+        "description": {
+            "template": "Select a building for removal."
+        }
+    },
+    {
+        "cause": "FEUD_REMOVE_CARD",
+        "description": {
+            "template": "Which card to $red{'remove'}?"
+        }
+    },
+    {
+        "cause": "FREE_RESOURCES",
+        "description": {
+            "template": "Which resource do you want?"
+        }
+    },
+    {
+        "cause": "TO_PAY_WITH",
+        "description": {
+            "template": "Which resource do you want to $red{'pay'} with."
+        }
+    },
+    {
+        "cause": "RELOCATION_SHOULD_MOVE_EXPANSION",
+        "description": {
+            "template": "Do you want to move Expansion (Yes) cards or Region (No) cards?"
+        }
+    },
+    {
+        "cause": "RELOCATION_FROM",
+        "description": {
+            "template": "First card to swap."
+        }
+    },
+    {
+        "cause": "RELOCATION_TO",
+        "description": {
+            "template": "Second card to swap."
+        }
+    },
+    {
+        "cause": "AMOUNT_TO_TRADE",
+        "description": {
+            "template": "How many resources do you want to trade?"
+        }
+    },
+    {
+        "cause": "RIG_PRODUCTION_DIE",
+        "description": {
+            "template": "What should the production dice be?"
+        }
     }
 ]

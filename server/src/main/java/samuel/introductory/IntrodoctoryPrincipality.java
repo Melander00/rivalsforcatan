@@ -50,8 +50,8 @@ public class IntrodoctoryPrincipality {
         BoardPosition roadPosition = grid.getPositionFromGrid(centerRow, centerCol);
         roadPosition.setCard(road);
         road.onPlace(player, context, roadPosition);
-        player.placeCard(new SettlementCard(), grid.getPositionFromGrid(centerRow, centerCol - 1), context);
-        player.placeCard(new SettlementCard(), grid.getPositionFromGrid(centerRow, centerCol + 1), context);
+        grid.place(new SettlementCard(), grid.getPositionFromGrid(centerRow, centerCol - 1));
+        grid.place(new SettlementCard(), grid.getPositionFromGrid(centerRow, centerCol + 1));
 
 
         List<RegionCard> regions = getRegions(isRed ? redRolls : blueRolls);

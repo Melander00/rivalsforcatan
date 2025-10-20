@@ -1,5 +1,6 @@
 package samuel.introductory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import samuel.card.stack.StackContainer;
 import samuel.game.GameContext;
 import samuel.condition.VictoryCondition;
@@ -60,6 +61,7 @@ public class IntroductoryGameContext implements GameContext {
         players.add(player);
     }
 
+    @JsonIgnore
     @Override
     public EventBus getEventBus() {
         return this.eventBus;

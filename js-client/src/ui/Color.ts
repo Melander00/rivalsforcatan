@@ -15,6 +15,8 @@ export function AnsiCode(code: string | string[]): (text: string) => string {
 }
 
 export const Color = {
-    red: AnsiCode(["38;5","196"])
+    red: AnsiCode(["38;5","196"]),
+    green: AnsiCode(["38;5","46"]),
+    orange: AnsiCode(["38;5","202"]),
 
 } as const

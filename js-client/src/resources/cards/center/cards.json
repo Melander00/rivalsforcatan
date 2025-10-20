@@ -1,0 +1,20 @@
+[
+    {
+        "id": "city",
+        "name": "City",
+        "type": "Center",
+        "description": "Place card on a settlement. 4 building sites for red and green."
+    },
+    {
+        "id": "road",
+        "name": "Road",
+        "type": "Center",
+        "description": "Allows construction of a new settlement and of road complements."
+    },
+    {
+        "id": "settlement",
+        "name": "Settlement",
+        "type": "Center",
+        "description": "Two new regions. 2 building sites for green."
+    }
+]

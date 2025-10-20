@@ -1,7 +1,9 @@
 export type ServerRequest<T> = {
-    cause: {
-        type: string,
-        data: any
-    },
+    cause: RequestCause,
     data: T
+}
+
+export type RequestCause = {
+    type: string,
+    data: any
 }

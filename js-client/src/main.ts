@@ -14,6 +14,13 @@ import { initEventListener } from "./ui/Event";
 const PORT = parseInt(process.env["HOST_PORT"] || "5000")
 const ADDRESS = process.env["HOST_ADDRESS"] || "localhost"
 
+
+// console.log(handleTemplate({resourceType: "LumberResource"}, {
+//     template: "You lost $red{$resource{resourceType}} $green{'literal'} from the Brigand Attack."
+// }))
+
+// process.exit()
+
 connect(ADDRESS, PORT);
 listenToCommands()
 initActionQueue()

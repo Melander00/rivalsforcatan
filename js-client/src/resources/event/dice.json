@@ -7,7 +7,15 @@
         }
     },
     {
-        "id": "event",
+        "id": "event_post",
         "description": "Event dice has been rolled."
+    },
+    {
+        "id": "production",
+        "description": ""
+    },
+    {
+        "id": "event",
+        "description": ""
     }
 ]

@@ -1,0 +1,38 @@
+[
+    {
+        "id": "austin",
+        "name": "Austin",
+        "type": "Hero",
+        "description": "If you hit my left cheek, don't even think\nyou'll have time to bit the right one too."
+    },
+    {
+        "id": "candamir",
+        "name": "Candamir",
+        "type": "Hero",
+        "description": "A well-sharpened axe is a tried and tested starting\nposition for a successful conversation."
+    },
+    {
+        "id": "harald",
+        "name": "Harald",
+        "type": "Hero",
+        "description": "I knock you out faster than you can\ncarve the word 'strategy' in this stone."
+    },
+    {
+        "id": "inga",
+        "name": "Inga",
+        "type": "Hero",
+        "description": "The gods are expecting more offerings\nAnd they expect you to hand them over to me!"
+    },
+    {
+        "id": "osmund",
+        "name": "Osmund",
+        "type": "Hero",
+        "description": "When it comes to gold and women, friendship stops.\nAnd it also stops when it comes to power.\nActually, friendship never lasts very long."
+    },
+    {
+        "id": "siglind",
+        "name": "Siglind",
+        "type": "Hero",
+        "description": "Turning men into heroes belittles\nthe importance of being a hero."
+    }
+]

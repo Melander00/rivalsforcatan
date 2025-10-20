@@ -7,8 +7,7 @@ import samuel.card.building.*;
 import samuel.card.building.booster.*;
 import samuel.card.event.*;
 import samuel.card.hero.*;
-import samuel.card.region.ForestRegionCard;
-import samuel.card.region.RegionCard;
+import samuel.card.region.*;
 import samuel.card.ship.*;
 import samuel.deck.Deck;
 
@@ -17,13 +16,23 @@ import java.util.List;
 public class IntroductoryDeck implements Deck {
 
     private final List<RegionCard> regionCards = List.of(
+            new FieldsRegionCard(3),
+            new FieldsRegionCard(1),
+
+            new MountainsRegionCard(4),
+            new MountainsRegionCard(2),
+
+            new HillsRegionCard(5),
+            new HillsRegionCard(1),
+
+            new ForestRegionCard(6),
             new ForestRegionCard(2),
-            new ForestRegionCard(1),
-            new ForestRegionCard(2),
-            new ForestRegionCard(3),
-            new ForestRegionCard(4),
-            new ForestRegionCard(5),
-            new ForestRegionCard(6)
+
+            new PastureRegionCard(6),
+            new PastureRegionCard(5),
+
+            new GoldFieldRegionCard(3),
+            new GoldFieldRegionCard(2)
     );
 
     private final List<PlayableCard> basicCards = List.of(

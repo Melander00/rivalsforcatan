@@ -30,10 +30,10 @@ public class RegionCardHelper {
         if(center == null) throw new IllegalStateException("There is no center row in this column");
 
         BoardPosition left = board.getLeftOfPosition(center);
-        if(!left.isEmpty() && left.getCard() instanceof SettlementLike) return true;
+        if(left != null && !left.isEmpty() && left.getCard() instanceof SettlementLike) return true;
 
         BoardPosition right = board.getRightOfPosition(center);
-        if(!right.isEmpty() && right.getCard() instanceof SettlementLike) return true;
+        if(right != null && !right.isEmpty() && right.getCard() instanceof SettlementLike) return true;
 
         return false;
     }

@@ -1,0 +1,65 @@
+[
+    {
+        "id": "toll_bridge",
+        "name": "Toll Bridge",
+        "type": "Building",
+        "description": "Event Plentiful Harvest:\nYou receive 2 gold."
+    },
+    {
+        "id": "abbey",
+        "name": "Abbey",
+        "type": "Building",
+        "description": "Progress is not the only thing here;\nyou also get red wine and lots of dark beer."
+    },
+    {
+        "id": "marketplace",
+        "name": "Marketplace",
+        "type": "Building",
+        "description": "If a production number is rolled that appears more frequently\non your oppponent's regions than on yours, you receive 1 resource.\nChoose a resource your opponent can normally receive."
+    },
+    {
+        "id": "parish_hall",
+        "name": "Parish Hall",
+        "type": "Building",
+        "description": "You pay only 1 resource for choosing\na card from a draw stack."
+    },
+    {
+        "id": "storehouse",
+        "name": "Storehouse",
+        "type": "Building",
+        "description": "Do not count the resources on the 2 neighboring\nregions when the event Brigand Attack is rolled."
+    },
+
+
+
+    {
+        "id": "brick_factory",
+        "name": "Brick Factory",
+        "type": "Building",
+        "description": "Doubles the brick production\nof the neighboring hills"
+    },
+    {
+        "id": "grain_mill",
+        "name": "Grain Mill",
+        "type": "Building",
+        "description": "Doubles the grain production\nof the neighboring fields"
+    },
+    {
+        "id": "iron_foundry",
+        "name": "Iron Foundry",
+        "type": "Building",
+        "description": "Doubles the ore production\nof the neighboring mountains"
+    },
+    {
+        "id": "lumber_camp",
+        "name": "Lumber Camp",
+        "type": "Building",
+        "description": "Doubles the lumber production\nof the neighboring forests"
+    },
+    {
+        "id": "weaver_shop",
+        "name": "Weaver Shop",
+        "type": "Building",
+        "description": "Doubles the wool production\nof the neighboring pastures"
+    }
+]

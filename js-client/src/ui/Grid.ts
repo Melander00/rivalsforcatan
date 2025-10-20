@@ -1,6 +1,7 @@
 import { GetCardInfo } from "../resources/ResourceHandler";
 import { GridPosition } from "../types/board/board";
 import { handleTemplate } from "./Template";
+import { CalculateWidth } from "./Text";
 
 export function buildPrincipality(positions: GridPosition[][]) {
     const sb: string[] = [];
@@ -17,7 +18,7 @@ export function buildPrincipality(positions: GridPosition[][]) {
         let maxW = minW;
         for (let r = 0; r < rows; r++) {
             const pos = principality[r][c];
-            maxW = Math.max(maxW, getCellTitle(pos).length, getCellInfo(pos).length);
+            maxW = Math.max(maxW, CalculateWidth(getCellTitle(pos)), CalculateWidth(getCellInfo(pos)));
         }
         return maxW;
     });
@@ -63,7 +64,7 @@ export function buildPrincipality(positions: GridPosition[][]) {
 
 
 function padRight(str: string, length: number): string {
-    return str + " ".repeat(Math.max(0, length - str.length));
+    return str + " ".repeat(Math.max(0, length - CalculateWidth(str)));
 }
 
 function buildSep(widths: number[]): string {
@@ -78,7 +79,8 @@ function getCellTitle(pos: GridPosition): string {
 
     const cardId = pos.card.cardID;
     const cardInfo = GetCardInfo(cardId)
-    if(!cardInfo || !cardInfo.board?.name) return `${cardId.namespace}:${cardId.id}`
+    if(!cardInfo) return `${cardId.namespace}:${cardId.id}`
+    if(!cardInfo.board?.name) return `${cardInfo.name}`
 
     return handleTemplate(pos.card, cardInfo.board?.name, `${cardId.namespace}:${cardId.id}`)
 }

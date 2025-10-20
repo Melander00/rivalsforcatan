@@ -1,0 +1,32 @@
+[
+    {
+        "id": "take_regions",
+        "description": ""
+    },
+    {
+        "id": "trade",
+        "description": ""
+    },
+    {
+        "id": "trade_post",
+        "description": {
+            "template": "You trade {resourceToPay.amount} $resource{resourceToPay.resourceType} for {resourceToGet.amount} $resource{resourceToGet.resourceType}"
+        }
+    },
+    {
+        "id": "replenish",
+        "description": ""
+    },
+    {
+        "id": "replenish_discard",
+        "description": ""
+    },
+    {
+        "id": "exchange",
+        "description": ""
+    },
+    {
+        "id": "exchange_search",
+        "description": ""
+    }
+]

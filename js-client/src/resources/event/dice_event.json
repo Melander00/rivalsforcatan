@@ -1,6 +1,28 @@
 [
     {
-        "id": "plentiful_harvest_event",
-        "description": "Plentiful Harvest Event: You get one resource of you choice!"
+        "id": "plentiful_harvest",
+        "description": "Plentiful Harvest Event: You get one resource of your choice!"
+    },
+    {
+        "id": "brigand_attack",
+        "description": "Brigand Attack: If you have more than 7 resources you lose all your gold and wool supplies."
+    },
+    {
+        "id": "brigand_attack_post",
+        "description": {
+            "template": "You lost $iterateResources{lostResources} from the Brigand Attack."
+        }
+    },
+    {
+        "id": "celebration",
+        "description": "Celebration: If you have the most skill points, you alone receive 1 resource of your choice. Otherwise, each player receives 1 resources of their choice."
+    },
+    {
+        "id": "event_card",
+        "description": "Event Card!"
+    },
+    {
+        "id": "trade",
+        "description": "Trade: If you have the trade advantage, you receive 1 resource of your choice from your opponent."
     }
 ]

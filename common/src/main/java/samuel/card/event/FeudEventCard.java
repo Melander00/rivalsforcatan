@@ -10,7 +10,6 @@ import samuel.player.Player;
 import samuel.player.request.RequestCause;
 import samuel.player.request.RequestCauseEnum;
 
-import java.lang.reflect.MalformedParameterizedTypeException;
 import java.util.*;
 
 public class FeudEventCard implements EventCard {
@@ -77,7 +76,7 @@ public class FeudEventCard implements EventCard {
 
             List<PlaceableCard> cards = map.keySet().stream().toList();
 
-            PlaceableCard toRemove = player.requestCard(cards, new RequestCause(RequestCauseEnum.REMOVE_CARD));
+            PlaceableCard toRemove = player.requestCard(cards, new RequestCause(RequestCauseEnum.FEUD_REMOVE_CARD));
             BoardPosition position = map.get(toRemove);
             if(position == null) {
                 throw new IllegalStateException("We got a position that was invalid somehow");

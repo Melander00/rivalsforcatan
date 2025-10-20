@@ -3,7 +3,9 @@
         "id": "hills",
         "name": "Hills",
         "type": "Region",
-        "description": "Gains resources based on production die roll. 1 building site for brown.",
+        "description": {
+            "template": "D{diceRoll}\nGains resources based on production die roll. 1 building site for brown."
+        },
         "board": {
             "name": {
                 "template": "Hills D{diceRoll}"
@@ -17,7 +19,9 @@
         "id": "gold_field",
         "name": "Gold Field",
         "type": "Region",
-        "description": "Gains resources based on production die roll. 1 building site for brown.",
+        "description": {
+            "template": "D{diceRoll}\nGains resources based on production die roll. 1 building site for brown."
+        },
         "board": {
             "name": {
                 "template": "Gold Field D{diceRoll}"
@@ -31,7 +35,9 @@
         "id": "fields",
         "name": "Fields",
         "type": "Region",
-        "description": "Gains resources based on production die roll. 1 building site for brown.",
+        "description": {
+            "template": "D{diceRoll}\nGains resources based on production die roll. 1 building site for brown."
+        },
         "board": {
             "name": {
                 "template": "Fields D{diceRoll}"
@@ -45,7 +51,9 @@
         "id": "mountains",
         "name": "Mountains",
         "type": "Region",
-        "description": "Gains resources based on production die roll. 1 building site for brown.",
+        "description": {
+            "template": "D{diceRoll}\nGains resources based on production die roll. 1 building site for brown."
+        },
         "board": {
             "name": {
                 "template": "Mountains D{diceRoll}"
@@ -59,7 +67,9 @@
         "id": "forest",
         "name": "Forest",
         "type": "Region",
-        "description": "Gains resources based on production die roll. 1 building site for brown.",
+        "description": {
+            "template": "D{diceRoll}\nGains resources based on production die roll. 1 building site for brown."
+        },
         "board": {
             "name": {
                 "template": "Forest D{diceRoll}"
@@ -73,7 +83,9 @@
         "id": "pasture",
         "name": "Pasture",
         "type": "Region",
-        "description": "Gains resources based on production die roll. 1 building site for brown.",
+        "description": {
+            "template": "D{diceRoll}\nGains resources based on production die roll. 1 building site for brown."
+        },
         "board": {
             "name": {
                 "template": "Pasture D{diceRoll}"

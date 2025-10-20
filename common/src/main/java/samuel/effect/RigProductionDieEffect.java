@@ -20,6 +20,7 @@ public class RigProductionDieEffect implements Effect {
 
     @Subscribe
     public void onProductionDie(ProductionDieEvent event) {
+        if(hasBeenUsed) return;
         if(!owner.equals(event.getRoller())) return;
 
         int riggedResults = owner.requestInt(1, 6, new RequestCause(RequestCauseEnum.RIG_PRODUCTION_DIE));

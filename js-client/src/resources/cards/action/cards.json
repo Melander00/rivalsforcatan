@@ -1,0 +1,32 @@
+[
+    {
+        "id": "brigitta_the_wise_woman",
+        "name": "Brigitta the Wise Woman",
+        "type": "Action",
+        "description": "Play this card before rolling the dice.\nChoose the result of the production die roll."
+    },
+    {
+        "id": "goldsmith",
+        "name": "Goldsmith",
+        "type": "Action",
+        "description": "Discard 3 gold and take any\n2 resources of your choice in return."
+    },
+    {
+        "id": "merchant_caravan",
+        "name": "Merchant Caravan",
+        "type": "Action",
+        "description": "Discard exactly 2 of your resources and\ntake any 2 resources of your choice in return."
+    },
+    {
+        "id": "relocation",
+        "name": "Relocation",
+        "type": "Action",
+        "description": "You may exchange 2 of your own regions or 2 of your\nown expansion cards. Resources stored on regions may not be\nchanged and card placement rules must be followed."
+    },
+    {
+        "id": "scout",
+        "name": "Scout",
+        "type": "Action",
+        "description": "Play this card when building a settlement.\nTake 2 cards of your choice from the region\ncard stack. Reshuffle the region card stack."
+    }
+]

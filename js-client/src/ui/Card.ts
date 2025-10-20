@@ -1,6 +1,7 @@
 import { GetCardInfo, GetResourceInfo } from "../resources/ResourceHandler";
 import { Card } from "../types/card/card";
 import { handleTemplate } from "./Template";
+import { CalculateWidth } from "./Text";
 
 type CardPrint = {
     width: number;
@@ -115,7 +116,8 @@ export function buildCard(card: Card, index: number): CardPrint {
 
     let biggestWidth = 10; // minWidth
     textRows.forEach(e => {
-        if(e.length > biggestWidth) biggestWidth = e.length;
+        const length = CalculateWidth(e)
+        if(length > biggestWidth) biggestWidth = length;
     })
 
     // textRows.push("S: " + biggestWidth)
@@ -124,7 +126,8 @@ export function buildCard(card: Card, index: number): CardPrint {
 
     let outer = "+-"
     const middle = Math.floor(biggestWidth/2)
-    for(let i = 0; i < biggestWidth; i++) {
+    const less = (""+index).length-1;
+    for(let i = 0; i < biggestWidth-less; i++) {
         outer += i === middle ? index : "-"
     }
     outer += "-+"
@@ -142,7 +145,7 @@ export function buildCard(card: Card, index: number): CardPrint {
 
 
 function getRow(text: string, innerWidth: number) {
-    const textLength = text.length;
+    const textLength = CalculateWidth(text);
     const toPad = innerWidth - textLength;
 
     let str = "| "
@@ -205,7 +208,7 @@ type Points = {
 }
 
 function getPoints(card: Card): Points|null {
-    if(!card.points || !card.points.length) return null; 
+    if(!card.points || card.points.length) return null; 
     
     const points: Points = {}
 

@@ -391,7 +391,6 @@ public class ServerPlayer implements Player {
         Object data = switch(request.getType()) {
             case REQUEST_BOARD -> principality;
             case REQUEST_HAND -> hand;
-            case REQUEST_POINTS -> getPoints();
             default -> null;
         };
 

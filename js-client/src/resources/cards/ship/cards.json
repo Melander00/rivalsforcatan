@@ -1,0 +1,44 @@
+[
+    {
+        "id": "large_trade_ship",
+        "name": "Large Trade Ship",
+        "type": "Ship",
+        "description": "You may trade 2 resources of the left\nor right neighboring region for any\n1 other resource of your choice."
+    },
+    {
+        "id": "gold_ship",
+        "name": "Gold Ship",
+        "type": "Ship",
+        "description": "During your turn, you may trade\n2 gold for any 1 other resource\nas often as you wish"
+    },
+    {
+        "id": "brick_ship",
+        "name": "Brick Ship",
+        "type": "Ship",
+        "description": "During your turn, you may trade\n2 brick for any 1 other resource\nas often as you wish"
+    },
+    {
+        "id": "grain_ship",
+        "name": "Grain Ship",
+        "type": "Ship",
+        "description": "During your turn, you may trade\n2 grain for any 1 other resource\nas often as you wish"
+    },
+    {
+        "id": "lumber_ship",
+        "name": "Lumber Ship",
+        "type": "Ship",
+        "description": "During your turn, you may trade\n2 Lumber for any 1 other resource\nas often as you wish"
+    },
+    {
+        "id": "ore_ship",
+        "name": "Ore Ship",
+        "type": "Ship",
+        "description": "During your turn, you may trade\n2 ore for any 1 other resource\nas often as you wish"
+    },
+    {
+        "id": "wool_ship",
+        "name": "Wool Ship",
+        "type": "Ship",
+        "description": "During your turn, you may trade\n2 wool for any 1 other resource\nas often as you wish"
+    }
+]

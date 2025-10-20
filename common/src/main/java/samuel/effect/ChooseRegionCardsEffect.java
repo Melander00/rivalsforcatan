@@ -26,6 +26,7 @@ public class ChooseRegionCardsEffect implements Effect {
 
     @Subscribe
     public void onPlayerChooseRegionEvent(PlayerTakeRegionCardsEvent event) {
+        if(hasBeenUsed) return;
         if(!event.getPlayer().equals(player)) return;
 
         List<RegionCard> cards = new ArrayList<>();

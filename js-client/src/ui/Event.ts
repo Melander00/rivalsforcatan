@@ -19,11 +19,11 @@ export function initEventListener() {
 function handler(event: ServerEvent) {
     const eventInfo = GetEventInfo(event.id)
     if(!eventInfo) {
-        print(event)
+        print(event.id)
         return;
     }
 
-    print(
-        handleTemplate(event, eventInfo.description, `Event: ${event.id.namespace}:${event.id.id}`)
-    )
+    const toPrint = handleTemplate(event, eventInfo.description, `Event: ${event.id.namespace}:${event.id.id}`)
+
+    if(toPrint) print(toPrint)
 }

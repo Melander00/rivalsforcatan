@@ -1,6 +1,7 @@
 package samuel;
 
 import samuel.board.GridBoard;
+import samuel.condition.VictoryCondition;
 import samuel.game.Game;
 import samuel.game.GameContext;
 import samuel.introductory.IntroductoryGame;
@@ -11,6 +12,8 @@ import samuel.player.ServerPlayer;
 import samuel.network.SocketClient;
 import samuel.network.SocketServer;
 import samuel.player.Player;
+import samuel.point.PointBundle;
+import samuel.point.points.VictoryPoint;
 import samuel.response.OpponentResponse;
 import samuel.response.StateResponse;
 
@@ -76,11 +79,23 @@ public class Main {
 
                     if(opponent == null) yield null;
 
-                    yield new OpponentResponse(opponent.getPrincipality().getBoardPositions(), opponent.getPoints());
+                    PointBundle points = opponent.getPoints();
+                    int victory = context.getVictoryPoints(opponent);
+                    int diff = victory - points.getAmount(VictoryPoint.class);
+                    points.addPoint(VictoryPoint.class, diff);
+
+                    yield new OpponentResponse(opponent.getPrincipality().getBoardPositions(), points);
                 }
 //                case REQUEST_STATE -> context.getPlayers();
                 case REQUEST_STATE -> new StateResponse(context.getActivePlayer().equals(player), context.getPhase().toString());
                 case REQUEST_STACKS -> context.getStackContainer();
+                case REQUEST_POINTS -> {
+                    PointBundle points = player.getPoints();
+                    int victory = context.getVictoryPoints(player);
+                    int diff = victory - points.getAmount(VictoryPoint.class);
+                    points.addPoint(VictoryPoint.class, diff);
+                    yield points;
+                }
                 default -> null;
             };
 
