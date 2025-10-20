@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class SocketServer {
+public class SocketServer implements NetworkServer {
 
     private final ServerSocket server;
 
@@ -16,8 +16,13 @@ public class SocketServer {
 
     }
 
-    public Socket acceptClient() throws IOException {
-        return server.accept();
+    public NetworkClient acceptClient() {
+        try {
+
+            return new SocketClient(server.accept());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

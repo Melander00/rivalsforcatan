@@ -80,7 +80,7 @@ public class DefaultActionHandler implements ActionHandler {
 
         PlayerTradeEvent event = new PlayerTradeEvent(
                 player,
-                new ResourceAmount(firstToPay.resourceType(), 3), // todo: hard-coded magical number (default trade value 3:1)
+                new ResourceAmount(firstToPay.resourceType(), 3),
                 new ResourceAmount(firstToGet.resourceType(), 1));
         context.getEventBus().fireEvent(event);
         // get from event how many to pay
@@ -109,7 +109,7 @@ public class DefaultActionHandler implements ActionHandler {
                 case "road" -> stacks.getRoadStack();
                 case "settlement" -> stacks.getSettlementStack();
                 case "city" -> stacks.getCityStack();
-                // todo: Special face-up theme cards
+                // Special face-up theme cards
                 default -> null;
             };
 

@@ -4,6 +4,8 @@ import samuel.board.GridBoard;
 import samuel.game.Game;
 import samuel.game.GameContext;
 import samuel.introductory.IntroductoryGame;
+import samuel.network.NetworkClient;
+import samuel.network.NetworkServer;
 import samuel.player.GenericPlayerHand;
 import samuel.player.ServerPlayer;
 import samuel.network.SocketClient;
@@ -22,30 +24,30 @@ public class Main {
     private static GameContext context;
 
     public static void main(String[] args) throws IOException {
-        // open socket
+        // Network Server
         SocketServer socket = new SocketServer(5000);
 
-        // await two players
-
+        // Game Type
         Game game = new IntroductoryGame();
         GameServer server = new GameServer(game);
 
+        // Setup
         context = game.getContext();
-
         List<Player> awaitedPlayers = awaitPlayers(socket, 2);
-
         server.start(awaitedPlayers);
     }
 
-    private static List<Player> awaitPlayers(SocketServer socket, int nrOfPlayers) throws IOException {
+
+
+
+
+
+    private static List<Player> awaitPlayers(NetworkServer socket, int nrOfPlayers) {
         List<Player> players = new ArrayList<>();
         for(int i = 1; i <= nrOfPlayers; i++) {
             System.out.println("Awaiting Player " + i);
-            Socket client = socket.acceptClient();
+            NetworkClient socketClient = socket.acceptClient();
             System.out.println("Player " + i + " connected.");
-            SocketClient socketClient = new SocketClient(client);
-
-            test(socketClient);
 
             ServerPlayer player = new ServerPlayer(GridBoard.createGridBoard(5, 7), new GenericPlayerHand(), socketClient);
 
@@ -56,6 +58,7 @@ public class Main {
         return players;
     }
 
+    // This isn't the correct place for this but i dont have time ATM to figure it out lmao.
     private static void contextRequestHandler(Message request, Player player) {
         if(request == null || request.getType() == null) return;
 
@@ -86,26 +89,5 @@ public class Main {
             serverPlayer.sendMessage(new Message(MessageType.RESPONSE, request.getRequestId(), data));
 
         }
-    }
-
-    private static void test(SocketClient client) throws IOException {
-//        client.sendData(new Message(MessageType.GENERIC, new ForestRegionCard(0)));
-//        UUID uuid = client.requestData(new Message(MessageType.REQUEST_BOARD_POSITION, null), UUID.class);
-//        System.out.println(uuid);
-//
-//        GridBoard board = GridBoard.createGridBoard();
-//        BoardPosition pos = board.getPositionOnGrid(2, 2);
-//        board.place(new ForestRegionCard(1), pos);
-//        client.sendData(new Message(MessageType.GENERIC, board));
-//
-//        ResourceBundle bundle = new ResourceBundle();
-//        bundle.addResource(TimberResource.class, 2);
-//        bundle.addResource(OreResource.class, 2);
-//        client.sendData(new Message(MessageType.GENERIC, bundle));
-//
-//        PointBundle pointBundle = new PointBundle();
-//        pointBundle.addPoint(VictoryPoint.class, 2);
-//        client.sendData(new Message(MessageType.GENERIC, pointBundle));
-
     }
 }

@@ -19,7 +19,7 @@ import samuel.MessageType;
 import samuel.jackson.CustomMapper;
 
 
-public class SocketClient {
+public class SocketClient implements NetworkClient {
 
     private final Socket socket;
     private final BufferedReader in;
@@ -37,42 +37,55 @@ public class SocketClient {
         this.startReaderThread();
     }
 
-    public void sendData(Message message) throws IOException {
-        String json = objectMapper.writeValueAsString(message);
-        out.write(json + "\n");
-        out.flush();
+    public void sendData(Message message) {
+        try {
+            String json = objectMapper.writeValueAsString(message);
+            out.write(json + "\n");
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public <T> T requestData(Message message, Class<T> clazz) throws IOException, InterruptedException {
-        BlockingQueue<Message> responseQueue = new LinkedBlockingQueue<>();
+    public <T> T requestData(Message message, Class<T> clazz) {
+        try {
+            BlockingQueue<Message> responseQueue = new LinkedBlockingQueue<>();
 
-        UUID requestId = message.getRequestId();
+            UUID requestId = message.getRequestId();
 
-        pendingRequests.put(requestId.toString(), responseQueue);
+            pendingRequests.put(requestId.toString(), responseQueue);
 
-        message.setRequestId(requestId);
-        sendData(message);
-        Message res = responseQueue.take();
+            message.setRequestId(requestId);
+            sendData(message);
+            Message res = responseQueue.take();
 
-        pendingRequests.remove(requestId.toString());
+            pendingRequests.remove(requestId.toString());
 
-        return objectMapper.convertValue(res.getData(), clazz);
+            return objectMapper.convertValue(res.getData(), clazz);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public <T> T requestData(Message message, TypeReference<T> typeReference) throws IOException, InterruptedException {
-        BlockingQueue<Message> responseQueue = new LinkedBlockingQueue<>();
+    public <T> T requestData(Message message, TypeReference<T> typeReference) {
+        try {
 
-        UUID requestId = message.getRequestId();
+            BlockingQueue<Message> responseQueue = new LinkedBlockingQueue<>();
 
-        pendingRequests.put(requestId.toString(), responseQueue);
+            UUID requestId = message.getRequestId();
 
-        message.setRequestId(requestId);
-        sendData(message);
-        Message res = responseQueue.take();
+            pendingRequests.put(requestId.toString(), responseQueue);
 
-        pendingRequests.remove(requestId.toString());
+            message.setRequestId(requestId);
+            sendData(message);
+            Message res = responseQueue.take();
 
-        return objectMapper.convertValue(res.getData(), typeReference);
+            pendingRequests.remove(requestId.toString());
+
+            return objectMapper.convertValue(res.getData(), typeReference);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -84,7 +97,7 @@ public class SocketClient {
 
 
 
-    public void startReaderThread() {
+    private void startReaderThread() {
         Thread thread = new Thread(() -> {
             try {
 

@@ -77,24 +77,23 @@ public class IntrodoctoryPrincipality {
     private static List<RegionCard> getRegions(List<Integer> rolls) {
         // top-left to top-right then bot-left to bot-right
         // Forest, Gold Fields, Fields, Hill, Pasture, Mountains
-        // todo: fix so that they only have 1 resource on start.
 
         RegionCard forest = new ForestRegionCard(rolls.get(0));
-        forest.increaseResource(3);
+        forest.increaseResource(1);
 
         RegionCard gold = new GoldFieldRegionCard(rolls.get(1));
 
         RegionCard fields = new FieldsRegionCard(rolls.get(2));
-        fields.increaseResource(3);
+        fields.increaseResource(1);
 
         RegionCard hills = new HillsRegionCard(rolls.get(3));
-        hills.increaseResource(3);
+        hills.increaseResource(1);
 
         RegionCard pasture = new PastureRegionCard(rolls.get(4));
-        pasture.increaseResource(3);
+        pasture.increaseResource(1);
 
         RegionCard mountains = new MountainsRegionCard(rolls.get(5));
-        mountains.increaseResource(3);
+        mountains.increaseResource(1);
 
         return List.of(forest, gold, fields, hills, pasture, mountains);
     }

@@ -9,7 +9,6 @@ import samuel.player.request.RequestCause;
 import samuel.player.request.RequestCauseEnum;
 
 public class DefaultReplenishHandler implements ReplenishHandler{
-    // todo: add events
     public void handleReplenish(Player player, GameContext context) {
 
         // Discard if too many cards

@@ -89,8 +89,6 @@ public abstract class AbstractGame implements Game {
         return exchangeHandler;
     }
 
-    // todo: move some methods into their own helper class
-
     public abstract void setupPrincipality(Player player, int playerIndex);
 
     public void setupCardDeckAndStacks(Deck deck, GameContext context) {

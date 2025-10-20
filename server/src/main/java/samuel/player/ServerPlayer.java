@@ -14,6 +14,7 @@ import samuel.event.Event;
 import samuel.event.PlayerEvent;
 import samuel.eventmanager.Subscribe;
 import samuel.game.GameContext;
+import samuel.network.NetworkClient;
 import samuel.network.SocketClient;
 import samuel.phase.Phase;
 import samuel.player.action.PlayerAction;
@@ -39,7 +40,7 @@ import java.util.function.BiConsumer;
 public class ServerPlayer implements Player {
 
     private final Board principality;
-    private final SocketClient client;
+    private final NetworkClient client;
     private final PlayerHand hand;
 
     private final List<Effect> effects = new ArrayList<>();
@@ -47,10 +48,10 @@ public class ServerPlayer implements Player {
     private final UUID uuid = UUID.randomUUID();
 
 
-    public ServerPlayer(Board principality, PlayerHand hand, SocketClient client) {
+    public ServerPlayer(Board principality, PlayerHand hand, NetworkClient client) {
         this.principality = principality;
         this.hand = hand;
-        this.client = client; // todo, byt ut SocketClient mot ett interface för future modifiability.
+        this.client = client;
         client.addListener(this::clientRequestHandler);
     }
 
@@ -81,31 +82,20 @@ public class ServerPlayer implements Player {
 
     @Override
     public int requestInt(int min, int max, RequestCause cause) {
-        try {
-            int res = client.requestData(new Message(MessageType.REQUEST_INT, new Request(cause, new IntRequest(min, max))), Integer.class);
-            if(res < min) return min;
-            if(res > max) return max;
-            return res;
-        } catch (IOException | InterruptedException exception) {
-            // handle the exception
-            return min;
-        }
+        int res = client.requestData(new Message(MessageType.REQUEST_INT, new Request(cause, new IntRequest(min, max))), Integer.class);
+        if(res < min) return min;
+        if(res > max) return max;
+        return res;
     }
 
     @Override
     public ResourceBundle requestResource(ResourceBundle bundle, int amount, RequestCause cause) {
-        try {
-            List<ResourceAmount> res = client.requestData(new Message(
-                            MessageType.REQUEST_RESOURCE,
-                            new Request(cause, new ResourceRequest(bundle, amount))),
-                            new TypeReference<>() {});
+        List<ResourceAmount> res = client.requestData(new Message(
+                        MessageType.REQUEST_RESOURCE,
+                        new Request(cause, new ResourceRequest(bundle, amount))),
+                        new TypeReference<>() {});
 
-            return ResourceBundle.fromAmounts(res);
-        } catch (IOException | InterruptedException exception) {
-
-        }
-
-        return null;
+        return ResourceBundle.fromAmounts(res);
     }
 
 
@@ -114,13 +104,9 @@ public class ServerPlayer implements Player {
     @Override
     public CardStack<PlayableCard> requestCardStack(List<CardStack<PlayableCard>> cardStacks, List<UUID> unselectableStackIds, RequestCause cause) {
 
-        try {
-            UUID uuid = client.requestData(new Message(MessageType.REQUEST_CARD_STACK, new Request(cause, new CardStackRequest(cardStacks, unselectableStackIds))), UUID.class);
-            for(CardStack<PlayableCard> stack : cardStacks) {
-                if(stack.getUuid().equals(uuid)) return stack;
-            }
-        } catch (IOException | InterruptedException exception) {
-
+        UUID uuid = client.requestData(new Message(MessageType.REQUEST_CARD_STACK, new Request(cause, new CardStackRequest(cardStacks, unselectableStackIds))), UUID.class);
+        for(CardStack<PlayableCard> stack : cardStacks) {
+            if(stack.getUuid().equals(uuid)) return stack;
         }
 
         return null;
@@ -131,35 +117,26 @@ public class ServerPlayer implements Player {
     @Override
     public BoardPosition requestBoardPosition(List<List<BoardPosition>> positions, RequestCause cause) {
 
-        try {
-            UUID uuid = client.requestData(new Message(MessageType.REQUEST_BOARD_POSITION, new Request(cause, new BoardPositionRequest(positions))), UUID.class);
-            for(List<BoardPosition> row : positions) {
-                for(BoardPosition pos : row) {
-                    if(pos.getUuid().equals(uuid)) {
-                        return pos;
-                    }
+        UUID uuid = client.requestData(new Message(MessageType.REQUEST_BOARD_POSITION, new Request(cause, new BoardPositionRequest(positions))), UUID.class);
+        for(List<BoardPosition> row : positions) {
+            for(BoardPosition pos : row) {
+                if(pos.getUuid().equals(uuid)) {
+                    return pos;
                 }
             }
-        } catch (IOException | InterruptedException exception) {
-
         }
-
         return null;
     }
 
     @Override
     public <T extends Card> T requestCard(List<T> cards, RequestCause cause) {
-        try {
-            UUID uuid = client.requestData(new Message(
-                    MessageType.REQUEST_CARD,
-                    new Request(cause, new CardRequest(cards))),
-                    UUID.class);
+        UUID uuid = client.requestData(new Message(
+                MessageType.REQUEST_CARD,
+                new Request(cause, new CardRequest(cards))),
+                UUID.class);
 
-            for(T card : cards) {
-                if(card.getUuid().equals(uuid)) return card;
-            }
-        } catch (IOException | InterruptedException exception) {
-
+        for(T card : cards) {
+            if(card.getUuid().equals(uuid)) return card;
         }
 
         return null;
@@ -167,62 +144,34 @@ public class ServerPlayer implements Player {
 
     @Override
     public boolean requestBoolean(RequestCause cause) {
-
-        try {
-            Boolean bool = client.requestData(new Message(MessageType.REQUEST_BOOL, new Request(cause, null)), Boolean.class);
-            return bool;
-
-        } catch (IOException | InterruptedException exception) {
-
-        }
-
-        return false;
+        Boolean bool = client.requestData(new Message(MessageType.REQUEST_BOOL, new Request(cause, null)), Boolean.class);
+        return bool;
     }
 
     @Override
     public Pair<PlayerAction, BiConsumer<Boolean, String>> requestAction(Phase phase) {
         UUID uuid = UUID.randomUUID();
 
-        System.out.println("Created REQUEST_ACTION with id " + uuid + " at " + phase.toString());
+        PlayerAction action = client.requestData(new Message(MessageType.REQUEST_ACTION, uuid, phase), PlayerAction.class);
 
-        try {
-            PlayerAction action = client.requestData(new Message(MessageType.REQUEST_ACTION, uuid, phase), PlayerAction.class);
-
-            return new Pair<>(action, (success, code) -> {
-                System.out.println("Sending ACTION_RESPONSE with id " + uuid + " of " + success + " " + code);
-                try {
-
-
-                    client.sendData(new Message(MessageType.RESPONSE, uuid, new ActionResponse(success, code)));
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return new Pair<>(action, (success, code) -> {
+            client.sendData(new Message(MessageType.RESPONSE, uuid, new ActionResponse(success, code)));
+        });
     }
 
     @Subscribe
     @Override
     public void onEvent(Event event) {
-        try {
-            if(event instanceof PlayerEvent playerEvent) {
-                if(!playerEvent.getPlayer().equals(this)) return;
-            }
-
-            client.sendData(new Message(MessageType.EVENT, event));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(event instanceof PlayerEvent playerEvent) {
+            if(!playerEvent.getPlayer().equals(this)) return;
         }
+
+        client.sendData(new Message(MessageType.EVENT, event));
     }
 
 
     @Override
     public <T extends Point> int getPoints(Class<T> pointClass) {
-        // todo: if we want to calculate victory points we need to also take into account trade/strength advantage
         PointBundle bundle = getPoints();
         return bundle.getAmount(pointClass);
     }
@@ -430,11 +379,7 @@ public class ServerPlayer implements Player {
 
 
     public void sendMessage(Message msg) {
-        try {
-            client.sendData(msg);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
+        client.sendData(msg);
     }
 
     public void addListener(BiConsumer<Message, Player> listener) {
