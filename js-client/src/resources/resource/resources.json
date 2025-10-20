@@ -1,32 +1,44 @@
 [
     {
         "id": "BrickResource",
-        "name": "Brick",
+        "name": {
+            "template": "$orange{'Brick'}"
+        },
         "short": "B"
     },
     {
         "id": "GoldResource",
-        "name": "Gold",
+        "name": {
+            "template": "$gold{'Gold'}"
+        },
         "short": "Go"
     },
     {
         "id": "GrainResource",
-        "name": "Grain",
+        "name": {
+            "template": "$yellow{'Grain'}"
+        },
         "short": "Gr"
     },
     {
         "id": "OreResource",
-        "name": "Ore",
+        "name": {
+            "template": "$gray{'Ore'}"
+        },
         "short": "O"
     },
     {
         "id": "LumberResource",
-        "name": "Lumber",
+        "name": {
+            "template": "$brown{'Lumber'}"
+        },
         "short": "L"
     },
     {
         "id": "WoolResource",
-        "name": "Wool",
+        "name": {
+            "template": "Wool"
+        },
         "short": "W"
     }
 ]

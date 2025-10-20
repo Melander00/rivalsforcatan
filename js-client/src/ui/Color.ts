@@ -18,5 +18,9 @@ export const Color = {
     red: AnsiCode(["38;5","196"]),
     green: AnsiCode(["38;5","46"]),
     orange: AnsiCode(["38;5","202"]),
+    brown: AnsiCode(["38;5","130"]),
+    gold: AnsiCode(["38;5","214"]),
+    yellow: AnsiCode(["38;5","226"]),
+    gray: AnsiCode(["38;5","240"]),
 
 } as const

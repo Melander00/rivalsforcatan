@@ -25,8 +25,7 @@ const helpers: {
     lower: (val) => val.toLocaleLowerCase(),
     upper: (val) => val.toLocaleUpperCase(),
     
-    resource: (val) => GetResourceInfo(val).name,
-    resourceShort: (val) => GetResourceInfo(val).short,
+    resource: (val) => handleTemplate({}, GetResourceInfo(val).name),
     iterateResources: (val: ResourceAmount[]): string => {
         return val.map(res => `${res.amount} ${helpers.resource(res.resourceType)}`).join(", ")
     },
@@ -36,7 +35,20 @@ const helpers: {
     red: Color.red,
     green: Color.green,
     orange: Color.orange,
+    brown: Color.brown,
+    gold: Color.gold,
+    yellow: Color.yellow,
+    gray: Color.gray,
 }
+
+
+
+
+
+
+
+
+
 
 export function replaceTemplate(data: any, template: string): string {
   function evaluate(str: string): string {

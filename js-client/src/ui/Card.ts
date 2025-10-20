@@ -193,7 +193,7 @@ function getCost(card: Card): CardCost|null {
     const cost: CardCost = {}
 
     card.cost.forEach((c: {resourceType: string, amount: number}) => {
-        const type = GetResourceInfo(c.resourceType).name
+        const type = handleTemplate({}, GetResourceInfo(c.resourceType).name)
 
         if(!cost[type]) cost[type] = 0
 

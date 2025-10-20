@@ -3,6 +3,7 @@ import { GetResourceInfo } from "../resources/ResourceHandler"
 import { MessageType } from "../types/message"
 import { ServerRequest } from "../types/request"
 import { ask, print } from "../ui/Console"
+import { handleTemplate } from "../ui/Template"
 import { getCauseDescription } from "./Description"
 
 type ResourceAmount = {
@@ -35,7 +36,7 @@ export function initResourceRequestHandler() {
                 if(am > 0) available.push({resourceType: resAmount.resourceType, amount: am})
             }
 
-            return `${available.sort((a, b) => a.resourceType.localeCompare(b.resourceType)).map(e => `[${GetResourceInfo(e.resourceType).name}]`).join(" ")}`
+            return `${available.sort((a, b) => a.resourceType.localeCompare(b.resourceType)).map(e => `[${handleTemplate({}, GetResourceInfo(e.resourceType).name)}]`).join(" ")}`
         }
         
         async function q(): Promise<ResourceAmount> {
