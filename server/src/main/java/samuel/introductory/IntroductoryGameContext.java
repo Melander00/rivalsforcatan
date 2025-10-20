@@ -13,6 +13,7 @@ import samuel.phase.Phase;
 import samuel.player.Player;
 import samuel.point.points.CommercePoint;
 import samuel.point.points.StrengthPoint;
+import samuel.point.points.VictoryPoint;
 import samuel.stack.GenericStackContainer;
 
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class IntroductoryGameContext implements GameContext {
 
     @Override
     public boolean hasWon(Player player) {
-        return victoryCondition.hasWon(player);
+        return victoryCondition.hasWon(player, this);
     }
 
     @Override
@@ -128,5 +129,15 @@ public class IntroductoryGameContext implements GameContext {
         if(commercePoints >= 3) return winner;
 
         return null;
+    }
+
+    @Override
+    public int getVictoryPoints(Player player) {
+        int points = player.getPoints(VictoryPoint.class);
+
+        if(player.equals(getTradeAdvantage())) points++;
+        if(player.equals(getStrengthAdvantage())) points++;
+
+        return points;
     }
 }

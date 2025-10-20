@@ -1,5 +1,6 @@
 package samuel.condition;
 
+import samuel.game.GameContext;
 import samuel.player.Player;
 
 public interface VictoryCondition {
@@ -9,6 +10,6 @@ public interface VictoryCondition {
      * @param player
      * @return
      */
-    boolean hasWon(Player player);
+    boolean hasWon(Player player, GameContext context);
 
 }

@@ -65,4 +65,6 @@ public interface GameContext {
 
     Player getStrengthAdvantage();
     Player getTradeAdvantage();
+
+    int getVictoryPoints(Player player);
 }
