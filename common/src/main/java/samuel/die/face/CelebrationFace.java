@@ -37,11 +37,6 @@ public class CelebrationFace implements EventDieFace {
             giveResource(winner);
         }
 
-        // If you have the most skill points,
-        //you alone receive 1 resource of your choice.
-        //Otherwise, each player receives 1 resource of
-        //his choice.
-        // todo
     }
 
     private void giveResource(Player player) {

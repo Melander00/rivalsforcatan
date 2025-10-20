@@ -151,7 +151,7 @@ public class RelocationTest {
             GameContext ctx = args.getArgument(2);
 
             pos.setCard(null);
-            card.onRemove(context);
+            card.onRemove(ctx);
 
             return null;
         }).when(player).removeCard(any(), any(), any());

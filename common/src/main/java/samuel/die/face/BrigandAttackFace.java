@@ -45,7 +45,6 @@ public class BrigandAttackFace implements EventDieFace {
             }
 
             /*
-            todo:
                 How do we handle Gold Cache and similar?
                 It is supposed to not lose the resources on brigand attack.
                 We cant simply only remove those from the finalMap since

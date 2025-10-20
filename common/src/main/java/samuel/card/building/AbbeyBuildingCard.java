@@ -21,8 +21,6 @@ public class AbbeyBuildingCard implements BuildingCard, SingletonCard, PointHold
 
     private final UUID uuid = UUID.randomUUID();
 
-    // todo: all cards with price tag need to add to canPlay with getCost
-
     @Override
     public boolean canPlay(Player player, GameContext context) {
         boolean phase = context.getPhase().equals(Phase.ACTION);
