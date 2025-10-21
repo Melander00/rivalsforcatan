@@ -40,6 +40,12 @@ const helpers: {
     yellow: Color.yellow,
     gray: Color.gray,
     blue: Color.blue,
+
+    commerce: Color.dark_gold,
+    progress: Color.purple,
+    strength: Color.dark_blue,
+    skill: Color.light_green,
+    victory: Color.gold,
 }
 
 

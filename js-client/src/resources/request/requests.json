@@ -9,13 +9,13 @@
         "cause": "CHOOSE_REGION_TO_INCREASE_RESOURCE",
         "fallback": "Pick the region for which you want to increase resources on.",
         "description": {
-            "template": "Pick the region for which you want to $green{'increase'} $resource{resourceType}"
+            "template": "Pick the region to give a $resource{resourceType}"
         }
     },
     {
         "cause": "CHOOSE_REGION_TO_DECREASE_RESOURCE",
         "description": {
-            "template": "Pick the region to use for $red{'paying'} $resource{resourceType}"
+            "template": "Pick the region to remove a $resource{resourceType}"
         }
     },
     {

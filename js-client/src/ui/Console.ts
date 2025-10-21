@@ -66,7 +66,7 @@ function lock(resetInput = false) {
             unlocked = true;
             rl.prompt(true)
 
-            if(saved) {
+            if(saved && resetInput) {
                 rl.write(saved)
                 // process.stdout.write("");
             }

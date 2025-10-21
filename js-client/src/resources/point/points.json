@@ -1,0 +1,37 @@
+[
+    {
+        "id": "StrengthPoint",
+        "name": {
+            "template": "$strength{'Strength'}"
+        },
+        "short": "SP"
+    },
+    {
+        "id": "VictoryPoint",
+        "name": {
+            "template": "$victory{'Victory'}"
+        },
+        "short": "VP"
+    },
+    {
+        "id": "ProgressPoint",
+        "name": {
+            "template": "$progress{'Progress'}"
+        },
+        "short": "PP"
+    },
+    {
+        "id": "SkillPoint",
+        "name": {
+            "template": "$skill{'Skill'}"
+        },
+        "short": "SP"
+    },
+    {
+        "id": "CommercePoint",
+        "name": {
+            "template": "$commerce{'Commerce'}"
+        },
+        "short": "CP"
+    }
+]

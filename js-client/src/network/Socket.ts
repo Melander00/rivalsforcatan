@@ -11,6 +11,7 @@ export async function connect(address: string, port: number) {
 
     return new Promise<void>((resolve) => {
         client.connect(port, address, () => {
+            print(Color.green("Successfully connected!"))
             resolve()
         })
     })

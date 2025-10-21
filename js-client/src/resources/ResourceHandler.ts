@@ -10,6 +10,7 @@ import dice_events from "./event/dice_event.json"
 import events from "./event/event.json"
 import player_events from "./event/player.json"
 import phases from "./phase/phases.json"
+import points from "./point/points.json"
 import requests from "./request/requests.json"
 import resources from "./resource/resources.json"
 
@@ -70,8 +71,8 @@ export function GetResourceInfo(id: string) {
 }
 
 export function GetPointInfo(id: string) {
-    // const res = resources.find(e => e.id === id)
-    // if(res) return res;
+    const res = points.find(e => e.id === id)
+    if(res) return res;
 
     const full = id.replace("Point", "")
     const first = id[0]

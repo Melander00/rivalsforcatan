@@ -1,4 +1,4 @@
-import { GetCardInfo, GetResourceInfo } from "../resources/ResourceHandler";
+import { GetCardInfo, GetPointInfo, GetResourceInfo } from "../resources/ResourceHandler";
 import { Card } from "../types/card/card";
 import { handleTemplate } from "./Template";
 import { CalculateWidth } from "./Text";
@@ -207,13 +207,15 @@ type Points = {
     [point: string]: number
 }
 
+// todo: We dont display points?
 function getPoints(card: Card): Points|null {
-    if(!card.points || card.points.length) return null; 
+    if(!card.points || !card.points.length) return null; 
     
     const points: Points = {}
 
     card.points.forEach((c: {pointType: string, amount: number}) => {
-        const type = c.pointType.replace("Point","")
+        const type = handleTemplate({}, GetPointInfo(c.pointType).name)
+        // const type = c.pointType.replace("Point","")
 
         if(!points[type]) points[type] = 0
 
