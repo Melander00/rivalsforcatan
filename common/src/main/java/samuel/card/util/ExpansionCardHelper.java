@@ -79,13 +79,14 @@ public class ExpansionCardHelper {
         List<RegionCard> regions = new ArrayList<>();
         boolean foundSettlement = above;
         for(BoardPosition pos : column) {
-            if(pos.isEmpty()) continue;
 
-            if(pos.getCard() instanceof SettlementLike) {
+            if(pos.getBoard().isCenterRow(pos)) {
                 if(foundSettlement) break;
                 foundSettlement = true;
                 continue;
             }
+
+            if(pos.isEmpty()) continue;
 
             if(!foundSettlement) continue;
 

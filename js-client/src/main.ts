@@ -11,6 +11,7 @@ import { MessageType } from "./types/message";
 import { listenToCommands, print } from "./ui/Console";
 import { initEventListener } from "./ui/Event";
 
+
 const PORT = parseInt(process.env["HOST_PORT"] || "5000")
 const ADDRESS = process.env["HOST_ADDRESS"] || "localhost"
 

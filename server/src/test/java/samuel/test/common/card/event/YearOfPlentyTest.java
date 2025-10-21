@@ -13,12 +13,14 @@ import samuel.card.building.StorehouseBuildingCard;
 import samuel.card.event.EventCard;
 import samuel.card.event.YearOfPlentyEventCard;
 import samuel.card.region.ForestRegionCard;
+import samuel.card.region.MountainsRegionCard;
 import samuel.card.region.RegionCard;
 import samuel.event.GenericEventBus;
 import samuel.eventmanager.EventBus;
 import samuel.game.GameContext;
 import samuel.player.Player;
 import samuel.resource.resources.LumberResource;
+import samuel.resource.resources.OreResource;
 
 import java.util.List;
 
@@ -71,6 +73,22 @@ public class YearOfPlentyTest {
         card.resolveEvent(context);
 
         assertEquals(1, region.getResources().getAmount(LumberResource.class));
+    }
+
+    @Test
+    void testAbbeyBelow() {
+        RegionCard region = new ForestRegionCard(1);
+        board.place(region, board.getPositionFromGrid(3,3));
+        RegionCard mountains = new MountainsRegionCard(2);
+        board.place(mountains, board.getPositionFromGrid(3,5));
+
+        BuildingCard building = new AbbeyBuildingCard();
+        board.place(building, board.getPositionFromGrid(3,4));
+
+        card.resolveEvent(context);
+
+        assertEquals(1, region.getResources().getAmount(LumberResource.class));
+        assertEquals(1, mountains.getResources().getAmount(OreResource.class));
     }
 
     @Test

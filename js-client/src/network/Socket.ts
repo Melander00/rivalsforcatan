@@ -1,11 +1,14 @@
 import { randomUUID } from "crypto";
 import net from "net";
 import { Message, MessageType } from "../types/message";
-import { debug } from "../ui/Console";
+import { Color } from "../ui/Color";
+import { debug, print } from "../ui/Console";
 
 const client = new net.Socket();
 
 export async function connect(address: string, port: number) {
+    print(`Trying to connect to ${address}:${port}`)
+
     return new Promise<void>((resolve) => {
         client.connect(port, address, () => {
             resolve()
@@ -137,3 +140,11 @@ client.on("data", buf => {
         }
     }
 });
+
+client.on("error", (err) => {
+    print(Color.red(err.message))
+})
+
+client.on("close", () => {
+    process.exit()
+})
