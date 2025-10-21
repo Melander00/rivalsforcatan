@@ -9,6 +9,10 @@ export class RollCommand implements Command {
         return "roll"
     }
 
+    getArguments(): string[] {
+        return []
+    }
+
     async handle(args: string[]): Promise<boolean> {
 
         const action = getActionQueue().firstElement()

@@ -9,6 +9,10 @@ export class EndTurnCommand implements Command {
         return "end"
     }
 
+    getArguments(): string[] {
+        return []
+    }
+
     async handle(args: string[]): Promise<boolean> {
 
         const action = getActionQueue().firstElement()

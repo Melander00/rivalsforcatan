@@ -65,7 +65,7 @@
     {
         "cause": "EXCHANGE_SEARCH",
         "description": {
-            "template": "Exchange Search"
+            "template": "Do you want to pay to search the stack?"
         }
     },
     {

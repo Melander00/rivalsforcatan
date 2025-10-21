@@ -11,6 +11,10 @@ export class PlayCommand implements Command {
         return "play";
     }
 
+    getArguments(): string[] {
+        return []
+    }
+
     async handle(args: string[]): Promise<boolean> {
 
         if(args.length < 1) {

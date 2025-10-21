@@ -24,8 +24,8 @@ export default function initCardStackRequestHandler() {
         const sb: string[] = []
         for(let i = 0; i < cardStacks.length; i++) {
             if(
-                forbiddenStackIds.includes(cardStacks[i].uuid) ||
-                cardStacks[i].size === 0
+                forbiddenStackIds.includes(cardStacks[i].uuid)
+                // cardStacks[i].size === 0
             ) {
                 continue;
             }

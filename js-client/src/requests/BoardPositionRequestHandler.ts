@@ -23,7 +23,7 @@ export function initBoardPositionRequestHandler() {
         //     }
         // }
 
-        const question = `\n${buildPrincipality(data.positions)}\n${causeDetails} | Choose the position as "[Row] [Column]": `
+        const question = `\n${buildPrincipality(data.positions)}\n${causeDetails} | Choose the position as "Row Column": `
 
         if(data.positions.length === 0 || data.positions[0].length === 0) return null;
 

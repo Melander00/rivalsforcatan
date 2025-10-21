@@ -16,10 +16,18 @@ import { Command } from "./Command";
 
 export class ViewCommand implements Command {
     private readonly name = "view"
+    private readonly args: string[] = [
+        "board","hand","points","state","stacks","opponent",
+    ]
 
     getName(): string {
         return this.name
     }
+
+    getArguments(): string[] {
+        return this.args
+    }
+
     async handle(args: string[]): Promise<boolean> {
 
         if(args.length < 1) {

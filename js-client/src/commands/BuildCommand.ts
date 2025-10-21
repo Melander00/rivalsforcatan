@@ -11,10 +11,17 @@ const CENTER_CARDS = [
 
 export class BuildCommand implements Command {
     private readonly name = "build"
+    private readonly args: string[] = [
+        "road","settlement","city"
+    ]
 
 
     getName(): string {
         return this.name;
+    }
+
+    getArguments(): string[] {
+        return this.args
     }
 
     async handle(args: string[]): Promise<boolean> {

@@ -11,6 +11,7 @@ import { ViewCommand } from "./ViewCommand"
 export interface Command {
     
     getName(): string
+    getArguments(): string[]
     handle(args: string[]): Promise<boolean>
     help(): string
 
@@ -19,6 +20,10 @@ export interface Command {
 class HelpCommand implements Command {
     getName(): string {
         return "help"
+    }
+
+    getArguments(): string[] {
+        return []
     }
 
     async handle(args: string[]): Promise<boolean> {
@@ -65,4 +70,8 @@ export async function handleCommands(cmd: string, args: string[]): Promise<boole
 export function getCommandHelps(): string {
     const sb: string[] = commands.map(e => e.help())
     return `Available Commands:\n\t${sb.join("\n\t")}`
+}
+
+export function getCommands() {
+    return commands;
 }

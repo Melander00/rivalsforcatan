@@ -7,6 +7,10 @@ export class ResumeCommand implements Command {
         return "resume"
     }
 
+    getArguments(): string[] {
+        return []
+    }
+
     async handle(args: string[]): Promise<boolean> {
 
         const success = resumeAsk() 

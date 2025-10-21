@@ -8,7 +8,8 @@ import initCardStackRequestHandler from "./requests/CardStackRequestHandler";
 import { initIntRequestHandler } from "./requests/IntRequestHandler";
 import { initResourceRequestHandler } from "./requests/ResourceRequestHandler";
 import { MessageType } from "./types/message";
-import { listenToCommands, print } from "./ui/Console";
+import { Color } from "./ui/Color";
+import { initCommandPrediction, listenToCommands, print } from "./ui/Console";
 import { initEventListener } from "./ui/Event";
 
 
@@ -25,6 +26,11 @@ const ADDRESS = process.env["HOST_ADDRESS"] || "localhost"
 connect(ADDRESS, PORT);
 listenToCommands()
 initActionQueue()
+if(/^(true|1|yes|on)$/i.test(process.env['PREDICTION'] ?? "")) {
+    if(initCommandPrediction()) print(Color.blue("Enabled command prediction."))
+    else print(Color.red("Couldnt enable command prediction. Maybe not TTY?"))
+}
+// stopCommandPrediction()
 
 // -- Init Server Request Handlers --
 initIntRequestHandler()

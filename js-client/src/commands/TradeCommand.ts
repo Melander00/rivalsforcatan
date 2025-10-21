@@ -11,6 +11,10 @@ export class TradeCommand implements Command {
         return this.name;
     }
 
+    getArguments(): string[] {
+        return []
+    }
+
     async handle(args: string[]): Promise<boolean> {
 
         const action = getActionQueue().firstElement()
