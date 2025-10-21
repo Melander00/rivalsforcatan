@@ -37,8 +37,11 @@ import java.util.function.BiConsumer;
 
 public class ServerPlayer implements Player {
 
+
     private final Board principality;
-    private final NetworkClient client;
+
+    private final PlayerNetworkHelper network;
+
     private final PlayerHand hand;
 
     private final List<Effect> effects = new ArrayList<>();
@@ -46,11 +49,13 @@ public class ServerPlayer implements Player {
     private final UUID uuid = UUID.randomUUID();
 
 
-    public ServerPlayer(Board principality, PlayerHand hand, NetworkClient client) {
+    public ServerPlayer(Board principality, PlayerHand hand, PlayerNetworkHelper network) {
         this.principality = principality;
         this.hand = hand;
-        this.client = client;
-        client.addListener(this::clientRequestHandler);
+        this.network = network;
+        if(network != null) {
+            addListener(this::clientRequestHandler);
+        }
     }
 
 
@@ -63,6 +68,9 @@ public class ServerPlayer implements Player {
         return this.principality;
     }
 
+
+
+
     @Override
     public void giveEffect(Effect effect) {
         effects.add(effect);
@@ -73,6 +81,9 @@ public class ServerPlayer implements Player {
         effects.remove(effect);
     }
 
+
+
+
     @Override
     public int requestInt(RequestCause cause) {
         return this.requestInt(Integer.MIN_VALUE, Integer.MAX_VALUE, cause);
@@ -80,82 +91,47 @@ public class ServerPlayer implements Player {
 
     @Override
     public int requestInt(int min, int max, RequestCause cause) {
-        int res = client.requestData(new Message(MessageType.REQUEST_INT, new Request(cause, new IntRequest(min, max))), Integer.class);
-        if(res < min) return min;
-        if(res > max) return max;
-        return res;
+        return this.network.requestInt(min, max, cause);
     }
 
     @Override
     public ResourceBundle requestResource(ResourceBundle bundle, int amount, RequestCause cause) {
-        List<ResourceAmount> res = client.requestData(new Message(
-                        MessageType.REQUEST_RESOURCE,
-                        new Request(cause, new ResourceRequest(bundle, amount))),
-                        new TypeReference<>() {});
-
-        return ResourceBundle.fromAmounts(res);
+        return this.network.requestResource(bundle, amount, cause);
     }
-
-
-
 
     @Override
     public CardStack<PlayableCard> requestCardStack(List<CardStack<PlayableCard>> cardStacks, List<UUID> unselectableStackIds, RequestCause cause) {
-
-        UUID uuid = client.requestData(new Message(MessageType.REQUEST_CARD_STACK, new Request(cause, new CardStackRequest(cardStacks, unselectableStackIds))), UUID.class);
-        for(CardStack<PlayableCard> stack : cardStacks) {
-            if(stack.getUuid().equals(uuid)) return stack;
-        }
-
-        return null;
+        return this.network.requestCardStack(cardStacks, unselectableStackIds, cause);
     }
-
-
 
     @Override
     public BoardPosition requestBoardPosition(List<List<BoardPosition>> positions, RequestCause cause) {
-
-        UUID uuid = client.requestData(new Message(MessageType.REQUEST_BOARD_POSITION, new Request(cause, new BoardPositionRequest(positions))), UUID.class);
-        for(List<BoardPosition> row : positions) {
-            for(BoardPosition pos : row) {
-                if(pos.getUuid().equals(uuid)) {
-                    return pos;
-                }
-            }
-        }
-        return null;
+        return this.network.requestBoardPosition(positions, cause);
     }
 
     @Override
     public <T extends Card> T requestCard(List<T> cards, RequestCause cause) {
-        UUID uuid = client.requestData(new Message(
-                MessageType.REQUEST_CARD,
-                new Request(cause, new CardRequest(cards))),
-                UUID.class);
-
-        for(T card : cards) {
-            if(card.getUuid().equals(uuid)) return card;
-        }
-
-        return null;
+        return this.network.requestCard(cards, cause);
     }
 
     @Override
     public boolean requestBoolean(RequestCause cause) {
-        Boolean bool = client.requestData(new Message(MessageType.REQUEST_BOOL, new Request(cause, null)), Boolean.class);
-        return bool;
+        return this.network.requestBoolean(cause);
     }
 
     @Override
     public Pair<PlayerAction, BiConsumer<Boolean, String>> requestAction(Phase phase) {
-        UUID uuid = UUID.randomUUID();
-
-        PlayerAction action = client.requestData(new Message(MessageType.REQUEST_ACTION, uuid, phase), PlayerAction.class);
-
-        return new Pair<>(action, (success, code) -> {
-            client.sendData(new Message(MessageType.RESPONSE, uuid, new ActionResponse(success, code)));
-        });
+        return this.network.requestAction(phase);
     }
+
+    @Override
+    public void directMessage(String msg) {
+        this.network.directMessage(msg);
+    }
+
+
+
+
 
     @Subscribe
     public void onEvent(Event event) {
@@ -163,8 +139,11 @@ public class ServerPlayer implements Player {
             if(!playerEvent.getPlayer().equals(this)) return;
         }
 
-        client.sendData(new Message(MessageType.EVENT, event));
+        sendMessage(new Message(MessageType.EVENT, event));
     }
+
+
+
 
 
     @Override
@@ -192,18 +171,9 @@ public class ServerPlayer implements Player {
         return points;
     }
 
-    @Override
-    public boolean hasPointAdvantage(Class<? extends Point> pointType, GameContext context) {
-        boolean hasAdvantage = true;
-        for(Player player : context.getPlayers()) {
-            if(player.equals(this)) continue;
-            if(player.getPoints(pointType) > this.getPoints(pointType)) {
-                hasAdvantage = false;
-                break;
-            }
-        }
-        return hasAdvantage;
-    }
+
+
+
 
     @Override
     public PlayerHand getHand() {
@@ -243,6 +213,10 @@ public class ServerPlayer implements Player {
         }
         return null;
     }
+
+
+
+
 
     @Override
     public void placeCard(PlaceableCard card, BoardPosition position, GameContext context) {
@@ -284,6 +258,11 @@ public class ServerPlayer implements Player {
 
     }
 
+
+
+
+
+
     @Override
     public void giveResources(ResourceBundle bundle) {
         if(bundle == null) return;
@@ -292,14 +271,6 @@ public class ServerPlayer implements Player {
             int amount = am.amount();
             while(amount > 0) {
                 int res = ResourceHelper.increaseHolderOfChoice(this, am.resourceType(), 1);
-
-//                deadlock if there is no region without max resources.
-//                if(res < amount) {
-//                    amount--;
-//                } else {
-//                    directMessage("That region already has max amount of resources.");
-//                }
-                // fix by always lowering amount. we let the user make sure that the region isn't full
                 amount--;
             }
         }
@@ -333,12 +304,6 @@ public class ServerPlayer implements Player {
             int amount = am.amount();
             while(amount > 0) {
                 int res = ResourceHelper.decreaseHolderOfChoice(this, am.resourceType(), 1);
-//                  deadlock
-//                if(res < amount) {
-//                    amount--;
-//                } else {
-//                    directMessage("That region has no resources to remove from.");
-//                }
                 amount--;
             }
         }
@@ -369,22 +334,22 @@ public class ServerPlayer implements Player {
         return bundle.getAmount(resource);
     }
 
-    @Override
-    public void directMessage(String msg) {
-        sendMessage(new Message(MessageType.DIRECT_MESSAGE, new DirectMessage("Server", msg)));
-    }
+
+
+
+
+
 
 
     public void sendMessage(Message msg) {
-        client.sendData(msg);
+        this.network.sendMessage(msg);
     }
 
     public void addListener(BiConsumer<Message, Player> listener) {
-        Player owner = this;
-        this.client.addListener(message -> listener.accept(message, owner));
+        this.network.addListener(listener, this);
     }
 
-    private void clientRequestHandler(Message request) {
+    private void clientRequestHandler(Message request, Player player) {
         if(request == null || request.getType() == null) return;
 
         Object data = switch(request.getType()) {

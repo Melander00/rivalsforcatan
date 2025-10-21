@@ -53,7 +53,7 @@ public class IngaTest {
     @BeforeEach
     void setup() {
         board = GridBoard.createGridBoard(5,7);
-        player = new ServerPlayer(board, hand, client);
+        player = new ServerPlayer(board, hand, null);
         hero = new IngaHeroCard();
     }
 

@@ -64,8 +64,6 @@ public class IntroductoryGame extends AbstractGame {
 
     @Override
     public void runTurn(Player activePlayer) {
-        activePlayer.directMessage("Your turn");
-
         super.runTurn(activePlayer);
     }
 

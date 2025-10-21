@@ -56,7 +56,7 @@ public class StorehouseTest {
         eventBus = new GenericEventBus();
         board = GridBoard.createGridBoard(5,7);
         card = new StorehouseBuildingCard();
-        player = new ServerPlayer(board, hand, client);
+        player = new ServerPlayer(board, hand, null);
     }
 
     @Test

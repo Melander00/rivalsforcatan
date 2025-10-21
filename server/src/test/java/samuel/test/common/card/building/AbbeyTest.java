@@ -52,7 +52,7 @@ public class AbbeyTest {
     @BeforeEach
     void setup() {
         board = GridBoard.createGridBoard(5,7);
-        player = new ServerPlayer(board, hand, client);
+        player = new ServerPlayer(board, hand, null);
         eventBus = new GenericEventBus();
         card = new AbbeyBuildingCard();
     }

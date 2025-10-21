@@ -12,6 +12,7 @@ import samuel.player.ServerPlayer;
 import samuel.network.SocketClient;
 import samuel.network.SocketServer;
 import samuel.player.Player;
+import samuel.player.ServerPlayerNetworkHelper;
 import samuel.point.PointBundle;
 import samuel.point.points.VictoryPoint;
 import samuel.response.OpponentResponse;
@@ -52,7 +53,10 @@ public class Main {
             NetworkClient socketClient = socket.acceptClient();
             System.out.println("Player " + i + " connected.");
 
-            ServerPlayer player = new ServerPlayer(GridBoard.createGridBoard(5, 7), new GenericPlayerHand(), socketClient);
+            ServerPlayer player = new ServerPlayer(
+                    GridBoard.createGridBoard(5, 7),
+                    new GenericPlayerHand(),
+                    new ServerPlayerNetworkHelper(socketClient));
 
             player.addListener(Main::contextRequestHandler);
 
@@ -100,6 +104,7 @@ public class Main {
             };
 
             if(data == null) return;
+
 
             serverPlayer.sendMessage(new Message(MessageType.RESPONSE, request.getRequestId(), data));
 

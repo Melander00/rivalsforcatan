@@ -87,7 +87,7 @@ public class MarketplaceTest {
 
     @Test
     void testPoints() {
-        Player player = new ServerPlayer(board, null, mock(SocketClient.class));
+        Player player = new ServerPlayer(board, null, null);
         board.place(card, board.getPositionFromGrid(1,1));
 
         assertEquals(1, player.getPoints(CommercePoint.class));

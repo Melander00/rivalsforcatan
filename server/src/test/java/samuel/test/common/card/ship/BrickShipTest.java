@@ -53,7 +53,7 @@ public class BrickShipTest {
     @BeforeEach
     void setup() {
         board = GridBoard.createGridBoard(5,7);
-        player = new ServerPlayer(board, hand, client);
+        player = new ServerPlayer(board, hand, null);
         eventBus = new GenericEventBus();
         ship = new BrickShipCard();
     }

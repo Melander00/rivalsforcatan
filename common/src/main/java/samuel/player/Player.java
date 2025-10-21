@@ -24,13 +24,6 @@ import java.util.UUID;
 import java.util.function.BiConsumer;
 
 public interface Player {
-
-    /**
-     * Returns the user's principality.
-     * @return
-     */
-    Board getPrincipality();
-
     /**
      * Gives a one-time effect to the user.
      * @param effect
@@ -42,6 +35,10 @@ public interface Player {
      * @param effect
      */
     void removeEffect(Effect effect);
+
+
+
+
 
     /**
      * Asks the user for an integer.
@@ -105,6 +102,11 @@ public interface Player {
      */
     void directMessage(String msg);
 
+
+
+
+
+
     /**
      * Returns the amount of a specific point type that the player has.
      * @param point
@@ -114,21 +116,17 @@ public interface Player {
     <T extends Point> int getPoints(Class<T> point);
 
     /**
-     * Whether this player has the most points of a type among all players in the context.
-     * Cannot be used alone for determining strength advantage since we don't check for minimum points.
-     * We only compare to other players.
-     * @param pointType
-     * @param context
-     * @return true if this player has the most points of all players.
-     */
-    boolean hasPointAdvantage(Class<? extends Point> pointType, GameContext context);
-
-    /**
      * Returns all the points a player has on the board.
      * Not including Victory Points from advantages or other sources which aren't from the board.
      * @return
      */
     PointBundle getPoints();
+
+
+
+
+
+
 
     /**
      * Returns the player's hand.
@@ -167,6 +165,17 @@ public interface Player {
      */
     PlayableCard getCardInHandFromUuid(UUID uuid);
 
+
+
+
+
+
+    /**
+     * Returns the user's principality.
+     * @return
+     */
+    Board getPrincipality();
+
     /**
      * Places the card on the board and initializes it.
      * @param card
@@ -189,6 +198,11 @@ public interface Player {
      * @param context
      */
     void playCard(PlayableCard card, GameContext context);
+
+
+
+
+
 
     /**
      * Gives the player the resources.
@@ -222,4 +236,8 @@ public interface Player {
      * @param <T>
      */
     <T extends Resource> int getResources(Class<T> resource);
+
+
+
+
 }

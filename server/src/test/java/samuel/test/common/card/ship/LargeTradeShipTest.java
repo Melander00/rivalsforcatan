@@ -60,7 +60,7 @@ public class LargeTradeShipTest {
     void setup() {
         board = GridBoard.createGridBoard(5,7);
         position = board.getPositionFromGrid(1,2);
-        player = new ServerPlayer(board, hand, client);
+        player = new ServerPlayer(board, hand, null);
         eventBus = new GenericEventBus();
         ship = new LargeTradeShipCard();
     }
