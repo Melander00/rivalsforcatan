@@ -146,6 +146,10 @@ client.on("error", (err) => {
     print(Color.red(err.message))
 })
 
-client.on("close", () => {
+client.on("close", (hadError) => {
+    print(hadError ? 
+        Color.red(`An error caused the socket to close. Exiting...`) : 
+        Color.blue(`The socket was closd. Exiting...`)
+    )
     process.exit()
 })

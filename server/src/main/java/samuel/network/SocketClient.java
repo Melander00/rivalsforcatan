@@ -43,7 +43,7 @@ public class SocketClient implements NetworkClient {
             out.write(json + "\n");
             out.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -120,6 +120,7 @@ public class SocketClient implements NetworkClient {
                     }
                 }
             } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
 //                e.printStackTrace();
             }
         });
