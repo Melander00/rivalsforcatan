@@ -22,5 +22,6 @@ export const Color = {
     gold: AnsiCode(["38;5","214"]),
     yellow: AnsiCode(["38;5","226"]),
     gray: AnsiCode(["38;5","240"]),
+    blue: AnsiCode(["38;5","45"]),
 
 } as const

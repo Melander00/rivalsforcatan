@@ -1,5 +1,6 @@
 import { GetRequestCauseInfo } from "../resources/ResourceHandler"
 import { RequestCause } from "../types/request"
+import { Color } from "../ui/Color"
 import { print } from "../ui/Console"
 import { handleTemplate } from "../ui/Template"
 
@@ -11,7 +12,11 @@ export function getCauseDescription(cause: RequestCause) {
     print(cause)
 
     if(info?.description) {
-        causeDetails = handleTemplate(cause.data, info.description)
+        try {
+            causeDetails = handleTemplate(cause.data, info.description)
+        } catch(error: unknown) {
+            print(Color.red((error as Error).message))
+        }
     }
 
     return causeDetails

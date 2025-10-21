@@ -13,7 +13,7 @@ export function handleTemplate(data: any, field: string | {template: string}, id
     if(typeof field === "string") return field;
 
     const template = field.template;
-    if(!template || typeof template !== "string") throw new Error(`Invalid description template of ${identifier}`)
+    if(template === undefined || template === null || typeof template !== "string") throw new Error(`Invalid description template of ${identifier}. Typeof: ${typeof template}`)
 
     return replaceTemplate(data, template);
 }
@@ -39,6 +39,7 @@ const helpers: {
     gold: Color.gold,
     yellow: Color.yellow,
     gray: Color.gray,
+    blue: Color.blue,
 }
 
 
